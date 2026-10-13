@@ -17,7 +17,7 @@ Read one requirement with `scripts/req.sh show REQ-nnn`.
 |----|------|----------|--------|-------|
 | REQ-006 | job | must | approved | Documentation on the site always matches the latest released Xaden |
 | REQ-007 | job | must | approved | Site changes go live only after CI passed on the exact commit |
-| REQ-008 | quality | should | approved | Builds are reproducible and pinned |
+| REQ-008 | quality | should | in-progress | Builds are reproducible and pinned |
 
 ## Experience (`experience`)
 
@@ -30,10 +30,10 @@ Read one requirement with `scripts/req.sh show REQ-nnn`.
 
 | ID | Type | Priority | Status | Title |
 |----|------|----------|--------|-------|
-| REQ-009 | job | must | approved | Security researchers find a standard contact for vulnerability reports |
+| REQ-009 | job | must | in-progress | Security researchers find a standard contact for vulnerability reports |
 | REQ-010 | job | must | approved | Visitors can see who runs the site and which data is processed |
-| REQ-011 | quality | must | approved | The site sets no cookies and makes no third-party requests |
-| REQ-012 | quality | must | approved | The site is hardened as far as GitHub Pages allows, and says where it is not |
+| REQ-011 | quality | must | in-progress | The site sets no cookies and makes no third-party requests |
+| REQ-012 | quality | must | in-progress | The site is hardened as far as GitHub Pages allows, and says where it is not |
 
 ## Visitor journey (`visitor-journey`)
 

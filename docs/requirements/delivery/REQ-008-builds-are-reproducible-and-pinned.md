@@ -3,7 +3,7 @@ id: REQ-008
 type: quality
 epic: delivery
 priority: should
-status: approved
+status: in-progress
 updated: 2026-10-13
 ---
 

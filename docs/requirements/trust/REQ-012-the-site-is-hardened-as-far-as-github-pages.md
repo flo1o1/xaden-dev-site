@@ -3,7 +3,7 @@ id: REQ-012
 type: quality
 epic: trust
 priority: must
-status: approved
+status: in-progress
 updated: 2026-10-13
 ---
 
