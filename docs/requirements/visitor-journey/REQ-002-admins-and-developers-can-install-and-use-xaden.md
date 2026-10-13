@@ -15,7 +15,7 @@ When I decide to try Xaden, I want task-oriented instructions to install, update
 
 ## Acceptance criteria
 
-- Given the docs landing page, then it offers the entry points Admins and Developers, each with its own pages, and links by task
+- Given the docs landing page, then it offers the entry points Admins and Developers, each one single page whose sections are listed on the landing page and in a table of contents
 - Given the install page, then it documents both ways to get Xaden, downloading the release as a zip archive and cloning the repository, each with its steps and when to choose it
 - Given the install, update and uninstall pages, then each has a section per operating system (Linux, macOS, Windows) wherever the steps differ, such as prerequisites, the shell profile line for `PATH`, or the shell used
 - Given the Windows section, then it states the support level exactly as the Getting Started page does (WSL or Git Bash, untested; native PowerShell not supported) and invents no steps that were not run
