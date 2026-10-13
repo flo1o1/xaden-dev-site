@@ -25,3 +25,4 @@ When I decide to try Xaden, I want task-oriented instructions to install, update
 - Given any docs page, then it shows the Xaden version and release date it describes
 - Given the main menu, then Docs opens a submenu with Quick start, Admins and Developers, which works with the keyboard and without JavaScript
 - Given any docs page, then it contains no requirement or rule IDs (such as REQ-123 or CC-03), no section references (such as §10) and no paths into the Xaden repository, because readers have not seen the repository; paths inside a generated project stay
+- Given any command in the docs, then it uses the `xaden` command wherever one exists (new, update, setup, check, req, pack, release), and `scripts/install.sh` appears only to install `xaden`
