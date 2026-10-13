@@ -1,6 +1,5 @@
 {{ define "main" }}
 {{ $hero := .Params.hero }}
-{{ $logo := (resources.Get "img/xaden.png").Resize "420x webp q85" }}
 <section class="hero">
   <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-40 pt-16 md:grid-cols-[1.5fr_1fr] md:pt-24">
     <div class="min-w-0">
@@ -15,7 +14,7 @@
       </p>
     </div>
     <div class="flex justify-center">
-      <img src="{{ $logo.RelPermalink }}" width="{{ $logo.Width }}" height="{{ $logo.Height }}" alt="Xaden: a hooded figure in black and crimson with two swords on its back" class="logo-glow h-auto w-64 md:w-80">
+      <img src="{{ "img/xaden.svg" | relURL }}" width="960" height="912" alt="Xaden: a smiling hooded figure in charcoal and crimson with two swords on its back" class="logo-glow h-auto w-64 md:w-80">
     </div>
   </div>
   <div class="ridge" aria-hidden="true"></div>
@@ -41,7 +40,7 @@
   <ol class="mt-10 grid gap-8 md:grid-cols-3">
     {{ range $i, $step := .Params.steps }}
     <li class="flex gap-4">
-      <span class="font-display text-4xl font-bold text-brand" aria-hidden="true">{{ add $i 1 }}</span>
+      <span class="font-display text-4xl font-bold text-accent" aria-hidden="true">{{ add $i 1 }}</span>
       <div>
         <h3 class="text-lg font-bold">{{ $step.title }}</h3>
         <p class="mt-1 text-sm text-muted">{{ $step.text }}</p>
