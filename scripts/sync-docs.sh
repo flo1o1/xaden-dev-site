@@ -104,6 +104,35 @@ rewrite_for_readers() {
   '
 }
 
+# prefer_xaden_command: from stdin, the text with the `xaden` command wherever it has an equivalent
+# (REQ-002). The Xaden docs show the scripts first and `xaden` as an option; the site makes `xaden`
+# the first choice. Block rewrites come first, the plain command swaps last. Text that no longer
+# matches (a release that already says it this way) is left alone.
+prefer_xaden_command() {
+  perl -0pe '
+    # Create your project: `xaden new` creates ./<name>, so the folder to enter changes too.
+    s/```bash\nscripts\/new-project\.sh my-app\nscripts\/new-project\.sh my-app ~\/code\/x\ncd \.\.\/my-app\n```\n\n- `scripts\/new-project\.sh my-app`: [^\n]*\n- `scripts\/new-project\.sh my-app ~\/code\/x`: [^\n]*\n\nWith the `xaden` command: [^\n]*\n/```bash\nxaden new my-app\ncd my-app\n```\n\n- `xaden new my-app`: creates the folder `my-app` in the current directory, with its own git repository and hooks\n- `cd my-app`: moves your terminal into the new project\n\nTo create the project somewhere else, add the folder: `xaden new my-app ~\/code\/x`.\n/;
+    s/Then clone your copy and run\n`scripts\/new-project\.sh my-app` from it the same way\./Then clone your copy and run its `scripts\/install.sh`; `xaden new my-app` then works the same way./;
+    # Update a project: run inside the project.
+    s/Pull the newest scaffold, then from the scaffold directory:.*?inside the project\./Pull the newest Xaden (`git pull` in its folder), then run this inside your project:\n\n```bash\nxaden update\nxaden update --apply\n```\n\n- `xaden update`: dry run, lists what would change\n- `xaden update --apply`: stages the changes; review them with `git diff --cached`/s;
+    # The xaden command is the way in, not an option.
+    s/### Optional: the `xaden` command/### The `xaden` command/;
+    s/so you can\nuse the scaffold from any directory\./so you can\nuse Xaden from any directory./;
+    s/is: the link points into it\./is: the link points into it. Every command in these docs assumes the command is installed./;
+    s/\| `scripts\/new-project\.sh`, creating `\.\/my-app` \(or `dir`\) \|/| creates `.\/my-app` (or `dir`) with its own git repository and hooks |/;
+    s/\| `scripts\/update-scaffold\.sh` for the project you are in \|/| brings the project you are in to this Xaden version; a dry run without `--apply` |/;
+    s/\| the project\x27s own `scripts\/setup\.sh`, `check\.sh`, `req\.sh`, `pack-context\.sh`, `release\.sh`, from anywhere inside it \|/| activate the git hooks, run the checks, manage requirements, build a context pack, cut a release; from anywhere inside the project |/;
+    # Everything else: the plain command swaps.
+    s/scripts\/new-project\.sh/xaden new/g;
+    s/scripts\/update-scaffold\.sh/xaden update/g;
+    s/scripts\/setup\.sh/xaden setup/g;
+    s/scripts\/check\.sh/xaden check/g;
+    s/scripts\/req\.sh/xaden req/g;
+    s/scripts\/pack-context\.sh/xaden pack/g;
+    s/scripts\/release\.sh/xaden release/g;
+  '
+}
+
 # demote_headings: from stdin, every Markdown heading one level deeper, except inside code fences.
 demote_headings() {
   awk '/^```/ { fence = !fence } !fence && /^#+ / { print "#" $0; next } { print }'
@@ -161,7 +190,7 @@ render_role_page() {
       [ -n "$file_title" ] || die "REQ-006: $path has no top-level heading"
       awk '!skipped && /^# / { skipped = 1; next } { print }' "$release/$path" | emit_section "$file_title" demote
     done
-  } | rewrite_for_readers | sed "s#<xaden-repo-url>#https://github.com/$XADEN_REPOSITORY#g" >"$DOCS_DIR/$role.md"
+  } | rewrite_for_readers | prefer_xaden_command | sed "s#<xaden-repo-url>#https://github.com/$XADEN_REPOSITORY#g" >"$DOCS_DIR/$role.md"
   # <xaden-repo-url> would be read as raw HTML, which the site forbids, and swallow the text after it.
 }
 

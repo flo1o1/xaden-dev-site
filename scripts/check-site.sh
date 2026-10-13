@@ -97,6 +97,14 @@ check_docs_have_no_internal_references() {
 $found"
 }
 
+# check_docs_prefer_xaden: REQ-002, the xaden command comes first wherever it exists.
+check_docs_prefer_xaden() {
+  local found
+  found="$(grep -rnoE 'scripts/(new-project|update-scaffold|setup|check|req|pack-context|release)\.sh' "$OUTPUT_DIR/docs" --include='*.html' | head -n 5 || true)"
+  [ -z "$found" ] || die "REQ-002: docs pages show a script where the xaden command exists (extend prefer_xaden_command in scripts/sync-docs.sh):
+$found"
+}
+
 main() {
   info "build"
   build_site
@@ -108,6 +116,8 @@ main() {
   check_content_security_policy
   info "docs without internal references (REQ-002)"
   check_docs_have_no_internal_references
+  info "docs use the xaden command (REQ-002)"
+  check_docs_prefer_xaden
   info "security.txt (REQ-009)"
   check_security_txt
   info "site checks passed"
