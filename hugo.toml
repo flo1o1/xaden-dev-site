@@ -1,0 +1,31 @@
+baseURL = "https://xaden.dev/"
+title = "Xaden"
+locale = "en"
+theme = "nightfall"
+enableRobotsTXT = true
+disableKinds = ["taxonomy", "term", "rss"]
+
+[markup.goldmark.renderer]
+  unsafe = false
+
+[menu]
+  [[menu.header]]
+    name = "docs"
+    weight = 1
+    url = "docs/"
+  [[menu.header]]
+    name = "about"
+    weight = 2
+    url = "about/"
+
+[params]
+  user = "visitor"
+  hostname = "xaden.dev"
+  openLinksInNewTab = false
+  showMetadata = false
+  footerHtml = "Xaden is open source under the MIT license."
+  [params.author]
+    name = "Xaden"
+
+[pagination]
+  disableAliases = true
