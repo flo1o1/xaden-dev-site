@@ -48,22 +48,9 @@
     scroll-behavior: smooth;
   }
   body {
-    position: relative;
-    isolation: isolate;
     background: var(--color-page);
   }
-  /* large dragon scales, fainter than any text and fading out down the page */
-  body::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 1000px;
-    z-index: -1;
-    pointer-events: none;
-    background-image: url("/img/scales.svg");
-    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 35%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0, #000 35%, transparent 100%);
-  }
+
   h1, h2, h3 {
     font-family: var(--font-display);
     letter-spacing: 0.02em;
@@ -131,6 +118,17 @@
     background-size: 100% 100%;
     animation: embers 14s linear infinite;
     opacity: 0.8;
+  }
+  /* large dragon scales: only in the hero, on the logo side; the text side stays clear (REQ-013) */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("/img/scales.svg");
+    -webkit-mask-image: radial-gradient(ellipse 55% 75% at 82% 45%, #000 0%, transparent 100%);
+    mask-image: radial-gradient(ellipse 55% 75% at 82% 45%, #000 0%, transparent 100%);
   }
   @keyframes embers {
     from { transform: translateY(6%); opacity: 0; }
