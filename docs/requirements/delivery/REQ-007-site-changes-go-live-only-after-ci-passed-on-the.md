@@ -3,7 +3,7 @@ id: REQ-007
 type: job
 epic: delivery
 priority: must
-status: approved
+status: in-progress
 updated: 2026-10-13
 ---
 
