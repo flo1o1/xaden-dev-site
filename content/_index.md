@@ -5,8 +5,12 @@ hero:
   eyebrow: "Open source · MIT"
   title: "Your AI writes fast. Xaden keeps it honest."
   lead: "One command creates a project with the rules, checks and requirements every AI assistant follows."
-  command: "git clone https://github.com/flo1o1/xaden.git && xaden/scripts/new-project.sh my-app"
-  note: "Linux and macOS. On Windows use WSL."
+  command: |-
+    git clone https://github.com/flo1o1/xaden.git ~/.xaden &&
+    ~/.xaden/scripts/install.sh &&
+    export PATH="$HOME/.local/bin:$PATH" &&
+    xaden new my-app
+  note: "This downloads Xaden into ~/.xaden, links the xaden command into ~/.local/bin, makes that folder available in this terminal and creates the project my-app in the current folder. Linux and macOS; on Windows use WSL."
   primary: "Quick start"
   secondary: "View on GitHub"
 benefits:

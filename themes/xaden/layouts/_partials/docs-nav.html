@@ -1,7 +1,11 @@
 {{/* Sidebar of a role page: the two roles, and under the current one its table of contents. */}}
 {{ $current := . }}
 <nav aria-label="Documentation" class="space-y-6 text-sm">
-  <ul class="flex gap-2 md:flex-col">
+  <ul class="flex flex-wrap gap-2 md:flex-col">
+    {{ $quick := site.GetPage "/docs/quick-start" }}
+    <li>
+      <a href="{{ $quick.RelPermalink }}" class="block rounded border px-3 py-1.5 font-display tracking-widest hover:border-accent {{ if eq $quick.RelPermalink $current.RelPermalink }}border-brand bg-panel text-fg{{ else }}border-line text-muted{{ end }}" {{ if eq $quick.RelPermalink $current.RelPermalink }}aria-current="page"{{ end }}>Quick start</a>
+    </li>
     {{ range hugo.Data.roles }}
       {{ $page := site.GetPage (printf "/docs/%s" .id) }}
       <li>

@@ -22,5 +22,5 @@ When I decide to try Xaden, I want task-oriented instructions to install, update
 - Given the operating system sections, then they are plain headings on the page and work without JavaScript, not tabs
 - Given the Admins pages, then they answer: install, update and upgrade (with the meaning of SemVer), uninstall, keep it secure, what is inside (linked tools and libraries)
 - Given the Developers pages, then they answer: use, customize, create a new project, migrate an existing project, model-specific use
-- Given any docs page, then it ends with an edit-on-GitHub link and shows the Xaden version it describes
+- Given any docs page, then it shows the Xaden version and release date it describes
 - Given the main menu, then Docs opens a submenu with Quick start, Admins and Developers, which works with the keyboard and without JavaScript

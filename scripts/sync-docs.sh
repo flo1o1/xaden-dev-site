@@ -48,6 +48,46 @@ release_date() {
     sed -n 's/^ *"date": "\([0-9-]\{10\}\)T.*/\1/p' | head -n 1
 }
 
+# strip_shell_comments: from stdin, shell code blocks (bash, sh, shell or unlabeled) without comments,
+# so a copied block pastes into a terminal as is (REQ-018). What a comment said moves into a list
+# after the block ("- `command`: comment") so the explanation stays next to the code. Other
+# languages keep their comments.
+strip_shell_comments() {
+  awk '
+    function note(command, text) { commands[count] = command; texts[count] = text; count++ }
+    /^```/ {
+      if (fence) {
+        fence = 0; shell = 0
+        print
+        if (count > 0) {
+          print ""
+          for (i = 0; i < count; i++) print "- `" commands[i] "`: " texts[i]
+        }
+        count = 0
+        next
+      }
+      fence = 1; lang = substr($0, 4); shell = (lang == "" || lang == "bash" || lang == "sh" || lang == "shell")
+      pending = ""; count = 0
+      print; next
+    }
+    fence && shell {
+      if ($0 ~ /^[[:space:]]*#([^!]|$)/) {
+        text = $0; sub(/^[[:space:]]*#[[:space:]]*/, "", text)
+        pending = (pending == "" ? text : pending " " text)
+        next
+      }
+      if (match($0, /[[:space:]]+#([[:space:]].*)?$/)) {
+        text = substr($0, RSTART); command = substr($0, 1, RSTART - 1)
+        sub(/^[[:space:]]+#[[:space:]]*/, "", text)
+        note(command, text)
+        print command; next
+      }
+      if (pending != "" && $0 !~ /^[[:space:]]*$/) { note($0, pending); pending = "" }
+    }
+    { print }
+  '
+}
+
 # demote_headings: from stdin, every Markdown heading one level deeper, except inside code fences.
 demote_headings() {
   awk '/^```/ { fence = !fence } !fence && /^#+ / { print "#" $0; next } { print }'
@@ -74,12 +114,12 @@ check_all_headings_mapped() {
   done < <(awk '/^```/ { fence = !fence } !fence && /^## / { print }' "$1")
 }
 
-# emit_section <title> <source path in release> <tag> <demote|keep>: "## title", the body from
-# stdin (headings one level deeper when the source heading was the file's H1), and an edit link.
+# emit_section <title> <demote|keep>: "## title" and the body from stdin, with shell comments moved
+# out of the code blocks and, when the source heading was the file's H1, headings one level deeper.
 emit_section() {
   printf '## %s\n\n' "$1"
-  if [ "$4" = demote ]; then demote_headings; else cat; fi
-  printf '\n[Edit on GitHub](https://github.com/%s/blob/%s/%s)\n\n' "$XADEN_REPOSITORY" "$3" "$2"
+  if [ "$2" = demote ]; then strip_shell_comments | demote_headings; else strip_shell_comments; fi
+  printf '\n'
 }
 
 # render_role_page <role> <title> <summary> <release dir> <tag> <date>
@@ -95,7 +135,7 @@ render_role_page() {
       section="${entry#*|}"
       body="$(section_body "$release/$GETTING_STARTED" "$heading")"
       [ -n "$body" ] || die "REQ-006: section '$heading' is missing or empty in $GETTING_STARTED of $tag"
-      printf '%s\n' "$body" | emit_section "$section" "$GETTING_STARTED" "$tag" keep
+      printf '%s\n' "$body" | emit_section "$section" keep
     done
     for entry in "${FILES[@]}"; do
       [ "${entry%%|*}" = "$role" ] || continue
@@ -103,7 +143,7 @@ render_role_page() {
       [ -f "$release/$path" ] || die "REQ-006: $path is missing in the $tag release"
       file_title="$(sed -n 's/^# \(.*\)$/\1/p' "$release/$path" | head -n 1)"
       [ -n "$file_title" ] || die "REQ-006: $path has no top-level heading"
-      awk '!skipped && /^# / { skipped = 1; next } { print }' "$release/$path" | emit_section "$file_title" "$path" "$tag" demote
+      awk '!skipped && /^# / { skipped = 1; next } { print }' "$release/$path" | emit_section "$file_title" demote
     done
   } | sed "s#<xaden-repo-url>#https://github.com/$XADEN_REPOSITORY#g" >"$DOCS_DIR/$role.md"
   # <xaden-repo-url> would be read as raw HTML, which the site forbids, and swallow the text after it.
@@ -121,7 +161,8 @@ main() {
   date="$(release_date "$tag")"
   [ -n "$date" ] || die "REQ-006: could not read the release date of $tag"
   check_all_headings_mapped "$WORK_DIR/release/$GETTING_STARTED"
-  find "$DOCS_DIR" -type f ! -name '_index.md' -delete
+  # everything generated goes; _index.md and quick-start.md are hand-written
+  find "$DOCS_DIR" -type f ! -name '_index.md' ! -name 'quick-start.md' -delete
   for entry in "${ROLE_PAGES[@]}"; do
     IFS='|' read -r role title summary <<<"$entry"
     render_role_page "$role" "$title" "$summary" "$WORK_DIR/release" "$tag" "$date"
