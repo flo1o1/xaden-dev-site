@@ -20,3 +20,4 @@ When I am curious about Xaden and have a terminal open, I want to copy one comma
 - Given JavaScript disabled, then the command is still shown and can be selected and copied by hand
 - Given every code block on the docs pages, then it has a copy button too
 - Given the home page, then it carries no more text than a hero, four short benefit blocks, three steps and two entry points to the docs
+- Given the hero button "Quick start", when followed, then it opens a Quick start page that leads from the clone to the first feature in a few commands, each with a copy button, and links to the Admins and Developers pages for details
