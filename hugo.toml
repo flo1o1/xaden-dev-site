@@ -19,3 +19,8 @@ disableKinds = ["taxonomy", "term", "rss"]
 [pagination]
   disableAliases = true
 
+
+# Table of contents of the role pages: sections (h2) and their subsections (h3).
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 3

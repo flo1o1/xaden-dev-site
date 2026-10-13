@@ -2,4 +2,4 @@
 title: "Choose your path"
 ---
 
-Each page names the Xaden release it describes. Unreleased changes do not appear.
+Each role has one page. It names the Xaden release it describes; unreleased changes do not appear.

@@ -196,6 +196,15 @@
   .copy-button:hover { border-color: var(--color-accent); }
 }
 
+/* table of contents of the role pages */
+.toc ul { border-left: 1px solid var(--color-line); }
+.toc ul ul { margin-left: 0.75rem; }
+.toc a { display: block; padding: 0.25rem 0 0.25rem 1rem; color: var(--color-muted); }
+.toc a:hover { color: var(--color-accent); }
+@media (min-width: 48rem) {
+  .toc { max-height: calc(100vh - 14rem); overflow-y: auto; }
+}
+
 /* long-form text: Tailwind typography tuned to the palette */
 .prose-xaden {
   --tw-prose-body: var(--color-fg);
