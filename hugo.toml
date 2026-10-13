@@ -1,31 +1,21 @@
 baseURL = "https://xaden.dev/"
 title = "Xaden"
 locale = "en"
-theme = "nightfall"
+theme = "xaden"
 enableRobotsTXT = true
 disableKinds = ["taxonomy", "term", "rss"]
 
 [markup.goldmark.renderer]
   unsafe = false
 
-[menu]
-  [[menu.header]]
-    name = "docs"
-    weight = 1
-    url = "docs/"
-  [[menu.header]]
-    name = "about"
-    weight = 2
-    url = "about/"
+# Chroma classes instead of inline styles: the Content-Security-Policy forbids inline styles.
+[markup.highlight]
+  noClasses = false
+  guessSyntax = false
 
 [params]
-  user = "visitor"
-  hostname = "xaden.dev"
-  openLinksInNewTab = false
-  showMetadata = false
-  footerHtml = "Xaden is open source under the MIT license."
-  [params.author]
-    name = "Xaden"
+  description = "Xaden is an open source starter that keeps AI coding assistants within rules, checks and requirements."
 
 [pagination]
   disableAliases = true
+

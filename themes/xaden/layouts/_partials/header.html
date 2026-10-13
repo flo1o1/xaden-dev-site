@@ -1,0 +1,16 @@
+{{ $logo := resources.Get "img/xaden.png" }}
+{{ $small := $logo.Resize "72x webp q90" }}
+<header class="border-b border-charcoal bg-ink/90">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3">
+    <a href="{{ "/" | relURL }}" class="flex items-center gap-3" aria-label="Xaden, home">
+      <img src="{{ $small.RelPermalink }}" width="{{ $small.Width }}" height="{{ $small.Height }}" alt="" class="h-9 w-auto">
+      <span class="font-display text-xl font-bold tracking-[0.25em]">XADEN</span>
+    </a>
+    <nav aria-label="Main" class="flex items-center gap-6 text-sm font-semibold">
+      {{ $section := .Section }}
+      <a href="{{ "docs/" | relURL }}" class="hover:text-ember" {{ if eq $section "docs" }}aria-current="page"{{ end }}>Docs</a>
+      <a href="{{ "about/" | relURL }}" class="hover:text-ember" {{ if eq .RelPermalink "/about/" }}aria-current="page"{{ end }}>About</a>
+      <a href="https://github.com/flo1o1/xaden" class="rounded border border-crimson px-3 py-1 hover:border-ember hover:text-ember">GitHub</a>
+    </nav>
+  </div>
+</header>

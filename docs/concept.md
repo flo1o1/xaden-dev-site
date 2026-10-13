@@ -18,8 +18,8 @@ server. The only traffic signal is GitHub's repository traffic and stars.
 |-------|----------|
 | Repository | Separate **public** repository `xaden-dev-site` (private would need a paid GitHub plan for Pages and the ruleset; the published site is public either way). No site files in `template/` or at the scaffold root |
 | Docs source | One source of truth: the site renders the docs of the latest scaffold **release** (tarball), never a copy. The site build picks up a new release by scheduled polling (proposed, REQ-064) |
-| Generator | Hugo (extended build) with the Nightfall theme, both pinned (theme to a commit). Own changes as overrides in the site repository, not edits inside the theme |
-| Look | Dark only (Nightfall). Palette taken from `xaden.png` |
+| Generator | Hugo (extended build) with the site's own theme `themes/xaden`, derived from Hugoplate (MIT, commit in `themes/xaden/NOTICE.md`) and styled with Tailwind CSS built by the pinned standalone CLI. Hugoplate itself was not adopted as is: it needs 25 Hugo modules fetched from GitHub, Google Fonts, analytics and scripts, which break REQ-011, REQ-012 and REQ-014 |
+| Look | Dark only, dark fantasy mood after the Empyrean novels (REQ-019). Palette taken from `xaden.png`: ink, charcoal, crimson, bone. Fonts Cinzel and Inter, self-hosted |
 | Hosting | GitHub Pages, custom domain `xaden.dev`, HTTPS enforced |
 | Language | English only, including imprint and privacy notice |
 | Imprint | Business address; email as the only contact way (accepted risk: a court may want a second fast contact way, mitigated by answering mail quickly) |
@@ -118,4 +118,4 @@ The privacy notice names GitHub Pages as host and the processing of visitor IP a
    planned (`inbox/2026-10-13-rename-repo-xaden-dev.md`).
 4. Check that the pinned Hugo version satisfies the theme (>= 0.158.0).
 5. Write the imprint and privacy texts; confirm the business address receives mail.
-6. Compare the Nightfall palette with `xaden.png`.
+6. Done 2026-10-13: palette taken from `xaden.png` (REQ-019).

@@ -1,0 +1,18 @@
+{{/* Sidebar of the docs: pages grouped by role (Admins, Developers), ordered by weight. */}}
+{{ $current := . }}
+{{ $pages := (site.GetPage "/docs").RegularPages }}
+<nav aria-label="Documentation" class="space-y-8 text-sm">
+  {{ range hugo.Data.roles }}
+    {{ $role := .id }}
+    <div>
+      <p class="eyebrow"><a href="{{ "docs/" | relURL }}#{{ $role }}" class="hover:underline">{{ .name }}</a></p>
+      <ul class="mt-3 space-y-1 border-l border-charcoal">
+        {{ range where $pages "Params.role" $role }}
+          <li>
+            <a href="{{ .RelPermalink }}" class="-ml-px block border-l-2 py-1 pl-4 hover:text-ember {{ if eq .RelPermalink $current.RelPermalink }}border-crimson font-semibold text-bone{{ else }}border-transparent text-mist{{ end }}" {{ if eq .RelPermalink $current.RelPermalink }}aria-current="page"{{ end }}>{{ .Title }}</a>
+          </li>
+        {{ end }}
+      </ul>
+    </div>
+  {{ end }}
+</nav>

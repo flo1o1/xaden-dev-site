@@ -1,0 +1,14 @@
+{{ define "main" }}
+<div class="hero">
+  <div class="mx-auto max-w-3xl px-4 py-24 text-center">
+    <p class="eyebrow">404</p>
+    <h1 class="mt-4 text-4xl font-bold">This path leads nowhere</h1>
+    <p class="mt-4 text-mist">The page you asked for does not exist. It may have moved.</p>
+    <p class="mt-8 flex justify-center gap-4">
+      <a href="{{ "/" | relURL }}" class="btn btn-primary">Home</a>
+      <a href="{{ "docs/" | relURL }}" class="btn btn-ghost">Documentation</a>
+    </p>
+  </div>
+  <div class="ridge" aria-hidden="true"></div>
+</div>
+{{ end }}

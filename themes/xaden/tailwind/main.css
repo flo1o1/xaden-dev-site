@@ -1,0 +1,213 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@source "../layouts";
+
+/* Palette taken from the logo (REQ-019); mist and ember are tints for contrast (REQ-013). */
+@theme {
+  --color-ink: #0c0c18;
+  --color-night: #12121f;
+  --color-slate: #1b1b2a;
+  --color-charcoal: #30303c;
+  --color-steel: #545460;
+  --color-crimson-deep: #6c2430;
+  --color-crimson: #a84854;
+  --color-ember: #e0808c;
+  --color-bone: #f3ece8;
+  --color-mist: #b4b4c4;
+  --font-display: "Cinzel", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+@font-face {
+  font-family: "Cinzel";
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/cinzel-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Cinzel";
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/cinzel-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-variable.woff2") format("woff2");
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-ink) url("/img/scales.svg");
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: 0.02em;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-ember);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--color-crimson-deep);
+    color: var(--color-bone);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--color-crimson);
+    border-radius: 0.375rem;
+    padding: 0.7rem 1.25rem;
+    font-weight: 600;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .btn-primary { background: var(--color-crimson-deep); color: var(--color-bone); }
+  .btn-primary:hover { background: var(--color-crimson); }
+  .btn-ghost { color: var(--color-bone); }
+  .btn-ghost:hover { background: var(--color-slate); border-color: var(--color-ember); }
+
+  .eyebrow {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-ember);
+  }
+
+  /* hero: ink sky, a crimson glow behind the logo, drifting embers, ridge at the bottom */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+      radial-gradient(ellipse 60% 55% at 78% 40%, rgb(168 72 84 / 0.28), transparent 70%),
+      radial-gradient(ellipse 80% 40% at 50% 110%, rgb(108 36 48 / 0.55), transparent 70%),
+      linear-gradient(180deg, #07070e 0%, var(--color-ink) 100%);
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(2px 2px at 12% 80%, var(--color-ember), transparent),
+      radial-gradient(1.5px 1.5px at 28% 62%, var(--color-crimson), transparent),
+      radial-gradient(2px 2px at 44% 90%, var(--color-ember), transparent),
+      radial-gradient(1.5px 1.5px at 63% 72%, var(--color-ember), transparent),
+      radial-gradient(2px 2px at 81% 86%, var(--color-crimson), transparent),
+      radial-gradient(1.5px 1.5px at 92% 58%, var(--color-ember), transparent);
+    background-size: 100% 100%;
+    animation: embers 14s linear infinite;
+    opacity: 0.8;
+  }
+  @keyframes embers {
+    from { transform: translateY(6%); opacity: 0; }
+    20% { opacity: 0.8; }
+    to { transform: translateY(-14%); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero::before { animation: none; opacity: 0.5; transform: none; }
+  }
+  .ridge {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: -1;
+    height: 7rem;
+    background: url("/img/ridge.svg") center bottom / 100% 100% no-repeat;
+  }
+  .logo-glow {
+    filter: drop-shadow(0 0 28px rgb(168 72 84 / 0.55));
+  }
+
+  .card {
+    background: linear-gradient(180deg, var(--color-slate), var(--color-night));
+    border: 1px solid var(--color-charcoal);
+    border-top: 2px solid var(--color-crimson);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  a.card:hover { border-color: var(--color-ember); transform: translateY(-2px); }
+  @media (prefers-reduced-motion: reduce) {
+    a.card:hover { transform: none; }
+  }
+
+  .rule {
+    height: 1px;
+    border: 0;
+    background: linear-gradient(90deg, transparent, var(--color-crimson), transparent);
+  }
+
+  /* code blocks (the copy button comes from /js/copy.js) */
+  pre {
+    background: #07070e;
+    border: 1px solid var(--color-charcoal);
+    border-radius: 0.5rem;
+    padding: 1rem 5.5rem 1rem 1rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-bone);
+  }
+  .code-block { position: relative; }
+  .copy-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    border: 1px solid var(--color-steel);
+    border-radius: 0.25rem;
+    background: var(--color-slate);
+    color: var(--color-bone);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .copy-button:hover { border-color: var(--color-ember); }
+}
+
+/* long-form text: Tailwind typography tuned to the palette */
+.prose-xaden {
+  --tw-prose-body: var(--color-bone);
+  --tw-prose-headings: var(--color-bone);
+  --tw-prose-lead: var(--color-mist);
+  --tw-prose-links: var(--color-ember);
+  --tw-prose-bold: var(--color-bone);
+  --tw-prose-counters: var(--color-mist);
+  --tw-prose-bullets: var(--color-crimson);
+  --tw-prose-hr: var(--color-charcoal);
+  --tw-prose-quotes: var(--color-bone);
+  --tw-prose-quote-borders: var(--color-crimson);
+  --tw-prose-captions: var(--color-mist);
+  --tw-prose-code: var(--color-bone);
+  --tw-prose-pre-code: var(--color-bone);
+  --tw-prose-pre-bg: #07070e;
+  --tw-prose-th-borders: var(--color-steel);
+  --tw-prose-td-borders: var(--color-charcoal);
+}
+.prose-xaden :where(pre):not(:where([class~="not-prose"] *)) {
+  padding-right: 5.5rem;
+}
+.prose-xaden :where(code):not(:where(pre code)):not(:where([class~="not-prose"] *)) {
+  background: var(--color-slate);
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.35rem;
+}
+.prose-xaden :where(code):not(:where([class~="not-prose"] *))::before,
+.prose-xaden :where(code):not(:where([class~="not-prose"] *))::after { content: none; }
