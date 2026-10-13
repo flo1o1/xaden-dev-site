@@ -89,6 +89,14 @@ check_security_txt() {
   [ "$expires" \> "$limit" ] || die "REQ-009: security.txt expires on $expires; renew it (needs at least $SECURITY_TXT_MIN_DAYS days, i.e. after $limit)"
 }
 
+# check_docs_have_no_internal_references: REQ-002, readers have not seen the Xaden repository.
+check_docs_have_no_internal_references() {
+  local found
+  found="$(grep -rnE 'REQ-[0-9]+|CC-[0-9]+|§|template/' "$OUTPUT_DIR/docs" --include='*.html' | cut -c1-160 | head -n 5 || true)"
+  [ -z "$found" ] || die "REQ-002: docs pages hold rule IDs, section references or repository paths (extend rewrite_for_readers in scripts/sync-docs.sh):
+$found"
+}
+
 main() {
   info "build"
   build_site
@@ -98,6 +106,8 @@ main() {
   check_no_inline_script
   info "Content-Security-Policy on every page (REQ-012)"
   check_content_security_policy
+  info "docs without internal references (REQ-002)"
+  check_docs_have_no_internal_references
   info "security.txt (REQ-009)"
   check_security_txt
   info "site checks passed"

@@ -88,6 +88,22 @@ strip_shell_comments() {
   '
 }
 
+# rewrite_for_readers: from stdin, the text without references that mean nothing to readers who
+# have not seen the Xaden repository (REQ-002): rule and section references, repository paths.
+rewrite_for_readers() {
+  perl -0pe '
+    s/ \((?:`?AGENTS\.md`? )?(?:§ ?[0-9]+|section [0-9]+)\)//g;
+    s/ \(CC-[0-9]+\)//g;
+    s/see `template\/docs\/local-llm\.md`/see [Using the scaffold with other LLMs](#using-the-scaffold-with-other-llms)/g;
+    s/list in `template\/docs\/optional-tools\.md`/list in [Optional tools](#optional-tools)/g;
+    s/are in `template\/docs\/optional-tools\.md` → "Assistant\s+plugins" \(in a generated project: `docs\/optional-tools\.md`\)/are in the [Optional tools](#optional-tools) section "Assistant plugins"/g;
+    s/tracked by git in `template\/`/tracked by git in Xaden\x27s template folder/g;
+    s/comes from `template\/`/comes from Xaden\x27s template folder/g;
+    s/--brief REQ-003 feature/--brief <requirement> feature/g;
+    s/index, REQ-003, prompt/index, the named requirement, prompt/g;
+  '
+}
+
 # demote_headings: from stdin, every Markdown heading one level deeper, except inside code fences.
 demote_headings() {
   awk '/^```/ { fence = !fence } !fence && /^#+ / { print "#" $0; next } { print }'
@@ -145,7 +161,7 @@ render_role_page() {
       [ -n "$file_title" ] || die "REQ-006: $path has no top-level heading"
       awk '!skipped && /^# / { skipped = 1; next } { print }' "$release/$path" | emit_section "$file_title" demote
     done
-  } | sed "s#<xaden-repo-url>#https://github.com/$XADEN_REPOSITORY#g" >"$DOCS_DIR/$role.md"
+  } | rewrite_for_readers | sed "s#<xaden-repo-url>#https://github.com/$XADEN_REPOSITORY#g" >"$DOCS_DIR/$role.md"
   # <xaden-repo-url> would be read as raw HTML, which the site forbids, and swallow the text after it.
 }
 
