@@ -18,14 +18,16 @@ GETTING_STARTED="GETTING-STARTED.md"
 ROLE_PAGES=(
   "admins|Admins|Install, extend and update Xaden"
   "developers|Developers|Create a project, build with your assistant, release"
-  "security|Security|Secure coding checklist and security reviews"
+  "security|Security|How Xaden helps keep your project secure"
 )
 # Parts of each page, in order: role | kind | reference | title | argument.
 #   section     "## <reference>" of Getting started as a section called <title>; the argument names
 #               an "###" subsection to leave out (it is placed elsewhere)
 #   subsection  the "###" <argument> under "## <reference>" of Getting started, as "### <title>"
 #   file        a whole file of the release, titled by its H1 (reference = path in the release)
-#   own         a text of this site in docs-parts/ (@TAG@ and @VERSION@ are filled in)
+#   own         a text of this site in docs-parts/ (@TAG@ and @VERSION@ are filled in); with an
+#               empty title it brings its own sections
+# A part of role "none" is never published; it marks a section as covered by an own text.
 # Add a line when a release adds a section of Getting started: the run fails on any unmapped one.
 # The template's admin and user guides are placeholders for generated projects: not published.
 PARTS=(
@@ -35,13 +37,14 @@ PARTS=(
   'admins|file|template/docs/optional-tools.md||'
   'admins|section|Getting scaffold improvements into your project|Update a project|'
   'developers|section|3. Create your project|Create your project|'
+  'developers|own|docs-parts/developers-existing-project.md|Bring an existing project|'
   'developers|section|4. Kickoff|Kickoff|'
   'developers|section|5. Build features (repeat)|Build features|'
   'developers|section|6. Release|Release|'
   'developers|section|Joining an existing project|Join an existing project|'
   'developers|file|template/docs/local-llm.md||'
-  'security|file|template/docs/security.md||'
-  'security|section|Security review quality|Security review quality|'
+  'security|own|docs-parts/security.md||'
+  'none|section|Security review quality|not published|'
 )
 WORK_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK_DIR"' EXIT
@@ -215,7 +218,9 @@ render_part() {
       ;;
     own)
       [ -f "$ROOT/$reference" ] || die "REQ-006: $reference is missing in this repository"
-      sed -e "s/@TAG@/$tag/g" -e "s/@VERSION@/$version/g" "$ROOT/$reference" | emit_section "$title" keep
+      # without a title the text brings its own sections: its "###" headings become "##"
+      sed -e "s/@TAG@/$tag/g" -e "s/@VERSION@/$version/g" "$ROOT/$reference" |
+        { if [ -n "$title" ]; then emit_section "$title" keep; else sed 's/^### /## /'; printf '\n'; fi; }
       ;;
     *) die "unknown part kind '$kind'" ;;
   esac

@@ -21,7 +21,7 @@ benefits:
   - name: "The Trial"
     title: "Checks nobody skips"
     text: "shellcheck, gitleaks, semgrep and your linters run in a git hook and in CI."
-    link: "/docs/security#secure-coding-checklist"
+    link: "/docs/security#on-every-commit-and-in-ci-automatic-checks"
   - name: "The Ledger"
     title: "Requirements first"
     text: "Every feature traces to a numbered requirement and a test."
@@ -29,7 +29,7 @@ benefits:
   - name: "The Watch"
     title: "Security review built in"
     text: "An OWASP-based review prompt that works with any model."
-    link: "/docs/security#security-review-quality"
+    link: "/docs/security#before-a-release-a-security-review"
 steps_title: "From zero to first feature"
 steps:
   - title: "Copy and run"
