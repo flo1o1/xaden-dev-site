@@ -2,18 +2,19 @@
 @plugin "@tailwindcss/typography";
 @source "../layouts";
 
-/* Palette taken from the logo (REQ-019); mist and ember are tints for contrast (REQ-013). */
+/* Palette from the logo (REQ-019); dark only. Contrast of every text pair is checked in REQ-013. */
 @theme {
-  --color-ink: #0c0c18;
-  --color-night: #12121f;
-  --color-slate: #1b1b2a;
-  --color-charcoal: #30303c;
-  --color-steel: #545460;
-  --color-crimson-deep: #6c2430;
-  --color-crimson: #a84854;
-  --color-ember: #e0808c;
-  --color-bone: #f3ece8;
-  --color-mist: #b4b4c4;
+  --color-page: #0c0c18;
+  --color-panel: #1b1b2a;
+  --color-panel-2: #12121f;
+  --color-line: #30303c;
+  --color-line-strong: #545460;
+  --color-fg: #f3ece8;
+  --color-muted: #b4b4c4;
+  --color-accent: #e0808c;
+  --color-brand: #a84854;
+  --color-brand-deep: #6c2430;
+  --color-on-brand: #f3ece8;
   --font-display: "Cinzel", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -40,25 +41,40 @@
 
 @layer base {
   html {
-    background: var(--color-ink);
-    color: var(--color-bone);
+    color-scheme: dark;
+    background: var(--color-page);
+    color: var(--color-fg);
     font-family: var(--font-sans);
     scroll-behavior: smooth;
   }
   body {
-    background: var(--color-ink) url("/img/scales.svg");
+    position: relative;
+    isolation: isolate;
+    background: var(--color-page);
+  }
+  /* large dragon scales, fainter than any text and fading out down the page */
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1000px;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("/img/scales.svg");
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 35%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0, #000 35%, transparent 100%);
   }
   h1, h2, h3 {
     font-family: var(--font-display);
     letter-spacing: 0.02em;
   }
   :focus-visible {
-    outline: 3px solid var(--color-ember);
+    outline: 3px solid var(--color-accent);
     outline-offset: 3px;
   }
   ::selection {
-    background: var(--color-crimson-deep);
-    color: var(--color-bone);
+    background: var(--color-brand-deep);
+    color: var(--color-fg);
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -70,16 +86,16 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    border: 1px solid var(--color-crimson);
+    border: 1px solid var(--color-brand);
     border-radius: 0.375rem;
     padding: 0.7rem 1.25rem;
     font-weight: 600;
     transition: background-color 0.15s, border-color 0.15s;
   }
-  .btn-primary { background: var(--color-crimson-deep); color: var(--color-bone); }
-  .btn-primary:hover { background: var(--color-crimson); }
-  .btn-ghost { color: var(--color-bone); }
-  .btn-ghost:hover { background: var(--color-slate); border-color: var(--color-ember); }
+  .btn-primary { background: var(--color-brand-deep); color: var(--color-on-brand); }
+  .btn-primary:hover { background: var(--color-brand); }
+  .btn-ghost { color: var(--color-fg); }
+  .btn-ghost:hover { background: var(--color-panel); border-color: var(--color-accent); }
 
   .eyebrow {
     font-family: var(--font-display);
@@ -87,7 +103,7 @@
     font-size: 0.8rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: var(--color-ember);
+    color: var(--color-accent);
   }
 
   /* hero: ink sky, a crimson glow behind the logo, drifting embers, ridge at the bottom */
@@ -98,7 +114,7 @@
     background:
       radial-gradient(ellipse 60% 55% at 78% 40%, rgb(168 72 84 / 0.28), transparent 70%),
       radial-gradient(ellipse 80% 40% at 50% 110%, rgb(108 36 48 / 0.55), transparent 70%),
-      linear-gradient(180deg, #07070e 0%, var(--color-ink) 100%);
+      linear-gradient(180deg, #07070e 0%, var(--color-page) 100%);
   }
   .hero::before {
     content: "";
@@ -106,12 +122,12 @@
     inset: 0;
     z-index: -1;
     background-image:
-      radial-gradient(2px 2px at 12% 80%, var(--color-ember), transparent),
-      radial-gradient(1.5px 1.5px at 28% 62%, var(--color-crimson), transparent),
-      radial-gradient(2px 2px at 44% 90%, var(--color-ember), transparent),
-      radial-gradient(1.5px 1.5px at 63% 72%, var(--color-ember), transparent),
-      radial-gradient(2px 2px at 81% 86%, var(--color-crimson), transparent),
-      radial-gradient(1.5px 1.5px at 92% 58%, var(--color-ember), transparent);
+      radial-gradient(2px 2px at 12% 80%, var(--color-accent), transparent),
+      radial-gradient(1.5px 1.5px at 28% 62%, var(--color-brand), transparent),
+      radial-gradient(2px 2px at 44% 90%, var(--color-accent), transparent),
+      radial-gradient(1.5px 1.5px at 63% 72%, var(--color-accent), transparent),
+      radial-gradient(2px 2px at 81% 86%, var(--color-brand), transparent),
+      radial-gradient(1.5px 1.5px at 92% 58%, var(--color-accent), transparent);
     background-size: 100% 100%;
     animation: embers 14s linear infinite;
     opacity: 0.8;
@@ -136,14 +152,14 @@
   }
 
   .card {
-    background: linear-gradient(180deg, var(--color-slate), var(--color-night));
-    border: 1px solid var(--color-charcoal);
-    border-top: 2px solid var(--color-crimson);
+    background: linear-gradient(180deg, var(--color-panel), var(--color-panel-2));
+    border: 1px solid var(--color-line);
+    border-top: 2px solid var(--color-brand);
     border-radius: 0.5rem;
     padding: 1.5rem;
     transition: border-color 0.15s, transform 0.15s;
   }
-  a.card:hover { border-color: var(--color-ember); transform: translateY(-2px); }
+  a.card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
   @media (prefers-reduced-motion: reduce) {
     a.card:hover { transform: none; }
   }
@@ -151,61 +167,61 @@
   .rule {
     height: 1px;
     border: 0;
-    background: linear-gradient(90deg, transparent, var(--color-crimson), transparent);
+    background: linear-gradient(90deg, transparent, var(--color-brand), transparent);
   }
 
   /* code blocks (the copy button comes from /js/copy.js) */
   pre {
     background: #07070e;
-    border: 1px solid var(--color-charcoal);
+    border: 1px solid var(--color-line);
     border-radius: 0.5rem;
     padding: 1rem 5.5rem 1rem 1rem;
     overflow-x: auto;
     font-family: var(--font-mono);
     font-size: 0.9rem;
     line-height: 1.6;
-    color: var(--color-bone);
+    color: #f3ece8;
   }
   .code-block { position: relative; }
   .copy-button {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    border: 1px solid var(--color-steel);
+    border: 1px solid #545460;
     border-radius: 0.25rem;
-    background: var(--color-slate);
-    color: var(--color-bone);
+    background: #1b1b2a;
+    color: #f3ece8;
     padding: 0.25rem 0.75rem;
     font-size: 0.8rem;
     cursor: pointer;
   }
-  .copy-button:hover { border-color: var(--color-ember); }
+  .copy-button:hover { border-color: var(--color-accent); }
 }
 
 /* long-form text: Tailwind typography tuned to the palette */
 .prose-xaden {
-  --tw-prose-body: var(--color-bone);
-  --tw-prose-headings: var(--color-bone);
-  --tw-prose-lead: var(--color-mist);
-  --tw-prose-links: var(--color-ember);
-  --tw-prose-bold: var(--color-bone);
-  --tw-prose-counters: var(--color-mist);
-  --tw-prose-bullets: var(--color-crimson);
-  --tw-prose-hr: var(--color-charcoal);
-  --tw-prose-quotes: var(--color-bone);
-  --tw-prose-quote-borders: var(--color-crimson);
-  --tw-prose-captions: var(--color-mist);
-  --tw-prose-code: var(--color-bone);
-  --tw-prose-pre-code: var(--color-bone);
+  --tw-prose-body: var(--color-fg);
+  --tw-prose-headings: var(--color-fg);
+  --tw-prose-lead: var(--color-muted);
+  --tw-prose-links: var(--color-accent);
+  --tw-prose-bold: var(--color-fg);
+  --tw-prose-counters: var(--color-muted);
+  --tw-prose-bullets: var(--color-brand);
+  --tw-prose-hr: var(--color-line);
+  --tw-prose-quotes: var(--color-fg);
+  --tw-prose-quote-borders: var(--color-brand);
+  --tw-prose-captions: var(--color-muted);
+  --tw-prose-code: var(--color-fg);
+  --tw-prose-pre-code: #f3ece8;
   --tw-prose-pre-bg: #07070e;
-  --tw-prose-th-borders: var(--color-steel);
-  --tw-prose-td-borders: var(--color-charcoal);
+  --tw-prose-th-borders: var(--color-line-strong);
+  --tw-prose-td-borders: var(--color-line);
 }
 .prose-xaden :where(pre):not(:where([class~="not-prose"] *)) {
   padding-right: 5.5rem;
 }
 .prose-xaden :where(code):not(:where(pre code)):not(:where([class~="not-prose"] *)) {
-  background: var(--color-slate);
+  background: var(--color-panel);
   border-radius: 0.25rem;
   padding: 0.1rem 0.35rem;
 }

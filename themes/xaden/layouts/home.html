@@ -2,13 +2,13 @@
 {{ $hero := .Params.hero }}
 {{ $logo := (resources.Get "img/xaden.png").Resize "420x webp q85" }}
 <section class="hero">
-  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-40 pt-16 md:grid-cols-[1.25fr_1fr] md:pt-24">
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-40 pt-16 md:grid-cols-[1.5fr_1fr] md:pt-24">
     <div class="min-w-0">
       <p class="eyebrow">{{ $hero.eyebrow }}</p>
       <h1 class="mt-4 text-4xl font-bold leading-tight md:text-5xl">{{ $hero.title }}</h1>
-      <p class="mt-5 max-w-xl text-lg text-mist">{{ $hero.lead }}</p>
-      <pre class="mt-8"><code>{{ $hero.command }}</code></pre>
-      <p class="mt-3 text-sm text-mist">{{ $hero.note }}</p>
+      <p class="mt-5 max-w-xl text-lg text-muted">{{ $hero.lead }}</p>
+      <pre class="mt-8 whitespace-pre-wrap break-all"><code>{{ $hero.command }}</code></pre>
+      <p class="mt-3 text-sm text-muted">{{ $hero.note }}</p>
       <p class="mt-8 flex flex-wrap gap-4">
         <a href="{{ relref . "/docs" }}" class="btn btn-primary">{{ $hero.primary }}</a>
         <a href="https://github.com/flo1o1/xaden" class="btn btn-ghost">{{ $hero.secondary }}</a>
@@ -28,7 +28,7 @@
     <a href="{{ relref $ .link }}" class="card block">
       <p class="eyebrow">{{ .name }}</p>
       <h3 class="mt-3 text-xl font-bold">{{ .title }}</h3>
-      <p class="mt-2 text-sm text-mist">{{ .text }}</p>
+      <p class="mt-2 text-sm text-muted">{{ .text }}</p>
     </a>
     {{ end }}
   </div>
@@ -41,10 +41,10 @@
   <ol class="mt-10 grid gap-8 md:grid-cols-3">
     {{ range $i, $step := .Params.steps }}
     <li class="flex gap-4">
-      <span class="font-display text-4xl font-bold text-crimson" aria-hidden="true">{{ add $i 1 }}</span>
+      <span class="font-display text-4xl font-bold text-brand" aria-hidden="true">{{ add $i 1 }}</span>
       <div>
         <h3 class="text-lg font-bold">{{ $step.title }}</h3>
-        <p class="mt-1 text-sm text-mist">{{ $step.text }}</p>
+        <p class="mt-1 text-sm text-muted">{{ $step.text }}</p>
       </div>
     </li>
     {{ end }}
@@ -60,7 +60,7 @@
     <a href="{{ relref $ .link }}" class="card block">
       <p class="eyebrow">{{ .name }}</p>
       <h3 class="mt-3 text-xl font-bold">{{ .title }}</h3>
-      <p class="mt-2 text-mist">{{ .text }}</p>
+      <p class="mt-2 text-muted">{{ .text }}</p>
     </a>
     {{ end }}
   </div>

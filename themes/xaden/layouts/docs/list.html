@@ -10,12 +10,12 @@
       <section id="{{ $role }}" class="card" aria-labelledby="{{ $role }}-title">
         <p class="eyebrow">{{ .name }}</p>
         <h2 id="{{ $role }}-title" class="mt-2 text-2xl font-bold">{{ .title }}</h2>
-        <p class="mt-2 text-mist">{{ .text }}</p>
+        <p class="mt-2 text-muted">{{ .text }}</p>
         <ul class="mt-5 space-y-3">
           {{ range where $pages "Params.role" $role }}
             <li>
-              <a href="{{ .RelPermalink }}" class="font-semibold text-ember hover:underline">{{ .Title }}</a>
-              {{ with .Params.summary }}<span class="block text-sm text-mist">{{ . }}</span>{{ end }}
+              <a href="{{ .RelPermalink }}" class="font-semibold text-accent hover:underline">{{ .Title }}</a>
+              {{ with .Params.summary }}<span class="block text-sm text-muted">{{ . }}</span>{{ end }}
             </li>
           {{ end }}
         </ul>
