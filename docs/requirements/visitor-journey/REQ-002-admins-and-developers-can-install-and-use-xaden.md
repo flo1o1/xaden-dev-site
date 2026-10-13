@@ -24,3 +24,4 @@ When I decide to try Xaden, I want task-oriented instructions to install, update
 - Given the Developers pages, then they answer: use, customize, create a new project, migrate an existing project, model-specific use
 - Given any docs page, then it shows the Xaden version and release date it describes
 - Given the main menu, then Docs opens a submenu with Quick start, Admins and Developers, which works with the keyboard and without JavaScript
+- Given any docs page, then it contains no requirement or rule IDs (such as REQ-123 or CC-03), no section references (such as §10) and no paths into the Xaden repository, because readers have not seen the repository; paths inside a generated project stay
