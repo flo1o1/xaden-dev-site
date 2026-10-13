@@ -20,11 +20,11 @@ When I decide to try Xaden, I want task-oriented instructions to install, update
 - Given the install, update and uninstall pages, then each has a section per operating system (Linux, macOS, Windows) wherever the steps differ, such as prerequisites, the shell profile line for `PATH`, or the shell used
 - Given the Windows section, then it states the support level exactly as the Getting Started page does (WSL or Git Bash, untested; native PowerShell not supported) and invents no steps that were not run
 - Given the operating system sections, then they are plain headings on the page and work without JavaScript, not tabs
-- Given the Admins pages, then they answer: install, update and upgrade (with the meaning of SemVer), uninstall, keep it secure, what is inside (linked tools and libraries)
+- Given the Admins pages, then they answer: install, update and upgrade (with the meaning of SemVer), uninstall, what is inside (linked tools and libraries)
 - Given the Developers pages, then they answer: use, customize, create a new project, migrate an existing project, model-specific use
 - Given any docs page, then it shows the Xaden version and release date it describes
 - Given the main menu, then Docs opens a submenu with Quick start, Admins, Developers and Security, which works with the keyboard and without JavaScript
 - Given any docs page, then it contains no requirement or rule IDs (such as REQ-123 or CC-03), no section references (such as §10) and no paths into the Xaden repository, because readers have not seen the repository; paths inside a generated project stay
 - Given any command in the docs, then it uses the `xaden` command wherever one exists (new, update, setup, check, req, pack, release), and `scripts/install.sh` appears only to install `xaden`
-- Given the Admins page, then its sections run Prerequisites, Install, Optional tools, Update a project, and Install shows both ways to get Xaden (git clone and zip download) and the steps for Linux, macOS and Windows
+- Given the Admins page, then its sections run Prerequisites, Install, Optional tools, Update a project; Install shows both ways to get Xaden (git clone and zip download) and the steps for Linux, macOS and Windows
 - Given the Security page, which follows the Developers page, then it holds all security information (the secure coding checklist and the security review guidance) and no other docs page does

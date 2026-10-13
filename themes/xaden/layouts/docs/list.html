@@ -3,7 +3,7 @@
   <p class="eyebrow">Documentation</p>
   <h1 class="mt-2 text-4xl font-bold">{{ .Title }}</h1>
   <div class="prose prose-lg prose-xaden mt-4 max-w-2xl">{{ .Content }}</div>
-  <div class="mt-10 grid gap-8 md:grid-cols-2">
+  <div class="mt-10 grid gap-8 lg:grid-cols-3 md:grid-cols-2">
     {{ range hugo.Data.roles }}
       {{ $role := .id }}
       <section id="{{ $role }}" class="card" aria-labelledby="{{ $role }}-title">

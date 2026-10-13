@@ -16,28 +16,32 @@ DOCS_DIR="$ROOT/content/docs"
 GETTING_STARTED="GETTING-STARTED.md"
 # Pages: role | page title | summary. Sections of each page follow in the order below.
 ROLE_PAGES=(
-  "admins|Admins|Set up, update and secure Xaden"
+  "admins|Admins|Install, extend and update Xaden"
   "developers|Developers|Create a project, build with your assistant, release"
+  "security|Security|Secure coding checklist and security reviews"
 )
-# Sections of Getting started: role | heading | section title.
-# Add a line when a release adds a section (for example "2. Get Xaden" with the zip and clone install).
-SECTIONS=(
-  "admins|1. Prerequisites|Prerequisites and the xaden command"
-  "admins|Getting scaffold improvements into your project|Update a project"
-  "developers|3. Create your project|Create your project"
-  "developers|4. Kickoff|Kickoff"
-  "developers|5. Build features (repeat)|Build features"
-  "developers|6. Release|Release"
-  "developers|Joining an existing project|Join an existing project"
-  "developers|Security review quality|Security review quality"
-)
-# Whole files, appended after the sections of the same role: role | path in the release.
-# The section title is the file's H1. The template's admin and user guides are placeholders for
-# generated projects: not published.
-FILES=(
-  "admins|template/docs/security.md"
-  "admins|template/docs/optional-tools.md"
-  "developers|template/docs/local-llm.md"
+# Parts of each page, in order: role | kind | reference | title | argument.
+#   section     "## <reference>" of Getting started as a section called <title>; the argument names
+#               an "###" subsection to leave out (it is placed elsewhere)
+#   subsection  the "###" <argument> under "## <reference>" of Getting started, as "### <title>"
+#   file        a whole file of the release, titled by its H1 (reference = path in the release)
+#   own         a text of this site in docs-parts/ (@TAG@ and @VERSION@ are filled in)
+# Add a line when a release adds a section of Getting started: the run fails on any unmapped one.
+# The template's admin and user guides are placeholders for generated projects: not published.
+PARTS=(
+  "admins|section|1. Prerequisites|Prerequisites|Optional: the \`xaden\` command"
+  'admins|own|docs-parts/admins-install.md|Install|'
+  "admins|subsection|1. Prerequisites|The \`xaden\` command|Optional: the \`xaden\` command"
+  'admins|file|template/docs/optional-tools.md||'
+  'admins|section|Getting scaffold improvements into your project|Update a project|'
+  'developers|section|3. Create your project|Create your project|'
+  'developers|section|4. Kickoff|Kickoff|'
+  'developers|section|5. Build features (repeat)|Build features|'
+  'developers|section|6. Release|Release|'
+  'developers|section|Joining an existing project|Join an existing project|'
+  'developers|file|template/docs/local-llm.md||'
+  'security|file|template/docs/security.md||'
+  'security|section|Security review quality|Security review quality|'
 )
 WORK_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK_DIR"' EXIT
@@ -116,7 +120,6 @@ prefer_xaden_command() {
     # Update a project: run inside the project.
     s/Pull the newest scaffold, then from the scaffold directory:.*?inside the project\./Pull the newest Xaden (`git pull` in its folder), then run this inside your project:\n\n```bash\nxaden update\nxaden update --apply\n```\n\n- `xaden update`: dry run, lists what would change\n- `xaden update --apply`: stages the changes; review them with `git diff --cached`/s;
     # The xaden command is the way in, not an option.
-    s/### Optional: the `xaden` command/### The `xaden` command/;
     s/so you can\nuse the scaffold from any directory\./so you can\nuse Xaden from any directory./;
     s/is: the link points into it\./is: the link points into it. Every command in these docs assumes the command is installed./;
     s/\| `scripts\/new-project\.sh`, creating `\.\/my-app` \(or `dir`\) \|/| creates `.\/my-app` (or `dir`) with its own git repository and hooks |/;
@@ -147,15 +150,34 @@ section_body() {
   ' "$1"
 }
 
-# check_all_headings_mapped <file>: every "## " heading of Getting started has a section.
+# without_subsection <heading>: from stdin, the text without the "### <heading>" block.
+without_subsection() {
+  awk -v heading="### $1" '
+    /^### / { skipping = ($0 == heading) }
+    !skipping { print }
+  '
+}
+
+# subsection_body <file> <h2 heading> <h3 heading>: the lines under that "###", up to the next heading.
+subsection_body() {
+  section_body "$1" "$2" | awk -v heading="### $3" '
+    /^### / { inside = ($0 == heading); next }
+    inside { print }
+  '
+}
+
+# check_all_headings_mapped <file>: every "## " heading of Getting started is used by a part.
 check_all_headings_mapped() {
-  local heading entry
+  local heading entry rest kind reference
   while IFS= read -r heading; do
-    for entry in "${SECTIONS[@]}"; do
-      entry="${entry#*|}"
-      [ "${entry%%|*}" = "${heading#\#\# }" ] && continue 2
+    for entry in "${PARTS[@]}"; do
+      rest="${entry#*|}"
+      kind="${rest%%|*}"
+      rest="${rest#*|}"
+      reference="${rest%%|*}"
+      case "$kind" in section | subsection) [ "$reference" = "${heading#\#\# }" ] && continue 2 ;; esac
     done
-    die "REQ-006: heading '${heading#\#\# }' of $GETTING_STARTED has no section; add it to SECTIONS"
+    die "REQ-006: heading '${heading#\#\# }' of $GETTING_STARTED has no part; add it to PARTS"
   done < <(awk '/^```/ { fence = !fence } !fence && /^## / { print }' "$1")
 }
 
@@ -167,28 +189,48 @@ emit_section() {
   printf '\n'
 }
 
+# render_part <kind> <reference> <title> <argument> <release dir> <tag> <version>: one part of a page.
+render_part() {
+  local kind="$1" reference="$2" title="$3" argument="$4" release="$5" tag="$6" version="$7" body file_title
+  case "$kind" in
+    section)
+      body="$(section_body "$release/$GETTING_STARTED" "$reference")"
+      [ -n "$body" ] || die "REQ-006: section '$reference' is missing or empty in $GETTING_STARTED of $tag"
+      [ -z "$argument" ] || printf '%s\n' "$body" | grep -qxF "### $argument" ||
+        die "REQ-006: subsection '$argument' is missing in section '$reference' of $tag"
+      printf '%s\n' "$body" | { if [ -n "$argument" ]; then without_subsection "$argument"; else cat; fi; } | emit_section "$title" keep
+      ;;
+    subsection)
+      body="$(subsection_body "$release/$GETTING_STARTED" "$reference" "$argument")"
+      [ -n "$body" ] || die "REQ-006: subsection '$argument' is missing or empty in section '$reference' of $tag"
+      printf '### %s\n\n' "$title"
+      printf '%s\n' "$body" | strip_shell_comments
+      printf '\n'
+      ;;
+    file)
+      [ -f "$release/$reference" ] || die "REQ-006: $reference is missing in the $tag release"
+      file_title="$(sed -n 's/^# \(.*\)$/\1/p' "$release/$reference" | head -n 1)"
+      [ -n "$file_title" ] || die "REQ-006: $reference has no top-level heading"
+      awk '!skipped && /^# / { skipped = 1; next } { print }' "$release/$reference" | emit_section "$file_title" demote
+      ;;
+    own)
+      [ -f "$ROOT/$reference" ] || die "REQ-006: $reference is missing in this repository"
+      sed -e "s/@TAG@/$tag/g" -e "s/@VERSION@/$version/g" "$ROOT/$reference" | emit_section "$title" keep
+      ;;
+    *) die "unknown part kind '$kind'" ;;
+  esac
+}
+
 # render_role_page <role> <title> <summary> <release dir> <tag> <date>
 render_role_page() {
-  local role="$1" title="$2" summary="$3" release="$4" tag="$5" date="$6" entry heading section path body file_title
+  local role="$1" title="$2" summary="$3" release="$4" tag="$5" date="$6" entry part_role kind reference part_title argument
   {
     printf -- '---\ntitle: "%s"\nrole: %s\nsummary: "%s"\n---\n\n' "$title" "$role" "$summary"
     printf '_Describes Xaden %s, released %s._\n\n' "$tag" "$date"
-    for entry in "${SECTIONS[@]}"; do
-      [ "${entry%%|*}" = "$role" ] || continue
-      entry="${entry#*|}"
-      heading="${entry%%|*}"
-      section="${entry#*|}"
-      body="$(section_body "$release/$GETTING_STARTED" "$heading")"
-      [ -n "$body" ] || die "REQ-006: section '$heading' is missing or empty in $GETTING_STARTED of $tag"
-      printf '%s\n' "$body" | emit_section "$section" keep
-    done
-    for entry in "${FILES[@]}"; do
-      [ "${entry%%|*}" = "$role" ] || continue
-      path="${entry#*|}"
-      [ -f "$release/$path" ] || die "REQ-006: $path is missing in the $tag release"
-      file_title="$(sed -n 's/^# \(.*\)$/\1/p' "$release/$path" | head -n 1)"
-      [ -n "$file_title" ] || die "REQ-006: $path has no top-level heading"
-      awk '!skipped && /^# / { skipped = 1; next } { print }' "$release/$path" | emit_section "$file_title" demote
+    for entry in "${PARTS[@]}"; do
+      IFS='|' read -r part_role kind reference part_title argument <<<"$entry"
+      [ "$part_role" = "$role" ] || continue
+      render_part "$kind" "$reference" "$part_title" "$argument" "$release" "$tag" "${tag#v}"
     done
   } | rewrite_for_readers | prefer_xaden_command | sed "s#<xaden-repo-url>#https://github.com/$XADEN_REPOSITORY#g" >"$DOCS_DIR/$role.md"
   # <xaden-repo-url> would be read as raw HTML, which the site forbids, and swallow the text after it.
