@@ -25,6 +25,7 @@ Read one requirement with `scripts/req.sh show REQ-nnn`.
 |----|------|----------|--------|-------|
 | REQ-013 | quality | should | approved | Pages are readable, keyboard-usable and fit a phone |
 | REQ-014 | quality | should | approved | Pages are light and work without JavaScript |
+| REQ-019 | quality | should | approved | The site looks like Xaden: palette and logo from the logo, a dark fantasy mood |
 
 ## Trust and compliance (`trust`)
 
@@ -44,3 +45,4 @@ Read one requirement with `scripts/req.sh show REQ-nnn`.
 | REQ-003 | job | should | approved | Visitors learn who is behind Xaden and how to reach them |
 | REQ-004 | job | could | approved | Visitors with a wrong link find their way |
 | REQ-005 | job | could | approved | Contributors find how to contribute, test and open pull requests (second step) |
+| REQ-018 | job | should | approved | Visitors can try Xaden by copying one command |

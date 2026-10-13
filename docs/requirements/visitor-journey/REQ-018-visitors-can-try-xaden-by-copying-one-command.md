@@ -1,0 +1,22 @@
+---
+id: REQ-018
+type: job
+epic: visitor-journey
+priority: should
+status: approved
+updated: 2026-10-13
+---
+
+# Visitors can try Xaden by copying one command
+
+## Job
+
+When I am curious about Xaden and have a terminal open, I want to copy one command from the home page and run it, so I can see a working Xaden project within a minute without reading documentation first.
+
+## Acceptance criteria
+
+- Given the home page, then the first screen shows one command with a copy button, and the command creates a project from a fresh clone of Xaden
+- Given the copy button, when pressed, then the command is on the clipboard and the button says so
+- Given JavaScript disabled, then the command is still shown and can be selected and copied by hand
+- Given every code block on the docs pages, then it has a copy button too
+- Given the home page, then it carries no more text than a hero, four short benefit blocks, three steps and two entry points to the docs
