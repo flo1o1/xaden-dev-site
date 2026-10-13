@@ -17,6 +17,6 @@ The site shows the Xaden logo and uses the logo's own colors (ink black, charcoa
 
 - Given every page, then the header shows the logo and the browser tab shows a favicon made from it
 - Given the site colors, then each is taken from the logo (ink #0c0c18, charcoal #30303c, crimson #a84854, deep crimson #6c2430, bone #f3ece8), with lighter tints only where contrast needs them
-- Given the background pattern, then it is large dragon scales (pointed, with a center ridge), not small round fish scales, and it is fainter than any text and fades out down the page
+- Given the background pattern, then it is large dragon scales (pointed, with a center ridge), not small round fish scales, and it appears only in the hero, on the logo side, never behind running text
 - Given the artwork (background, dividers, patterns), then it is drawn for this site, with no assets of the novels, and decorative motion stops under reduced-motion
 - Given any text, then REQ-013 contrast and keyboard rules still hold

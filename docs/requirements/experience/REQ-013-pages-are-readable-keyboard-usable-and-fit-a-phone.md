@@ -18,4 +18,4 @@ All text meets WCAG AA contrast in the dark theme (the site has no light theme),
 - Given the theme colors, when checked, then every text and background pair meets a contrast ratio of at least 4.5:1 (3:1 for large text)
 - Given any page, when operated with the keyboard only, then every link and control is reachable and shows a visible focus
 - Given a 320 px wide viewport, then no horizontal scrolling is needed
-- Given the background artwork, then text on top of it keeps the contrast ratios above, with the artwork drawn fainter than the text colors and fading out below the top of the page
+- Given the background artwork, then it never lies behind running text: pages with documentation or legal text have a plain background, and in the hero the artwork stays on the side away from the text
