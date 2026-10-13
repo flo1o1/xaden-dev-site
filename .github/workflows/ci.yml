@@ -45,6 +45,8 @@ jobs:
           echo "${TAILWIND_SHA256}  tailwindcss" | sha256sum -c -
           sudo install tailwindcss /usr/local/bin/tailwindcss
       - name: Render the docs of the pinned Xaden release
+        env:
+          GITHUB_TOKEN: ${{ github.token }} # read-only (contents: read); lifts the API rate limit for the release date
         run: scripts/sync-docs.sh
       - name: Build the site and check it
         run: scripts/check-site.sh
