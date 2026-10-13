@@ -15,7 +15,7 @@ Read one requirement with `scripts/req.sh show REQ-nnn`.
 
 | ID | Type | Priority | Status | Title |
 |----|------|----------|--------|-------|
-| REQ-006 | job | must | approved | Documentation on the site always matches the latest released Xaden |
+| REQ-006 | job | must | in-progress | Documentation on the site always matches the latest released Xaden |
 | REQ-007 | job | must | approved | Site changes go live only after CI passed on the exact commit |
 | REQ-008 | quality | should | in-progress | Builds are reproducible and pinned |
 

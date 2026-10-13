@@ -3,7 +3,7 @@ id: REQ-006
 type: job
 epic: delivery
 priority: must
-status: approved
+status: in-progress
 updated: 2026-10-13
 ---
 
@@ -15,7 +15,7 @@ When I publish a Xaden release, I want to rebuild the site from that release's d
 
 ## Acceptance criteria
 
-- Given a new Xaden release, when it is published, then a site build starts and renders the docs from the release tarball
-- Given the built site, then every docs page shows the Xaden version and the build date
+- Given a new Xaden release, when it is published, then the pinned version in `XADEN_DOCS_VERSION` is bumped by a reviewed change and the build renders the docs from that release's tarball
+- Given the built site, then every docs page shows the Xaden version and the release date (not the build date, so builds stay reproducible, REQ-008)
 - Given a missing or unreadable source file, when the build runs, then the build fails and nothing is published
 - Given unreleased changes in the Xaden repository, then they never appear on the site
