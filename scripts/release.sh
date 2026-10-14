@@ -17,6 +17,7 @@ cd "$ROOT"
 stamp_docs() {
   local file
   for file in docs/user-guide.md docs/admin-guide.md; do
+    [ -f "$file" ] || continue # a project can opt out of the guides (docs/decisions/0001-no-user-or-admin-guides.md)
     rewrite_file "$file" awk -v v="$1" '/^\*\*Applies to version:\*\*/ { print "**Applies to version:** " v; next } { print }' ||
       return
   done
@@ -29,7 +30,8 @@ stamp_release() {
 
 main() {
   local part=${1:-} current next
-  local release_files=(VERSION CHANGELOG.md docs/user-guide.md docs/admin-guide.md)
+  local release_files=(VERSION CHANGELOG.md) guide
+  for guide in docs/user-guide.md docs/admin-guide.md; do [ -f "$guide" ] && release_files+=("$guide"); done
   [ -n "$part" ] || die "usage: scripts/release.sh <major|minor|patch>"
   git rev-parse --git-dir >/dev/null 2>&1 || die "not a git repository"
   [ -z "$(git status --porcelain)" ] || die "working tree not clean; commit or stash first"

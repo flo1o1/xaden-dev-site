@@ -147,6 +147,8 @@ Details and examples: `docs/clean-code.md` (same IDs).
   `docs/admin-guide.md` (install, system requirements, configuration, security hardening,
   deployment, backup, monitoring, upgrade, uninstall).
 - A feature is not done until the guides describe it. Update them in the same change.
+  This project has no guides (`docs/decisions/0001-no-user-or-admin-guides.md`): the site and
+  `README.md` are its documentation, and the checks skip the guides.
 - Fill the `<!-- TODO -->` markers with verified facts; ask if a fact is unknown. Never invent
   system requirements or commands. Prompt: `prompts/documentation.md` (`/docs` in Claude Code).
 - `scripts/check-docs.sh` enforces the section structure; releases are blocked while TODO

@@ -42,11 +42,16 @@ check_filled() {
   fi
 }
 
-check_headings "$ROOT/docs/user-guide.md" "$USER_HEADINGS"
-check_headings "$ROOT/docs/admin-guide.md" "$ADMIN_HEADINGS"
+# A project without guides records the decision in an ADR; this file is the opt-out marker.
+NO_GUIDES_DECISION="$ROOT/docs/decisions/0001-no-user-or-admin-guides.md"
+
+if [ ! -f "$NO_GUIDES_DECISION" ]; then
+  check_headings "$ROOT/docs/user-guide.md" "$USER_HEADINGS"
+  check_headings "$ROOT/docs/admin-guide.md" "$ADMIN_HEADINGS"
+fi
 
 if [ "$RELEASE_MODE" = "1" ]; then
-  check_filled "$ROOT/docs/user-guide.md"
+  check_filled "$ROOT/docs/user-guide.md" # absent guides are skipped by check_filled
   check_filled "$ROOT/docs/admin-guide.md"
   check_filled "$ROOT/SECURITY.md"
   check_filled "$ROOT/docs/threat-model.md"

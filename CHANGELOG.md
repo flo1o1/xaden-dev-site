@@ -15,5 +15,6 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 - Fix: the deploy dropped `/.well-known/security.txt` because the Pages upload action skips dot folders; hidden files are now included, and the deploy job fails if security.txt is not served afterwards.
 - Security policy (`SECURITY.md`) and threat model (`docs/threat-model.md`) written for the launch, including the response headers GitHub Pages cannot set.
 - Admins page: how to update Xaden itself (clone or zip). Xaden v0.2.3's new "Get Xaden" section is covered by the site's own Install section.
+- Removed the unfilled user and admin guides (decision 0001); the README now describes how to build, check and publish the site.
 - Project created from the Xaden scaffold.
 - Hugo site skeleton with its own theme `themes/xaden` (dark, self-hosted fonts, one optional script for copy buttons), pages Home, Docs and About, a 404 page and `security.txt`; `scripts/check-site.sh` builds it and fails on other origins, inline script, a missing Content-Security-Policy or a `security.txt` that expires within 60 days; CI installs pinned, checksum-verified Hugo and Tailwind CSS CLI.
