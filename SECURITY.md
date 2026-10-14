@@ -43,7 +43,7 @@ The site is static and holds almost no secrets. All of them are rotated by the o
 4. **Fix**: regression test first, then the fix; run the security review; release.
 5. **Notify**: affected users and, where the law requires it, authorities within the legal
    deadline (e.g. GDPR: 72 hours for personal-data breaches).
-6. **Learn**: add a requirement, test or semgrep rule so the same mistake is caught next time;
+6. **Learn**: add a requirement or test so the same mistake is caught next time;
    update `docs/threat-model.md`.
 
 The owner, Florian Auer, decides and is the contact: [hello@xaden.dev](mailto:hello@xaden.dev). If the site itself
@@ -52,5 +52,5 @@ settings (Settings, Pages, unpublish) and to revert the last commit on `main`.
 
 ## Supply chain
 
-Dependency rules, accepted vulnerabilities and optional SBOM/provenance guidance:
-`docs/security.md` (section Dependencies) and `docs/security-exceptions.md`.
+The site has no runtime dependencies. Hugo and the Tailwind CSS CLI are pinned with checksums in
+`.github/workflows/ci.yml`; update them deliberately.

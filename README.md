@@ -37,9 +37,9 @@ scripts/check-site.sh
 | `XADEN_DOCS_VERSION` | The Xaden release the documentation describes |
 | `scripts/sync-docs.sh` | Builds the Admins, Developers and Security pages from that release |
 | `static/` | Files copied as they are, such as `security.txt` and the `CNAME` for xaden.dev |
-| `docs/requirements/` | What the site must do, one file per requirement; `INDEX.md` lists them |
+| `docs/requirements/` | What the site must do, one file per requirement |
 | `docs/threat-model.md`, `SECURITY.md` | Security of the site and how to report a problem |
-| `AGENTS.md` | Rules for AI assistants working on this repository |
+| `CLAUDE.md` | Rules for AI assistants working on this repository |
 
 ## How a change goes live
 
