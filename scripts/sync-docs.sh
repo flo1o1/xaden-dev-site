@@ -4,6 +4,7 @@
 # in XADEN_DOCS_VERSION; unreleased changes never appear. A missing source, a missing or unmapped
 # heading, or an unreadable tarball fails the run, so nothing is dropped silently.
 # Usage: scripts/sync-docs.sh [tag]    (needs curl, tar, awk)
+#        XADEN_SOURCE=<xaden checkout> scripts/sync-docs.sh    local preview of unreleased docs (not in CI)
 set -euo pipefail
 
 SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -243,17 +244,34 @@ render_role_page() {
   # <xaden-repo-url> would be read as raw HTML, which the site forbids, and swallow the text after it.
 }
 
+# use_local_source <checkout>: preview of unreleased docs. Copies the checkout (working tree, so
+# uncommitted edits show) into the release folder; prints its version tag. Never used in CI.
+use_local_source() {
+  local source=$1
+  [ -z "${CI:-}" ] || die "REQ-006: XADEN_SOURCE is for local previews and is refused when CI is set"
+  [ -f "$source/$GETTING_STARTED" ] && [ -f "$source/VERSION" ] || die "REQ-006: $source is not a Xaden checkout ($GETTING_STARTED or VERSION missing)"
+  warn "PREVIEW of unreleased files from $source: content/docs/ is git-ignored, do not publish this build"
+  tar -C "$source" --exclude=./.git --exclude=./inbox --exclude=./node_modules -cf - . |
+    tar -x -C "$WORK_DIR/release"
+  printf 'v%s' "$(tr -d '[:space:]' <"$source/VERSION")"
+}
+
 main() {
   local tag="${1:-$(tr -d '[:space:]' <"$ROOT/XADEN_DOCS_VERSION")}" date entry
-  printf '%s' "$tag" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$' || die "REQ-006: '$tag' is not a release tag like v1.2.3"
-  has_command curl || die "curl not found"
-  info "download $XADEN_REPOSITORY $tag"
   mkdir "$WORK_DIR/release"
-  curl -fsSL "https://github.com/$XADEN_REPOSITORY/archive/refs/tags/$tag.tar.gz" |
-    tar -xz -C "$WORK_DIR/release" --strip-components=1
-  [ -f "$WORK_DIR/release/$GETTING_STARTED" ] || die "REQ-006: $GETTING_STARTED is missing in the $tag release"
-  date="$(release_date "$tag")"
-  [ -n "$date" ] || die "REQ-006: could not read the release date of $tag"
+  if [ -n "${XADEN_SOURCE:-}" ]; then
+    tag="$(use_local_source "$XADEN_SOURCE")"
+    date="$(date +%F)"
+  else
+    printf '%s' "$tag" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$' || die "REQ-006: '$tag' is not a release tag like v1.2.3"
+    has_command curl || die "curl not found"
+    info "download $XADEN_REPOSITORY $tag"
+    curl -fsSL "https://github.com/$XADEN_REPOSITORY/archive/refs/tags/$tag.tar.gz" |
+      tar -xz -C "$WORK_DIR/release" --strip-components=1
+    [ -f "$WORK_DIR/release/$GETTING_STARTED" ] || die "REQ-006: $GETTING_STARTED is missing in the $tag release"
+    date="$(release_date "$tag")"
+    [ -n "$date" ] || die "REQ-006: could not read the release date of $tag"
+  fi
   check_all_headings_mapped "$WORK_DIR/release/$GETTING_STARTED"
   # everything generated goes; _index.md and quick-start.md are hand-written
   find "$DOCS_DIR" -type f ! -name '_index.md' ! -name 'quick-start.md' -delete
