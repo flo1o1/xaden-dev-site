@@ -7,5 +7,5 @@ the 25 Hugo modules, Google Fonts, analytics, search, PWA, cookie consent and th
 
 Fonts (SIL Open Font License 1.1), self-hosted from the npm packages @fontsource/cinzel 5.3.0
 and @fontsource-variable/inter (latest on 2026-10-13): static/fonts/.
-The logo is the Xaden logo (static/img/xaden.svg; favicon and touch icon are PNG renderings of it).
+The logo is the Xaden logo (static/img/xaden.png; favicon and touch icon are PNG renderings of it).
 The CSS is built by Hugo with the standalone Tailwind CSS CLI (see .github/workflows/ci.yml for the pinned version).
