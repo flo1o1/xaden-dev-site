@@ -39,7 +39,9 @@ render_page() {
     printf -- '---\ntitle: "%s"\nweight: %s\n---\n\n' "${title//\"/\\\"}" "$weight"
     printf '_Describes Xaden %s, released %s. [Edit on GitHub](https://github.com/%s/blob/%s/%s)._\n\n' \
       "$tag" "$date" "$XADEN_REPOSITORY" "$tag" "${source#"$WORK_DIR"/release/}"
-    awk 'BEGIN { skipped = 0 } !skipped && /^# / { skipped = 1; next } { print }' "$source"
+    # <xaden-repo-url> would be read as raw HTML, which the site forbids, and swallow the section after it.
+    awk 'BEGIN { skipped = 0 } !skipped && /^# / { skipped = 1; next } { print }' "$source" |
+      sed "s#<xaden-repo-url>#https://github.com/$XADEN_REPOSITORY#g"
   } >"$DOCS_DIR/$slug.md"
 }
 

@@ -1,0 +1,9 @@
+{{ define "title"}}
+404 | {{ .Site.Params.author.name }}
+{{ end }}
+
+{{ define "main"}}
+<h1>{{ i18n "not_found" }}</h1>
+<p>{{ i18n "not_found_desc" }}</p>
+<p><a href="{{ "/" | relURL }}">Home</a> · <a href="{{ "docs/" | relURL }}">Documentation</a></p>
+{{ end }}
