@@ -15,11 +15,17 @@ When I decide to try Xaden, I want task-oriented instructions to install, update
 
 ## Acceptance criteria
 
-- Given the docs landing page, then it offers the entry points Admins and Developers and links by task
+- Given the docs landing page, then it offers the entry points Admins, Developers and Security, each one single page whose sections are listed on the landing page and in a table of contents
 - Given the install page, then it documents both ways to get Xaden, downloading the release as a zip archive and cloning the repository, each with its steps and when to choose it
 - Given the install, update and uninstall pages, then each has a section per operating system (Linux, macOS, Windows) wherever the steps differ, such as prerequisites, the shell profile line for `PATH`, or the shell used
 - Given the Windows section, then it states the support level exactly as the Getting Started page does (WSL or Git Bash, untested; native PowerShell not supported) and invents no steps that were not run
 - Given the operating system sections, then they are plain headings on the page and work without JavaScript, not tabs
-- Given the Admins pages, then they answer: install, update and upgrade (with the meaning of SemVer), uninstall, keep it secure, what is inside (linked tools and libraries)
+- Given the Admins pages, then they answer: install, update and upgrade (with the meaning of SemVer), uninstall, what is inside (linked tools and libraries)
 - Given the Developers pages, then they answer: use, customize, create a new project, migrate an existing project, model-specific use
-- Given any docs page, then it ends with an edit-on-GitHub link and shows the Xaden version it describes
+- Given any docs page, then it shows the Xaden version and release date it describes
+- Given the main menu, then Docs opens a submenu with Quick start, Admins, Developers and Security, which works with the keyboard and without JavaScript
+- Given any docs page, then it contains no requirement or rule IDs (such as REQ-123 or CC-03), no section references (such as §10) and no paths into the Xaden repository, because readers have not seen the repository; paths inside a generated project stay
+- Given any command in the docs, then it uses the `xaden` command wherever one exists (new, update, setup, check, req, pack, release), and `scripts/install.sh` appears only to install `xaden`
+- Given the Admins page, then its sections run Prerequisites, Install, Optional tools, Update a project; Install shows both ways to get Xaden (git clone and zip download) and the steps for Linux, macOS and Windows
+- Given the Security page, which follows the Developers page, then it holds all security information, at a high level: it explains how Xaden helps at each stage (before building, while building, on every commit, before a release, when something goes wrong) and links to deeper sources such as OWASP, instead of reproducing a checklist, and no other docs page covers security
+- Given the Developers page, then a section explains how to bring an existing project into Xaden with steps that were run, and says that Xaden has no one-step import

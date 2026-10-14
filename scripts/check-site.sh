@@ -3,7 +3,7 @@
 #   REQ-011  no reference to another origin, no inline script
 #   REQ-012  every page carries the Content-Security-Policy meta tag
 #   REQ-009  security.txt has Contact and Expires, and Expires is at least 60 days away
-# Usage: scripts/check-site.sh   (needs hugo, extended build, and dart-sass on PATH)
+# Usage: scripts/check-site.sh   (needs hugo, extended build, and the tailwindcss CLI v4 on PATH)
 set -euo pipefail
 
 SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -21,7 +21,7 @@ trap 'rm -rf "$OUTPUT_DIR"' EXIT
 # build_site: renders the site into OUTPUT_DIR; fails on any Hugo warning-level error.
 build_site() {
   has_command hugo || die "hugo not found (extended build, see .github/workflows/ci.yml for the pinned version)"
-  has_command sass || die "dart-sass not found (the Nightfall theme compiles its styles with it)"
+  "$SCRIPTS/build-css.sh" >/dev/null
   (cd "$ROOT" && hugo --gc --minify --panicOnWarning --destination "$OUTPUT_DIR" >/dev/null)
 }
 
@@ -54,10 +54,14 @@ check_no_foreign_origins() {
   [ -z "$foreign" ] || die "REQ-011: the built site refers to other origins:$foreign"
 }
 
-# check_no_inline_script: REQ-011/REQ-012, the policy forbids scripts of any kind.
+# check_no_inline_script: REQ-012, only script files from the site itself are allowed
+# (the policy says script-src 'self'); any inline script or event handler fails.
 check_no_inline_script() {
-  if grep -rlE '<script|[[:space:]]on[a-z]+=' "$OUTPUT_DIR" --include='*.html' | grep -q .; then
-    die "REQ-012: a built page contains <script> or an inline event handler"
+  if grep -rhoE '<script[^>]*>' "$OUTPUT_DIR" --include='*.html' | grep -qv 'src='; then
+    die "REQ-012: a built page contains an inline <script>"
+  fi
+  if grep -rlE '[[:space:]]on[a-z]+=' "$OUTPUT_DIR" --include='*.html' | grep -q .; then
+    die "REQ-012: a built page contains an inline event handler"
   fi
 }
 
@@ -85,6 +89,22 @@ check_security_txt() {
   [ "$expires" \> "$limit" ] || die "REQ-009: security.txt expires on $expires; renew it (needs at least $SECURITY_TXT_MIN_DAYS days, i.e. after $limit)"
 }
 
+# check_docs_have_no_internal_references: REQ-002, readers have not seen the Xaden repository.
+check_docs_have_no_internal_references() {
+  local found
+  found="$(grep -rnE 'REQ-[0-9]+|CC-[0-9]+|§|template/' "$OUTPUT_DIR/docs" --include='*.html' | cut -c1-160 | head -n 5 || true)"
+  [ -z "$found" ] || die "REQ-002: docs pages hold rule IDs, section references or repository paths (extend rewrite_for_readers in scripts/sync-docs.sh):
+$found"
+}
+
+# check_docs_prefer_xaden: REQ-002, the xaden command comes first wherever it exists.
+check_docs_prefer_xaden() {
+  local found
+  found="$(grep -rnoE 'scripts/(new-project|update-scaffold|setup|check|req|pack-context|release)\.sh' "$OUTPUT_DIR/docs" --include='*.html' | head -n 5 || true)"
+  [ -z "$found" ] || die "REQ-002: docs pages show a script where the xaden command exists (extend prefer_xaden_command in scripts/sync-docs.sh):
+$found"
+}
+
 main() {
   info "build"
   build_site
@@ -94,6 +114,10 @@ main() {
   check_no_inline_script
   info "Content-Security-Policy on every page (REQ-012)"
   check_content_security_policy
+  info "docs without internal references (REQ-002)"
+  check_docs_have_no_internal_references
+  info "docs use the xaden command (REQ-002)"
+  check_docs_prefer_xaden
   info "security.txt (REQ-009)"
   check_security_txt
   info "site checks passed"

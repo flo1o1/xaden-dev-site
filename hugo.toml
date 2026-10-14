@@ -1,31 +1,56 @@
 baseURL = "https://xaden.dev/"
 title = "Xaden"
 locale = "en"
-theme = "nightfall"
+theme = "xaden"
 enableRobotsTXT = true
 disableKinds = ["taxonomy", "term", "rss"]
 
 [markup.goldmark.renderer]
   unsafe = false
 
-[menu]
-  [[menu.header]]
-    name = "docs"
-    weight = 1
-    url = "docs/"
-  [[menu.header]]
-    name = "about"
-    weight = 2
-    url = "about/"
+# Chroma classes instead of inline styles: the Content-Security-Policy forbids inline styles.
+[markup.highlight]
+  noClasses = false
+  guessSyntax = false
 
 [params]
-  user = "visitor"
-  hostname = "xaden.dev"
-  openLinksInNewTab = false
-  showMetadata = false
-  footerHtml = "Xaden is open source under the MIT license."
-  [params.author]
-    name = "Xaden"
+  description = "Xaden is an open source starter that keeps AI coding assistants within rules, checks and requirements."
 
 [pagination]
   disableAliases = true
+
+
+# Table of contents of the role pages: sections (h2) and their subsections (h3).
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 3
+
+[[menus.main]]
+  identifier = "docs"
+  name = "Docs"
+  pageRef = "/docs"
+  weight = 1
+[[menus.main]]
+  name = "Quick start"
+  pageRef = "/docs/quick-start"
+  parent = "docs"
+  weight = 1
+[[menus.main]]
+  name = "Admins"
+  pageRef = "/docs/admins"
+  parent = "docs"
+  weight = 2
+[[menus.main]]
+  name = "Developers"
+  pageRef = "/docs/developers"
+  parent = "docs"
+  weight = 3
+[[menus.main]]
+  name = "Security"
+  pageRef = "/docs/security"
+  parent = "docs"
+  weight = 4
+[[menus.main]]
+  name = "About"
+  pageRef = "/about"
+  weight = 2

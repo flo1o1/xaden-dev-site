@@ -1,0 +1,236 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@source "../layouts";
+
+/* Palette from the logo (REQ-019); dark only. Contrast of every text pair is checked in REQ-013. */
+@theme {
+  --color-page: #0f0b13;
+  --color-panel: #211a26;
+  --color-panel-2: #18121d;
+  --color-line: #42414d;
+  --color-line-strong: #7c7b89;
+  --color-fg: #f7ede9;
+  --color-muted: #b9b7c6;
+  --color-accent: #ee8f95;
+  --color-brand: #93272d;
+  --color-brand-deep: #7a1f26;
+  --color-on-brand: #f7ede9;
+  --font-display: "Cinzel", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+@font-face {
+  font-family: "Cinzel";
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/cinzel-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Cinzel";
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/cinzel-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-variable.woff2") format("woff2");
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background: var(--color-page);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-page);
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: 0.02em;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--color-brand-deep);
+    color: var(--color-fg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--color-brand);
+    border-radius: 0.375rem;
+    padding: 0.7rem 1.25rem;
+    font-weight: 600;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .btn-primary { background: var(--color-brand-deep); color: var(--color-on-brand); }
+  .btn-primary:hover { background: var(--color-brand); }
+  .btn-ghost { color: var(--color-fg); }
+  .btn-ghost:hover { background: var(--color-panel); border-color: var(--color-accent); }
+
+  .eyebrow {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  /* hero: ink sky, a crimson glow behind the logo, drifting embers, ridge at the bottom */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+      radial-gradient(ellipse 60% 55% at 78% 40%, rgb(147 39 45 / 0.32), transparent 70%),
+      radial-gradient(ellipse 80% 40% at 50% 110%, rgb(122 31 38 / 0.55), transparent 70%),
+      linear-gradient(180deg, #09070c 0%, var(--color-page) 100%);
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(2px 2px at 12% 80%, var(--color-accent), transparent),
+      radial-gradient(1.5px 1.5px at 28% 62%, var(--color-brand), transparent),
+      radial-gradient(2px 2px at 44% 90%, var(--color-accent), transparent),
+      radial-gradient(1.5px 1.5px at 63% 72%, var(--color-accent), transparent),
+      radial-gradient(2px 2px at 81% 86%, var(--color-brand), transparent),
+      radial-gradient(1.5px 1.5px at 92% 58%, var(--color-accent), transparent);
+    background-size: 100% 100%;
+    animation: embers 14s linear infinite;
+    opacity: 0.8;
+  }
+  /* large dragon scales: only in the hero, on the logo side; the text side stays clear (REQ-013) */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("/img/scales.svg");
+    -webkit-mask-image: radial-gradient(ellipse 55% 75% at 82% 45%, #000 0%, transparent 100%);
+    mask-image: radial-gradient(ellipse 55% 75% at 82% 45%, #000 0%, transparent 100%);
+  }
+  @keyframes embers {
+    from { transform: translateY(6%); opacity: 0; }
+    20% { opacity: 0.8; }
+    to { transform: translateY(-14%); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero::before { animation: none; opacity: 0.5; transform: none; }
+  }
+  .ridge {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: -1;
+    height: 7rem;
+    background: url("/img/ridge.svg") center bottom / 100% 100% no-repeat;
+  }
+  .logo-glow {
+    filter: drop-shadow(0 0 28px rgb(147 39 45 / 0.6));
+  }
+
+  .card {
+    background: linear-gradient(180deg, var(--color-panel), var(--color-panel-2));
+    border: 1px solid var(--color-line);
+    border-top: 2px solid var(--color-brand);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  a.card:hover { border-color: var(--color-accent); transform: translateY(-2px); }
+  @media (prefers-reduced-motion: reduce) {
+    a.card:hover { transform: none; }
+  }
+
+  .rule {
+    height: 1px;
+    border: 0;
+    background: linear-gradient(90deg, transparent, var(--color-brand), transparent);
+  }
+
+  /* code blocks (the copy button comes from /js/copy.js) */
+  pre {
+    background: #09070c;
+    border: 1px solid var(--color-line);
+    border-radius: 0.5rem;
+    padding: 1rem 5.5rem 1rem 1rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #f7ede9;
+  }
+  .code-block { position: relative; }
+  .copy-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    border: 1px solid #7c7b89;
+    border-radius: 0.25rem;
+    background: #211a26;
+    color: #f7ede9;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .copy-button:hover { border-color: var(--color-accent); }
+}
+
+/* table of contents of the role pages */
+.toc ul { border-left: 1px solid var(--color-line); }
+.toc ul ul { margin-left: 0.75rem; }
+.toc a { display: block; padding: 0.25rem 0 0.25rem 1rem; color: var(--color-muted); }
+.toc a:hover { color: var(--color-accent); }
+@media (min-width: 48rem) {
+  .toc { max-height: calc(100vh - 14rem); overflow-y: auto; }
+}
+
+/* long-form text: Tailwind typography tuned to the palette */
+.prose-xaden {
+  --tw-prose-body: var(--color-fg);
+  --tw-prose-headings: var(--color-fg);
+  --tw-prose-lead: var(--color-muted);
+  --tw-prose-links: var(--color-accent);
+  --tw-prose-bold: var(--color-fg);
+  --tw-prose-counters: var(--color-muted);
+  --tw-prose-bullets: var(--color-brand);
+  --tw-prose-hr: var(--color-line);
+  --tw-prose-quotes: var(--color-fg);
+  --tw-prose-quote-borders: var(--color-brand);
+  --tw-prose-captions: var(--color-muted);
+  --tw-prose-code: var(--color-fg);
+  --tw-prose-pre-code: #f7ede9;
+  --tw-prose-pre-bg: #09070c;
+  --tw-prose-th-borders: var(--color-line-strong);
+  --tw-prose-td-borders: var(--color-line);
+}
+.prose-xaden :where(pre):not(:where([class~="not-prose"] *)) {
+  padding-right: 5.5rem;
+}
+.prose-xaden :where(code):not(:where(pre code)):not(:where([class~="not-prose"] *)) {
+  background: var(--color-panel);
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.35rem;
+}
+.prose-xaden :where(code):not(:where([class~="not-prose"] *))::before,
+.prose-xaden :where(code):not(:where([class~="not-prose"] *))::after { content: none; }

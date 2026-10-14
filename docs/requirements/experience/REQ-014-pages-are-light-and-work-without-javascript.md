@@ -11,9 +11,9 @@ updated: 2026-10-13
 
 ## Quality goal
 
-Every page works with JavaScript disabled, and the home page transfers at most 100 KB (threshold proposed; confirm after the first build).
+Every page works with JavaScript disabled, and scripts are optional enhancements only (the copy buttons), and the home page transfers at most 250 KB including fonts and logo (raised from 100 KB when the Empyrean design added fonts and the logo)
 
 ## Acceptance criteria
 
 - Given JavaScript disabled, when any page is opened, then all content and navigation work
-- Given the home page, when loaded with an empty cache, then no more than 100 KB are transferred
+- Given the home page, when loaded with an empty cache, then no more than 250 KB are transferred

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale | default "en" }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body class="flex min-h-screen flex-col font-sans antialiased">
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-brand-deep focus:text-on-brand focus:px-4 focus:py-2">Skip to content</a>
+  {{ partial "header.html" . }}
+  <main id="main" class="grow">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+  {{ $copy := resources.Get "js/copy.js" | minify | fingerprint }}
+  <script src="{{ $copy.RelPermalink }}" defer></script>
+</body>
+</html>

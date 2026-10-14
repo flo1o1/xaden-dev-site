@@ -11,11 +11,11 @@ updated: 2026-10-13
 
 ## Quality goal
 
-Every page carries a strict Content-Security-Policy (as a meta tag, because GitHub Pages cannot set response headers) and no inline script; header-only protections that are unavailable are named in the threat model.
+Every page carries a strict Content-Security-Policy (as a meta tag, because GitHub Pages cannot set response headers) and no inline script (script files from the site's own origin are allowed for optional enhancements such as copy buttons); header-only protections that are unavailable are named in the threat model.
 
 ## Acceptance criteria
 
-- Given any page, then it has a Content-Security-Policy meta tag that forbids inline script and non-self origins
+- Given any page, then it has a Content-Security-Policy meta tag that forbids inline script and non-self origins, and allows scripts only from 'self'
 - Given the built site, when scanned, then it contains no inline script
 - Given the threat model of the site repository, then it lists the missing header protections (for example frame-ancestors, Permissions-Policy) as accepted limits
 - Given the site dependencies (Hugo, theme), then they follow the dependency policy of the Xaden template

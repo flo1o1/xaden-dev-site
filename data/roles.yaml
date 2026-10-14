@@ -1,0 +1,12 @@
+- id: admins
+  name: Admins
+  title: Install and update
+  text: Install Xaden, add optional tools and keep it current.
+- id: developers
+  name: Developers
+  title: Build with it
+  text: Create a project, run the workflow with your assistant, release and join projects.
+- id: security
+  name: Security
+  title: How Xaden helps
+  text: Where security enters the workflow, and where to learn more.
