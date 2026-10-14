@@ -95,6 +95,7 @@ jobs:
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: public
+          include-hidden-files: true # the action skips dot folders by default, which drops /.well-known/security.txt
 
   deploy:
     name: deploy
@@ -115,3 +116,6 @@ jobs:
       - name: Publish to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+      - name: Check that security.txt is served (REQ-009)
+        run: |
+          curl -fsS --retry 6 --retry-delay 10 --retry-all-errors https://xaden.dev/.well-known/security.txt | grep -q '^Contact:'
