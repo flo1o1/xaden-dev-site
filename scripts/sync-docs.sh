@@ -38,7 +38,7 @@ PARTS=(
   'admins|file|template/docs/optional-tools.md||'
   'admins|section|Getting scaffold improvements into your project|Update a project|'
   'developers|section|3. Create your project|Create your project|'
-  'developers|own|docs-parts/developers-existing-project.md|Bring an existing project|'
+  'developers|own|docs-parts/developers-existing-project.md|Adopt an existing project|'
   'developers|section|4. Kickoff|Kickoff|'
   'developers|section|5. Build features (repeat)|Build features|'
   'developers|section|6. Release|Release|'

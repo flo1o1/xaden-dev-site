@@ -28,4 +28,4 @@ When I decide to try Xaden, I want task-oriented instructions to install, update
 - Given any command in the docs, then it uses the `xaden` command wherever one exists (new, update, setup, check, req, pack, release), and `scripts/install.sh` appears only to install `xaden`
 - Given the Admins page, then its sections run Prerequisites, Install, Optional tools, Update a project; Install shows both ways to get Xaden (git clone and zip download) and the steps for Linux, macOS and Windows
 - Given the Security page, which follows the Developers page, then it holds all security information, at a high level: it explains how Xaden helps at each stage (before building, while building, on every commit, before a release, when something goes wrong) and links to deeper sources such as OWASP, instead of reproducing a checklist, and no other docs page covers security
-- Given the Developers page, then a section explains how to bring an existing project into Xaden with steps that were run, and says that Xaden has no one-step import
+- Given the Developers page, then a section "Adopt an existing project" explains how to add Xaden to an existing repository with `xaden adopt`

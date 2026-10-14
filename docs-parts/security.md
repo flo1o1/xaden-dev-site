@@ -46,11 +46,9 @@ A fast subset runs in a git hook on every commit. The full set runs in CI, where
 A vulnerability you accept for now goes into an exceptions file with an owner, a reason and an
 expiry date. Once a date has passed, the full check fails until someone decides again.
 
-### Planned: nothing downloads without your yes
+### Nothing downloads without your yes
 
-> **Planned, not released yet.** This rule is approved but not built.
-
-Xaden will never download itself or anything else without asking you first. When a project needs a
+Xaden never downloads itself or anything else without asking you first. When a project needs a
 Xaden version you do not have, you see the version, the source and the checksum, and the question
 defaults to no. A download is installed only if its checksum matches the one pinned in the project.
 Scripts, IDEs and assistants cannot answer for you: without a terminal Xaden stops and prints the

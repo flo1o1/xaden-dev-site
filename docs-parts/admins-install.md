@@ -73,11 +73,9 @@ rm -r ~/tools/xaden-OLD
 - `~/tools/xaden-NEW/scripts/install.sh`: links `xaden` to the new folder. Replace `NEW` with the new version.
 - `rm -r ~/tools/xaden-OLD`: deletes the old folder once the new link works.
 
-### Planned: one Xaden version per project
+### One Xaden version per project
 
-> **Planned, not released yet.** The commands in this section are approved but not built.
-
-A team project will pin the Xaden version it uses, together with a checksum, in its `xaden/` folder.
+A team project pins the Xaden version it uses, together with a checksum, in its `xaden/` folder.
 Installing a newer Xaden on your machine changes nothing in a project.
 
 ```bash
