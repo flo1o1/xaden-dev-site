@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Removed
+- The Xaden scaffold: prompts, presets, personas, stack checks, requirements tooling, the pre-commit hook, the release script and the configuration of other AI tools. `scripts/check.sh` now runs shellcheck and gitleaks; `CLAUDE.md` holds the few rules that remain. The requirements and the threat model stay as plain files.
+
 ### Added
 - `scripts/sync-docs.sh` renders Getting started, Security, Optional tools and Local LLM into the Admins, Developers and Security pages from the Xaden release in `XADEN_DOCS_VERSION` (pinned, v0.2.2); each page shows the version and release date; CI runs it before the build.
 - A daily workflow (`bump-docs.yml`, also startable by hand) opens a pull request that moves `XADEN_DOCS_VERSION` to the newest Xaden release tag; CI checks it and you merge it. It needs the repository secret `DOCS_BUMP_TOKEN`.

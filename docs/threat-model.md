@@ -1,7 +1,6 @@
 # xaden-dev-site — Threat model
 
-Filled at kickoff (`prompts/kickoff.md`), read by every security review
-(`prompts/security-review.md`), and updated when a change adds an entry point, a data type,
+Read before every security-relevant change, and updated when a change adds an entry point, a data type,
 a dependency on an external service or a new deployment target. Keep it short and true;
 "unknown" is a valid answer that the user must resolve.
 

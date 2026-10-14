@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Runs the commit-msg checks (Conventional Commits + REQ/CC references) on existing commits.
+# Runs the commit-msg checks (Conventional Commits) on existing commits.
 # Used by CI so contributors without local hooks are checked too.
 # Usage: scripts/verify-commits.sh <git-revision-range>   e.g. origin/main..HEAD
 #        scripts/verify-commits.sh --ci                    range derived from CI variables:
@@ -8,10 +8,8 @@
 # Merge commits are not checked themselves; every commit they bring in is.
 set -euo pipefail
 
-# SCRIPTS: where the tooling lives. ROOT: the repository it works on; PROJECT_ROOT lets
-# another repository (e.g. the scaffold itself) reuse these scripts.
 SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="${PROJECT_ROOT:-$(cd "$SCRIPTS/.." && pwd)}"
+ROOT="$(cd "$SCRIPTS/.." && pwd)"
 # shellcheck source=SCRIPTDIR/lib.sh
 source "$SCRIPTS/lib.sh"
 

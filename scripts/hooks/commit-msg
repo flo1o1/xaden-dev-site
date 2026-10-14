@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-# Git commit-msg hook: enforce Conventional Commits (drives SemVer decisions)
-# and verify that cited requirement/rule IDs exist (guards against invented IDs).
-# Merge, Revert, fixup! and squash! messages skip only the format check; their references
-# are still verified (REQ-022). fixup!/squash! commits are validated again after squashing.
+# Git commit-msg hook: enforce Conventional Commits.
+# Merge, Revert, fixup! and squash! messages skip the check.
 set -euo pipefail
 
 first_line="$(head -n 1 "$1")"
@@ -19,6 +17,3 @@ if [ "$check_format" = "1" ] && ! printf '%s' "$first_line" | grep -Eq "$pattern
   echo "  types: feat fix refactor docs test chore perf build ci style revert" >&2
   exit 1
 fi
-
-# Cited REQ-/CC- IDs must exist; feat/fix must reference a requirement.
-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/verify-refs.sh" "$1"
