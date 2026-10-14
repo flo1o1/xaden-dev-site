@@ -4,17 +4,18 @@
 
 /* Palette from the logo (REQ-019); dark only. Contrast of every text pair is checked in REQ-013. */
 @theme {
-  --color-page: #0f0b13;
-  --color-panel: #211a26;
-  --color-panel-2: #18121d;
+  --color-page: #0b0b0d;
+  --color-panel: #1a1a1e;
+  --color-panel-2: #131316;
   --color-line: #42414d;
   --color-line-strong: #7c7b89;
-  --color-fg: #f7ede9;
+  --color-fg: #f5f2ef;
   --color-muted: #b9b7c6;
   --color-accent: #ee8f95;
   --color-brand: #93272d;
+  --color-bronze: #a9714b;
   --color-brand-deep: #7a1f26;
-  --color-on-brand: #f7ede9;
+  --color-on-brand: #f5f2ef;
   --font-display: "Cinzel", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -101,7 +102,7 @@
     background:
       radial-gradient(ellipse 60% 55% at 78% 40%, rgb(147 39 45 / 0.32), transparent 70%),
       radial-gradient(ellipse 80% 40% at 50% 110%, rgb(122 31 38 / 0.55), transparent 70%),
-      linear-gradient(180deg, #09070c 0%, var(--color-page) 100%);
+      linear-gradient(180deg, #060607 0%, var(--color-page) 100%);
   }
   .hero::before {
     content: "";
@@ -152,7 +153,7 @@
   .card {
     background: linear-gradient(180deg, var(--color-panel), var(--color-panel-2));
     border: 1px solid var(--color-line);
-    border-top: 2px solid var(--color-brand);
+    border-top: 2px solid var(--color-bronze);
     border-radius: 0.5rem;
     padding: 1.5rem;
     transition: border-color 0.15s, transform 0.15s;
@@ -170,7 +171,7 @@
 
   /* code blocks (the copy button comes from /js/copy.js) */
   pre {
-    background: #09070c;
+    background: #060607;
     border: 1px solid var(--color-line);
     border-radius: 0.5rem;
     padding: 1rem 5.5rem 1rem 1rem;
@@ -178,7 +179,7 @@
     font-family: var(--font-mono);
     font-size: 0.9rem;
     line-height: 1.6;
-    color: #f7ede9;
+    color: #f5f2ef;
   }
   .code-block { position: relative; }
   .copy-button {
@@ -187,8 +188,8 @@
     right: 0.5rem;
     border: 1px solid #7c7b89;
     border-radius: 0.25rem;
-    background: #211a26;
-    color: #f7ede9;
+    background: #1a1a1e;
+    color: #f5f2ef;
     padding: 0.25rem 0.75rem;
     font-size: 0.8rem;
     cursor: pointer;
@@ -219,8 +220,8 @@
   --tw-prose-quote-borders: var(--color-brand);
   --tw-prose-captions: var(--color-muted);
   --tw-prose-code: var(--color-fg);
-  --tw-prose-pre-code: #f7ede9;
-  --tw-prose-pre-bg: #09070c;
+  --tw-prose-pre-code: #f5f2ef;
+  --tw-prose-pre-bg: #060607;
   --tw-prose-th-borders: var(--color-line-strong);
   --tw-prose-td-borders: var(--color-line);
 }
