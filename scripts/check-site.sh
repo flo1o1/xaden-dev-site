@@ -25,11 +25,16 @@ build_site() {
   (cd "$ROOT" && hugo --gc --minify --panicOnWarning --destination "$OUTPUT_DIR" >/dev/null)
 }
 
-# list_origin_references: prints every http(s) URL in the built text files (not fonts: their
-# embedded licence metadata names URLs that no browser requests).
+# list_origin_references: prints every http(s) URL a browser would request. In HTML that is
+# the value of a src, href, action, poster, srcset or data attribute outside plain links
+# (<a href>), so URLs shown as text or code are not requests; in CSS, JS, JSON and XML any URL
+# counts. Fonts are not read: their embedded licence metadata names URLs no browser requests.
 list_origin_references() {
+  find "$OUTPUT_DIR" -name '*.html' -exec sed -E 's/<a [^>]*>//g' {} + |
+    grep -hoE '(src|href|action|poster|srcset|data)=("[^"]*"|[^ >]*)' |
+    grep -oE 'https?://[^"'"'"' )<>]+' || true
   grep -rhoE 'https?://[^"'"'"' )<>]+' "$OUTPUT_DIR" \
-    --include='*.html' --include='*.css' --include='*.xml' --include='*.txt' --include='*.js' --include='*.json' || true
+    --include='*.css' --include='*.xml' --include='*.txt' --include='*.js' --include='*.json' || true
 }
 
 # check_no_foreign_origins: REQ-011.

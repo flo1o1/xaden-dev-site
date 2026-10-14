@@ -45,6 +45,10 @@ jobs:
           curl -fsSLO "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/${sass_archive}"
           echo "${DART_SASS_SHA256}  ${sass_archive}" | sha256sum -c -
           tar -xzf "$sass_archive" && echo "$PWD/dart-sass" >> "$GITHUB_PATH"
+      - name: Test the docs version bump
+        run: tests/bump-docs-version.sh
+      - name: Render the docs of the pinned Xaden release
+        run: scripts/sync-docs.sh
       - name: Build the site and check it
         run: scripts/check-site.sh
       - name: Set up Python (if this is a Python project)
