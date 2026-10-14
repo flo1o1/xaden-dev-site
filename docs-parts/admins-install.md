@@ -73,6 +73,23 @@ rm -r ~/tools/xaden-OLD
 - `~/tools/xaden-NEW/scripts/install.sh`: links `xaden` to the new folder. Replace `NEW` with the new version.
 - `rm -r ~/tools/xaden-OLD`: deletes the old folder once the new link works.
 
+### Planned: one Xaden version per project
+
+> **Planned, not released yet.** The commands in this section are approved but not built.
+
+A team project will pin the Xaden version it uses, together with a checksum, in its `xaden/` folder.
+Installing a newer Xaden on your machine changes nothing in a project.
+
+```bash
+xaden doctor
+xaden fetch 0.3.0
+xaden upgrade
+```
+
+- `xaden doctor`: compares the installed version with the one the project pins. It does not use the network.
+- `xaden fetch 0.3.0`: downloads that version after you confirm, and installs it only if the checksum matches. Replace `0.3.0` with the pinned version.
+- `xaden upgrade`: moves the project to a newer version on a branch. It updates the rules file and shows what changed, so your team reviews it in a pull request.
+
 ### Linux
 
 git, bash, awk, sed, tar, grep and cksum are normally preinstalled. Install a missing one with your

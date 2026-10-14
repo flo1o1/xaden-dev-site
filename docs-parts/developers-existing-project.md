@@ -1,3 +1,35 @@
+> **Planned, not released yet.** `xaden adopt` is approved but not built; Xaden @VERSION@ has no such
+> command. This section shows what the release will do. The method that works today follows below it.
+
+### The planned way: `xaden adopt`
+
+Your repository keeps its build, its tests and its CI. Xaden is added beneath it in one pull request
+that your team reviews.
+
+```bash
+cd ~/code/shop
+xaden adopt --scan
+xaden adopt --plan
+xaden adopt
+```
+
+- `cd ~/code/shop`: goes to your repository.
+- `xaden adopt --scan`: reads the repository and reports its language, test and lint commands, CI, git hooks and existing `AGENTS.md`. It changes no file.
+- `xaden adopt --plan`: prints exactly which files would be created or touched. It writes nothing.
+- `xaden adopt`: applies the plan on its own branch, ready for a pull request. It asks before it downloads anything.
+
+What it adds:
+
+- A visible folder `xaden/` with your requirements, personas and security reviews as plain Markdown, plus one settings file that pins the Xaden version.
+- A short marked block in `AGENTS.md` that points to the rules. Text you wrote there stays untouched. `CLAUDE.md` is created only if you use Claude Code.
+- Your own test and lint commands are reused, and hooks are added next to the ones you already have. If a tool is missing, Xaden offers a preset as a separate step and adds nothing unless you accept.
+
+Existing code never blocks you. Findings that are already there are recorded in a baseline that can
+only shrink, and you choose how strict the checks are: warn only, hold changed files to the rules, or
+hold everything.
+
+### Today: merge into a fresh Xaden project
+
 Xaden has no one-step import for an existing project yet. The reliable way is to create a fresh Xaden
 project and merge your project's git history into it. Your files and history stay, and Xaden adds its
 rules, checks and documents around them. The example assumes your project is `~/code/shop`.
