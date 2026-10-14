@@ -48,9 +48,7 @@
     font-family: var(--font-sans);
     scroll-behavior: smooth;
   }
-  body {
-    background: var(--color-page);
-  }
+  /* no body background: the pointer shadows sit at z-index -1 and must show above the html background */
 
   h1, h2, h3 {
     font-family: var(--font-display);
@@ -145,6 +143,37 @@
     z-index: -1;
     height: 7rem;
     background: url("/img/ridge.svg") center bottom / 100% 100% no-repeat;
+  }
+  /* shadow of the logo: a blurred black copy that sways behind it (REQ-019) */
+  .logo-wrap { position: relative; }
+  .logo-shadow {
+    position: absolute;
+    top: 0;
+    filter: brightness(0) blur(7px) drop-shadow(0 0 14px rgb(66 65 77 / 0.7));
+    opacity: 0.75;
+    transform-origin: 50% 100%;
+    animation: sway 9s ease-in-out infinite alternate;
+  }
+  @keyframes sway {
+    from { transform: translate(-14px, 8px) skewX(-5deg) scale(1.03); opacity: 0.5; }
+    to { transform: translate(16px, 4px) skewX(6deg) scale(1.08); opacity: 0.8; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logo-shadow { animation: none; transform: translate(6px, 6px); }
+  }
+  /* small shadows that trail the pointer (js/shadows.js) */
+  .pointer-shadow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, #000 0 35%, rgb(66 65 77 / 0.35) 58%, transparent 74%);
+    filter: blur(4px);
   }
   .logo-glow {
     filter: drop-shadow(0 0 28px rgb(147 39 45 / 0.6));

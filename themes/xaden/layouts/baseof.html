@@ -12,5 +12,7 @@
   {{ partial "footer.html" . }}
   {{ $copy := resources.Get "js/copy.js" | minify | fingerprint }}
   <script src="{{ $copy.RelPermalink }}" defer></script>
+  {{ $shadows := resources.Get "js/shadows.js" | minify | fingerprint }}
+  <script src="{{ $shadows.RelPermalink }}" defer></script>
 </body>
 </html>
