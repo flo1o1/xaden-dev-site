@@ -1,47 +1,51 @@
 # xaden-dev-site
 
-> Describe the project in one sentence here.
+The source of https://xaden.dev, the website of [Xaden](https://github.com/flo1o1/xaden): a static
+[Hugo](https://gohugo.io) site with its own theme (`themes/xaden`), built with the Tailwind CSS
+command-line tool and published on GitHub Pages. The documentation pages are not written here: they are
+rendered from a Xaden release.
 
-Built with the Xaden scaffold: AI-assisted, requirements-tracked, statically
-analysed, security-reviewed, SemVer-versioned.
+## Build and preview locally
 
-## Quick start
+You need macOS or Linux with `git`, `curl`, `hugo` (extended build, the version pinned in
+`.github/workflows/ci.yml`) and the standalone `tailwindcss` command (version 4; macOS: `brew install hugo tailwindcss`).
 
 ```bash
-scripts/setup.sh   # once after every clone: activates git hooks, lists missing tools
-scripts/check.sh   # static analysis, requirements and docs checks
+scripts/sync-docs.sh
+scripts/build-css.sh
+hugo server
 ```
 
-Start an AI session by pointing the tool at this folder, then run the kickoff prompt:
-`prompts/kickoff.md` (Claude Code: `/kickoff`).
-Tools without file access: `scripts/pack-context.sh kickoff` and paste `context-pack.md`.
+- `scripts/sync-docs.sh`: downloads the Xaden release named in `XADEN_DOCS_VERSION` and renders its documentation into `content/docs/`. It stops with an error if the release has a section it does not know.
+- `scripts/build-css.sh`: builds the stylesheet with Tailwind into `themes/xaden/assets/css/style.css`, a generated file that git ignores.
+- `hugo server`: serves the site at http://localhost:1313 and rebuilds when you edit a file.
+
+Run all checks, including a full build and the site checks (no foreign origins, no inline script, `security.txt` valid):
+
+```bash
+scripts/check.sh
+scripts/check-site.sh
+```
 
 ## Where things are
 
 | Path | Purpose |
 |------|---------|
-| `AGENTS.md` | Rules for every AI assistant (`CLAUDE.md` imports it) |
-| `docs/requirements/` | Requirements: one file per job or quality goal, grouped by epic; `INDEX.md` lists them |
-| `docs/user-guide.md`, `docs/admin-guide.md` | End-user and operator documentation (install, system requirements, config, upgrade) |
-| `docs/architecture.md` | Layers, composition root, naming, rules for new code; filled at kickoff |
-| `SECURITY.md` | How to report vulnerabilities; secret rotation; incident basics |
-| `docs/threat-model.md` | Assets, entry points, trust boundaries, ASVS level; filled at kickoff |
-| `docs/security.md`, `docs/security-exceptions.md` | Secure coding checklist and dependency policy; accepted vulnerabilities with owner and expiry |
-| `prompts/` | Reusable prompts; open the folder in Obsidian |
-| `scripts/` | check, release, hooks, context packing |
-| `CHANGELOG.md`, `VERSION` | SemVer history |
-| `inbox/` | Local drop zone for your files; contents are git-ignored and never committed |
-| `.scaffold/` | Scaffold version and managed-file manifest (used by the scaffold's `update-scaffold.sh`) |
+| `content/` | Pages you write: home (`_index.md`), About, imprint, privacy, Quick start |
+| `docs-parts/` | Texts for the Admins and Security pages that the site writes itself |
+| `themes/xaden/` | Layouts, Tailwind stylesheet, fonts, logo and artwork |
+| `XADEN_DOCS_VERSION` | The Xaden release the documentation describes |
+| `scripts/sync-docs.sh` | Builds the Admins, Developers and Security pages from that release |
+| `static/` | Files copied as they are, such as `security.txt` and the `CNAME` for xaden.dev |
+| `docs/requirements/` | What the site must do, one file per requirement; `INDEX.md` lists them |
+| `docs/threat-model.md`, `SECURITY.md` | Security of the site and how to report a problem |
+| `AGENTS.md` | Rules for AI assistants working on this repository |
 
-## Release
+## How a change goes live
 
-```bash
-scripts/release.sh patch   # or minor / major
-```
+1. Work on a branch and open a pull request. CI builds the site and runs every check.
+2. A person merges it into `main`. The ruleset on `main` accepts only commits whose `check` job passed.
+3. CI runs again on `main`. A separate `deploy` job publishes the site that this run checked.
 
-## Optional tools (checks skip missing ones; `scripts/check.sh --strict` requires them)
-
-shellcheck, gitleaks, semgrep, plus per stack: ruff, mypy, bandit, pip-audit, pytest (Python)
-or npm scripts `lint` / `typecheck` / `test` (Node/TypeScript).
-More optional checks and assistant plugins, suggested by `scripts/check.sh` when they fit:
-`docs/optional-tools.md`.
+A daily workflow (`bump-docs`) opens a pull request when Xaden publishes a new release. Merging it updates
+`XADEN_DOCS_VERSION` and the documentation.
