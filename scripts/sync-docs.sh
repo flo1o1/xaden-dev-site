@@ -44,6 +44,7 @@ PARTS=(
   'developers|section|Joining an existing project|Join an existing project|'
   'developers|file|template/docs/local-llm.md||'
   'security|own|docs-parts/security.md||'
+  'none|section|2. Get Xaden|not published|'
   'none|section|Security review quality|not published|'
 )
 WORK_DIR="$(mktemp -d)"

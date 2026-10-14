@@ -51,6 +51,28 @@ xaden version
 
 - `xaden version`: prints the installed Xaden version, @VERSION@ for this release.
 
+### Update Xaden
+
+If you cloned it:
+
+```bash
+git -C ~/.xaden pull
+```
+
+- `git -C ~/.xaden pull`: fetches the newest Xaden into the folder. The `xaden` command keeps working. To stay on a fixed release instead of the newest code, run `git -C ~/.xaden tag -l` to list the releases and `git -C ~/.xaden checkout @TAG@` (use the release you want) to switch; switch back with `git -C ~/.xaden checkout main` before the next pull.
+
+If you downloaded the zip, get the new release and extract it next to the old one. Then move the command over:
+
+```bash
+~/tools/xaden-OLD/scripts/install.sh --uninstall
+~/tools/xaden-NEW/scripts/install.sh
+rm -r ~/tools/xaden-OLD
+```
+
+- `~/tools/xaden-OLD/scripts/install.sh --uninstall`: removes the `xaden` link, but only if it points into the old folder. Replace `OLD` with the old version, for example `0.2.2`.
+- `~/tools/xaden-NEW/scripts/install.sh`: links `xaden` to the new folder. Replace `NEW` with the new version.
+- `rm -r ~/tools/xaden-OLD`: deletes the old folder once the new link works.
+
 ### Linux
 
 git, bash, awk, sed, tar, grep and cksum are normally preinstalled. Install a missing one with your
