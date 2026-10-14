@@ -44,6 +44,8 @@ jobs:
           curl -fsSLo tailwindcss "https://github.com/tailwindlabs/tailwindcss/releases/download/v${TAILWIND_VERSION}/tailwindcss-linux-x64"
           echo "${TAILWIND_SHA256}  tailwindcss" | sha256sum -c -
           sudo install tailwindcss /usr/local/bin/tailwindcss
+      - name: Test the docs version bump
+        run: tests/bump-docs-version.sh
       - name: Render the docs of the pinned Xaden release
         run: scripts/sync-docs.sh
       - name: Build the site and check it
