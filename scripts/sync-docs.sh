@@ -51,7 +51,8 @@ trap 'rm -rf "$WORK_DIR"' EXIT
 
 # release_date <tag>: the date (YYYY-MM-DD) of the commit the tag points at.
 release_date() {
-  curl -fsS "https://api.github.com/repos/$XADEN_REPOSITORY/commits/$1" |
+  # The API limits anonymous callers per IP address, which shared CI runners exhaust; a token lifts that.
+  curl -fsS ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} "https://api.github.com/repos/$XADEN_REPOSITORY/commits/$1" |
     sed -n 's/^ *"date": "\([0-9-]\{10\}\)T.*/\1/p' | head -n 1
 }
 
