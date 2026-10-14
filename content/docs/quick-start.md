@@ -29,11 +29,11 @@ This puts `~/.local/bin` in front of the folders your shell searches for command
 ## 2. Create a project
 
 ```bash
-xaden new my-app
+xaden create my-app
 cd my-app
 ```
 
-- `xaden new my-app`: creates the folder `my-app` in the current directory from Xaden's template (only files git tracks there), starts a git repository in it, switches on the git hooks and makes the first commit, on which the pre-commit checks run. If anything fails, it removes the half-created folder.
+- `xaden create my-app`: creates the folder `my-app` in the current directory from Xaden's template (only files git tracks there), starts a git repository in it, switches on the git hooks and makes the first commit, on which the pre-commit checks run. If anything fails, it removes the half-created folder.
 - `cd my-app`: moves your terminal into the new project.
 
 ## 3. Kick off

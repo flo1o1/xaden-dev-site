@@ -1,6 +1,6 @@
 AI assistants write code fast, and not always safely. Xaden does not make software secure by itself,
 but it builds security into the workflow at five points, so that mistakes are caught early and
-cheaply. Everything below is part of every project that `xaden new` creates.
+cheaply. Everything below is part of every project that `xaden create` creates.
 
 ### Before you build: a threat model
 

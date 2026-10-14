@@ -120,19 +120,19 @@ rewrite_for_readers() {
 # matches (a release that already says it this way) is left alone.
 prefer_xaden_command() {
   perl -0pe '
-    # Create your project: `xaden new` creates ./<name>, so the folder to enter changes too.
-    s/```bash\nscripts\/new-project\.sh my-app\nscripts\/new-project\.sh my-app ~\/code\/x\ncd \.\.\/my-app\n```\n\n- `scripts\/new-project\.sh my-app`: [^\n]*\n- `scripts\/new-project\.sh my-app ~\/code\/x`: [^\n]*\n\nWith the `xaden` command: [^\n]*\n/```bash\nxaden new my-app\ncd my-app\n```\n\n- `xaden new my-app`: creates the folder `my-app` in the current directory, with its own git repository and hooks\n- `cd my-app`: moves your terminal into the new project\n\nTo create the project somewhere else, add the folder: `xaden new my-app ~\/code\/x`.\n/;
-    s/Then clone your copy and run\n`scripts\/new-project\.sh my-app` from it the same way\./Then clone your copy and run its `scripts\/install.sh`; `xaden new my-app` then works the same way./;
+    # Create your project: `xaden create` creates ./<name>, so the folder to enter changes too.
+    s/```bash\nscripts\/new-project\.sh my-app\nscripts\/new-project\.sh my-app ~\/code\/x\ncd \.\.\/my-app\n```\n\n- `scripts\/new-project\.sh my-app`: [^\n]*\n- `scripts\/new-project\.sh my-app ~\/code\/x`: [^\n]*\n\nWith the `xaden` command: [^\n]*\n/```bash\nxaden create my-app\ncd my-app\n```\n\n- `xaden create my-app`: creates the folder `my-app` in the current directory, with its own git repository and hooks\n- `cd my-app`: moves your terminal into the new project\n\nTo create the project somewhere else, add the folder: `xaden create my-app ~\/code\/x`.\n/;
+    s/Then clone your copy and run\n`scripts\/new-project\.sh my-app` from it the same way\./Then clone your copy and run its `scripts\/install.sh`; `xaden create my-app` then works the same way./;
     # Update a project: run inside the project.
     s/Pull the newest scaffold, then from the scaffold directory:.*?inside the project\./Pull the newest Xaden (`git pull` in its folder), then run this inside your project:\n\n```bash\nxaden update\nxaden update --apply\n```\n\n- `xaden update`: dry run, lists what would change\n- `xaden update --apply`: stages the changes; review them with `git diff --cached`/s;
     # The xaden command is the way in, not an option.
     s/so you can\nuse the scaffold from any directory\./so you can\nuse Xaden from any directory./;
     s/is: the link points into it\./is: the link points into it. Every command in these docs assumes the command is installed./;
-    s/\| `scripts\/new-project\.sh`, creating `\.\/my-app` \(or `dir`\) \|/| creates `.\/my-app` (or `dir`) with its own git repository and hooks |/;
+    s/\| `scripts\/new-project\.sh`, creating `\.\/my-app` \(or `dir`\)([^|\n]*) \|/| creates `.\/my-app` (or `dir`) with its own git repository and hooks$1 |/;
     s/\| `scripts\/update-scaffold\.sh` for the project you are in \|/| brings the project you are in to this Xaden version; a dry run without `--apply` |/;
     s/\| the project\x27s own `scripts\/setup\.sh`, `check\.sh`, `req\.sh`, `pack-context\.sh`, `release\.sh`, from anywhere inside it \|/| activate the git hooks, run the checks, manage requirements, build a context pack, cut a release; from anywhere inside the project |/;
     # Everything else: the plain command swaps.
-    s/scripts\/new-project\.sh/xaden new/g;
+    s/scripts\/new-project\.sh/xaden create/g;
     s/scripts\/update-scaffold\.sh/xaden update/g;
     s/scripts\/setup\.sh/xaden setup/g;
     s/scripts\/check\.sh/xaden check/g;
