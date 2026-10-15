@@ -6,12 +6,12 @@ rules, checks and documents around them. The example assumes your project is `~/
 
 ```bash
 cd ~/code
-xaden new shop-xaden
+xaden create shop-xaden
 cd shop-xaden
 ```
 
 - `cd ~/code`: goes to the folder that holds your project.
-- `xaden new shop-xaden`: creates the new project `shop-xaden` there, with its own git repository and hooks.
+- `xaden create shop-xaden`: creates the new project `shop-xaden` there, with its own git repository and hooks.
 - `cd shop-xaden`: moves your terminal into it.
 
 ### 2. Merge your project into it

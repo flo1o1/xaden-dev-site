@@ -9,7 +9,7 @@ hero:
     git clone https://github.com/flo1o1/xaden.git ~/.xaden &&
     ~/.xaden/scripts/install.sh &&
     export PATH="$HOME/.local/bin:$PATH" &&
-    xaden new my-app
+    xaden create my-app
   note: "This downloads Xaden into ~/.xaden, links the xaden command into ~/.local/bin, makes that folder available in this terminal and creates the project my-app in the current folder. Linux and macOS; on Windows use WSL."
   primary: "Quick start"
   secondary: "View on GitHub"
