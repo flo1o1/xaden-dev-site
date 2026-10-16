@@ -26,6 +26,17 @@ know why this tool is called Xaden.
 Xaden is open source under the [MIT license](https://github.com/flo1o1/xaden/blob/main/LICENSE).
 Projects you generate with it do not inherit that license; you choose one for each project.
 
+## Release signing key
+
+Xaden releases are signed with an SSH key, so you can check that a download comes from the maintainer.
+Compare this key and fingerprint with the line in
+[`release-signers`](https://github.com/flo1o1/xaden/blob/main/release-signers) of the repository.
+
+```
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIY0fmJjw8aLB9x1otNvJkgIgZ2Q7w5vHcwjskJTOgQy release@xaden.dev
+SHA256:hK0RtYSppWVuMr6H5kdSfWE1FPO4vM3Un3bggaggqSE
+```
+
 ## Contact
 
 Write to [hello@xaden.dev](mailto:hello@xaden.dev) for questions, feedback and security reports
