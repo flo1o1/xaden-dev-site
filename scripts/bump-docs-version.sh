@@ -9,7 +9,7 @@ ROOT="$(cd "$SCRIPTS/.." && pwd)"
 # shellcheck source=SCRIPTDIR/lib.sh
 source "$SCRIPTS/lib.sh"
 
-XADEN_REMOTE="https://github.com/flo1o1/xaden.git"
+XADEN_REMOTE="https://github.com/flo1o1/xaden-dev.git"
 RELEASE_TAG_PATTERN='^v[0-9]+\.[0-9]+\.[0-9]+$'
 VERSION_FILE="$ROOT/XADEN_DOCS_VERSION"
 

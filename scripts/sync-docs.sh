@@ -11,7 +11,7 @@ ROOT="$(cd "$SCRIPTS/.." && pwd)"
 # shellcheck source=SCRIPTDIR/lib.sh
 source "$SCRIPTS/lib.sh"
 
-XADEN_REPOSITORY="flo1o1/xaden"
+XADEN_REPOSITORY="flo1o1/xaden-dev"
 DOCS_DIR="$ROOT/content/docs"
 GETTING_STARTED="GETTING-STARTED.md"
 # Pages: role | page title | summary. Sections of each page follow in the order below.
