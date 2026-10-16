@@ -11,6 +11,12 @@ You need macOS or Linux with `git`, `curl`, `hugo` (extended build, the version 
 `.github/workflows/ci.yml`) and the standalone `tailwindcss` command (version 4; macOS: `brew install hugo tailwindcss`).
 
 ```bash
+scripts/dev.sh
+```
+
+`scripts/dev.sh` runs the three steps below in order (it renders the docs only if they are missing). To run them by hand:
+
+```bash
 scripts/sync-docs.sh
 scripts/build-css.sh
 hugo server
