@@ -58,7 +58,7 @@ release_date() {
 }
 
 # strip_shell_comments: from stdin, shell code blocks (bash, sh, shell or unlabeled) without comments,
-# so a copied block pastes into a terminal as is (REQ-018). What a comment said moves into a list
+# so a copied block pastes into a terminal as is (REQ-002). What a comment said moves into a list
 # after the block ("- `command`: comment") so the explanation stays next to the code. Other
 # languages keep their comments.
 strip_shell_comments() {
