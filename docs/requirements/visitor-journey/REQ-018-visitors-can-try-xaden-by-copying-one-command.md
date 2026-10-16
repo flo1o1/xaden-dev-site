@@ -3,7 +3,7 @@ id: REQ-018
 type: job
 epic: visitor-journey
 priority: should
-status: approved
+status: dropped
 updated: 2026-10-13
 ---
 
@@ -23,3 +23,5 @@ When I am curious about Xaden and have a terminal open, I want to copy one comma
 - Given the hero button "Quick start", when followed, then it opens a Quick start page that leads from the clone to the first feature in a few commands, each with a copy button, and links to the Admins and Developers pages for details
 - Given any shell code block on the site, then it holds only commands, with no comments, so a copied block can be pasted into a terminal as is, and what each command does is explained in the text next to the block
 - Given the pages the site writes itself (home, Quick start), then they use the `xaden` command, not the `scripts/*.sh` paths
+
+Dropped 2026-10-16: the home page no longer shows an install command; visitors reach it through the hero button "Quick start". The criteria on code blocks, shell blocks and the Quick start page moved to REQ-002.
