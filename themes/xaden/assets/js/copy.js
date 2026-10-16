@@ -1,4 +1,4 @@
-// Optional enhancement (REQ-018): adds a copy button to every code block.
+// Optional enhancement (REQ-002): adds a copy button to every code block.
 // Without JavaScript the code stays visible and selectable.
 (function () {
   "use strict";
