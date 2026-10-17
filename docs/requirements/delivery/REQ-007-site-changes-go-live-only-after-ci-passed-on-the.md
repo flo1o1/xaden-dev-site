@@ -11,10 +11,11 @@ updated: 2026-10-13
 
 ## Job
 
-When I change the site, I want to deploy only from a green commit on main, so I can be sure a broken page never reaches visitors.
+When I change the site, I want to deploy only from a version tag on a green commit of main, so I can be sure a broken page never reaches visitors.
 
 ## Acceptance criteria
 
-- Given a commit on main, when CI has not passed on it, then it is not deployed and the push is rejected by the main-branch ruleset
+- Given a commit on main, when CI has not passed on it, then the push is rejected by the main-branch ruleset
+- Given a push to main or a pull request, then CI builds and checks the site and deploys nothing; only a pushed release tag (REQ-023) deploys
 - Given the deploy job, then its token has only the permissions it needs
 - Given the deployed site, then it is served at xaden.dev with HTTPS enforced
