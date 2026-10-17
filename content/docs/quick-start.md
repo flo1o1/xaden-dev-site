@@ -43,7 +43,7 @@ Want the recommended checks for a stack without choosing each tool? Use `xaden c
 
 ## 3. Tell your assistant what to build
 
-Open your assistant in `my-app`. Choose it in the list under the page title (Claude Code, Codex CLI, GitHub Copilot, Mistral Vibe or Other assistant); this page and the guides then show the commands for your tool. Start with:
+Open your assistant in `my-app`. Choose it in the list under the page title (Claude Code, ChatGPT Codex, GitHub Copilot, Mistral Vibe or Other); this page and the guides then show the commands for your tool. Start with:
 
 {{< prompt "kickoff" "kickoff" "My idea" "<your idea>" >}}
 

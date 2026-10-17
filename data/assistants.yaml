@@ -6,7 +6,7 @@
   shows: slash
   needs: ""
 - id: codex
-  name: Codex CLI
+  name: ChatGPT Codex
   shows: skill
   needs: codex
 - id: copilot
@@ -18,6 +18,6 @@
   shows: slash
   needs: vibe
 - id: other
-  name: Other assistant
+  name: Other
   shows: prompt
   needs: ""
