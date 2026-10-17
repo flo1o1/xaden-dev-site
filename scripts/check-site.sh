@@ -65,6 +65,19 @@ check_no_inline_script() {
   fi
 }
 
+# check_assistant_variants: REQ-022, a page that offers per-assistant commands has them for every assistant
+# of data/assistants.yaml, so no reader meets a page without the commands of their tool.
+check_assistant_variants() {
+  local page id missing=""
+  while IFS= read -r page; do
+    while IFS= read -r id; do
+      grep -q "data-assistant=\"$id\"" "$page" || missing="$missing
+$page: no commands for $id"
+    done < <(sed -n 's/^- id: //p' "$ROOT/data/assistants.yaml")
+  done < <(grep -rl 'class="assistant-variant"' "$OUTPUT_DIR" --include='*.html')
+  [ -z "$missing" ] || die "REQ-022: a page lacks the commands of an assistant:$missing"
+}
+
 # check_content_security_policy: REQ-012, every HTML page carries the meta tag.
 check_content_security_policy() {
   local page missing=""
@@ -134,6 +147,8 @@ main() {
   check_no_inline_script
   info "Content-Security-Policy on every page (REQ-012)"
   check_content_security_policy
+  info "commands for every assistant (REQ-022)"
+  check_assistant_variants
   info "docs without internal references (REQ-002)"
   check_docs_have_no_internal_references
   info "docs use the xaden command (REQ-002)"

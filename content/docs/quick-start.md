@@ -43,20 +43,16 @@ Want the recommended checks for a stack without choosing each tool? Use `xaden c
 
 ## 3. Tell your assistant what to build
 
-Open your assistant in `my-app` and tell it:
+Open your assistant in `my-app`. Choose it in the list under the page title (Claude Code, Codex CLI, GitHub Copilot, Mistral Vibe or Other assistant); this page and the guides then show the commands for your tool. Start with:
 
-```text
-Run `xaden prompt kickoff` and follow it. My idea: <your idea>
-```
+{{< prompt "kickoff" "kickoff" "My idea" "<your idea>" >}}
 
 The assistant asks questions. You approve the requirements, the stack and the threat model. Then it builds a minimal
 skeleton that runs. Details: [Kick off with your assistant]({{< relref "docs/developer-guide/kick-off-with-your-assistant" >}}).
 
 ## 4. Build your first feature
 
-```text
-Run `xaden prompt feature` and follow it. Feature: <what users can do afterwards>
-```
+{{< prompt "feature" "feature" "Feature" "<what users can do afterwards>" >}}
 
 The assistant links the work to a requirement, writes the test first, runs the checks and commits. Run
 the checks yourself at any time, from anywhere inside the project:

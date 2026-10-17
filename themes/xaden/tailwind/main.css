@@ -226,6 +226,28 @@
   .copy-button:hover { border-color: var(--color-accent); }
 }
 
+/* assistant picker (REQ-022): the Claude Code commands are the default; assistant.js sets html[data-assistant] */
+.assistant-variant { display: none; }
+.assistant-variant[data-assistant="claude"] { display: revert; }
+html[data-assistant] .assistant-variant { display: none; }
+html[data-assistant="claude"] .assistant-variant[data-assistant="claude"],
+html[data-assistant="codex"] .assistant-variant[data-assistant="codex"],
+html[data-assistant="copilot"] .assistant-variant[data-assistant="copilot"],
+html[data-assistant="vibe"] .assistant-variant[data-assistant="vibe"],
+html[data-assistant="other"] .assistant-variant[data-assistant="other"] { display: revert; }
+.assistant-picker { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+.assistant-picker[hidden] { display: none; }
+.assistant-select {
+  border: 1px solid var(--color-line-strong);
+  border-radius: 0.25rem;
+  background: var(--color-panel);
+  color: var(--color-fg);
+  padding: 0.35rem 0.75rem;
+  font: inherit;
+}
+.assistant-select:hover { border-color: var(--color-accent); }
+.assistant-note { margin-top: -0.5rem; color: var(--color-muted); font-size: 0.9rem; }
+
 /* table of contents of the role pages */
 .toc ul { border-left: 1px solid var(--color-line); }
 .toc ul ul { margin-left: 0.75rem; }

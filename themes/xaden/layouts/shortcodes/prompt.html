@@ -1,0 +1,12 @@
+{{- /* REQ-022: a code block with the command to start a prompt, once per assistant.
+       {{< prompt "feature" "feature" "Feature" "<what users can do afterwards>" >}}: slash name, prompt name, label (for the plain prompt), text. */ -}}
+{{- $slash := .Get 0 -}}{{- $prompt := .Get 1 -}}{{- $label := .Get 2 -}}{{- $text := .Get 3 -}}
+{{- range $a := hugo.Data.assistants -}}
+{{- $line := printf "Run `xaden prompt %s` and follow it. %s: %s" $prompt $label $text -}}
+{{- if eq $a.shows "slash" }}{{ $line = printf "/%s %s" $slash $text }}{{ end -}}
+{{- if eq $a.shows "skill" }}{{ $line = printf "$%s %s" $slash $text }}{{ end }}
+<div class="assistant-variant" data-assistant="{{ $a.id }}">
+{{ transform.Highlight $line "text" }}
+{{ with $a.needs }}<p class="assistant-note">This needs the command files of {{ $a.name }} in the project: create it with <code>xaden create --assistants {{ . }}</code>, or run <code>xaden adopt</code> in an existing project.</p>{{ end }}
+</div>
+{{- end -}}

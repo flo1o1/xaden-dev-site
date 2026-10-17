@@ -1,0 +1,10 @@
+{{- /* REQ-022: one command inline, once per assistant; CSS and assistant.js show the chosen one.
+       {{< cmd "feature" "feature" "<what users can do>" >}}: slash name, prompt name, optional text after the slash command. */ -}}
+{{- $slash := .Get 0 -}}{{- $prompt := .Get 1 -}}{{- $text := .Get 2 -}}
+{{- range hugo.Data.assistants -}}
+<span class="assistant-variant" data-assistant="{{ .id }}"><code>
+{{- if eq .shows "slash" }}/{{ $slash }}{{ with $text }} {{ . }}{{ end }}
+{{- else if eq .shows "skill" }}${{ $slash }}{{ with $text }} {{ . }}{{ end }}
+{{- else }}xaden prompt {{ $prompt }}{{ end -}}
+</code></span>
+{{- end -}}
