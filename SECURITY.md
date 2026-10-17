@@ -29,7 +29,6 @@ The site is static and holds almost no secrets. All of them are rotated by the o
 
 | Secret | Where it is issued | What it can do |
 |--------|--------------------|----------------|
-| `DOCS_BUMP_TOKEN` (repository secret) | GitHub, fine-grained token for this repository only (Contents and Pull requests read/write) | Lets the daily docs workflow open a pull request. A person still has to merge it. |
 | `GITHUB_TOKEN` of a workflow run | GitHub, created per run | Short-lived. Only the deploy job may write to Pages. |
 | GitHub account of the owner | GitHub | Can change the repository, its settings and the deployment. |
 | Netcup account of the owner | Netcup | Controls the DNS records and the mailbox of `xaden.dev`. |

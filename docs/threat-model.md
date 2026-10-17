@@ -36,7 +36,7 @@ https://xaden.dev. There is no server code, database, login, form or comment fun
 - Visitors request static files over HTTPS. There are no parameters, forms or uploads.
 - Pull requests and pushes to the repository (changes to the site code and content).
 - The Xaden release archive that `scripts/sync-docs.sh` downloads and renders into the documentation.
-- The daily `bump-docs` workflow, which opens a pull request when a newer Xaden release exists.
+- Pushed version tags (`v*`): a tag publishes the site, so who may create one matters. CI publishes only the newest tag, only when it equals `VERSION` and its commit is on `main`.
 - Email to hello@xaden.dev.
 
 ## Trust boundaries
