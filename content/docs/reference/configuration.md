@@ -21,6 +21,7 @@ commit-convention = conventional
 assistants = claude
 hook-checks = lint
 expect = test,lint
+update-check = 1d
 check.test = npm test
 check.lint = make lint
 ```
@@ -36,6 +37,7 @@ check.lint = make lint
 | `assistants` | comma-separated names, or `none` | The assistants the team uses. `claude` means `CLAUDE.md` exists with the line `@AGENTS.md`. |
 | `hook-checks` | comma-separated check names | The checks the pre-commit hook runs. Default: `lint`. The full run and CI run all checks. |
 | `expect` | comma-separated kinds: `test`, `lint`, `typecheck` | The kinds of checks the repository should have. A kind without a `check.<kind>` command is a gap. When the line is missing, Xaden looks at the files (`package.json`, `pyproject.toml`). |
+| `update-check` | `off`, or a whole number of hours or days of at least `1h`: `12h`, `1d`, `7d` | How often `xaden update-check` may look for a newer Xaden and outdated dependencies. It only reports. Default: `off`. The `XADEN_UPDATE_CHECK` environment variable overrides it on one machine. |
 | `check.<name>` | a shell command | A check Xaden runs from the repository root, for example `check.test = npm test`. The name is lowercase letters, digits and hyphens. |
 
 ## Modes

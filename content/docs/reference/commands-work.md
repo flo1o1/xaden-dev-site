@@ -1,7 +1,7 @@
 ---
 title: "Work commands"
 weight: 20
-description: "prompt, req, check, pack, persona, context, release, doc and preset."
+description: "prompt, req, check, persona, context, release, doc and preset."
 ---
 
 Commands for daily work inside a project. Run them from any folder below the project's top. In a project that adopted Xaden they run the
@@ -56,20 +56,6 @@ Every run ends with a summary of passed, failed and skipped checks. A run with s
 is set by the mode; see [Configuration]({{< relref "docs/reference/configuration" >}}).
 
 Exit status: `0` no check failed (skips included, with a warning); `1` a check failed.
-
-## `xaden pack`
-
-Builds one pasteable file for chat windows without file access.
-
-```text
-xaden pack [--brief] [REQ-nnn...] [<prompt>...]
-```
-
-Writes `context-pack.md` with the rules, the security checklist, the personas, the requirements, the unreleased changes and the named
-prompts, prints its estimated size in tokens, and copies it to the clipboard when a tool exists. `--brief` keeps only the rules, the
-checklist, the personas, the requirements index and the requirements you name.
-
-Guide: [Other assistants and local models]({{< relref "docs/developer-guide/other-assistants-and-local-models" >}}).
 
 ## `xaden persona`
 

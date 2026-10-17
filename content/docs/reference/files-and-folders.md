@@ -49,7 +49,7 @@ Xaden's blocks are delimited by `<!-- xaden:begin -->` and `<!-- xaden:end -->` 
 | Where | What |
 |-------|------|
 | `.git/hooks/pre-commit`, `.git/hooks/commit-msg` | a block that calls `xaden hook` (plain git, pre-commit, lefthook). Not shared by git; `xaden setup` creates it in each clone. |
-| `.git/info/exclude` | the line `context-pack.md`, added by `xaden adopt`, so the pack from `xaden pack` stays out of `git status`. New projects ignore it in `.gitignore`. |
+| `.git/xaden-update-check` | the cached result of `xaden update-check`. Never committed; every worktree of the clone shares it. |
 
 ## On a machine
 
