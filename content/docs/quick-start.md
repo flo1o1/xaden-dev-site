@@ -11,7 +11,7 @@ macOS with git and bash. On Windows use WSL (untested). Already have a repositor
 ## 1. Install the xaden command
 
 ```bash
-git clone https://github.com/flo1o1/xaden.git ~/.xaden
+git clone https://github.com/flo1o1/xaden-dev.git ~/.xaden
 ~/.xaden/scripts/install.sh
 ```
 

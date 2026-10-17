@@ -1,6 +1,6 @@
 # xaden-dev-site
 
-The source of https://xaden.dev, the website of [Xaden](https://github.com/flo1o1/xaden): a static
+The source of https://xaden.dev, the website of [Xaden](https://github.com/flo1o1/xaden-dev): a static
 [Hugo](https://gohugo.io) site with its own theme (`themes/xaden`), built with the Tailwind CSS
 command-line tool and published on GitHub Pages. The documentation pages are not written here: they are
 rendered from a Xaden release.

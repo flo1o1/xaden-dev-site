@@ -77,7 +77,7 @@ Verification standard: OWASP ASVS (what to build), OWASP WSTG (how to test it).
 
 | Threat | Asset | Mitigation | Requirement / test |
 |--------|-------|------------|--------------------|
-| A visitor copies a tampered install command | Visitors' machines, reputation | `main` accepts only commits that passed CI; only the deploy job publishes and only from `main`; commands point to github.com/flo1o1/xaden; the owner reviews every pull request | REQ-007; ruleset on `main` |
+| A visitor copies a tampered install command | Visitors' machines, reputation | `main` accepts only commits that passed CI; only the deploy job publishes and only from `main`; commands point to github.com/flo1o1/xaden-dev; the owner reviews every pull request | REQ-007; ruleset on `main` |
 | Hostile or broken text in a Xaden release is rendered into the docs | Integrity of the pages | Raw HTML is off; version bumps arrive as a pull request that renders and checks the new docs; the check fails on inline script, foreign origins, rule IDs and script paths | REQ-006, REQ-012; `scripts/check-site.sh` |
 | A page loads something from another site or tracks visitors | Visitor privacy | Policy `default-src 'none'` with only same-origin script, style, font and image; fonts self-hosted; the check fails on any other origin | REQ-011; `scripts/check-site.sh` |
 | Script injection into a page | Visitors | No user input exists; `script-src 'self'` forbids inline script; the check fails on an inline script or event handler | REQ-012; `scripts/check-site.sh` |
