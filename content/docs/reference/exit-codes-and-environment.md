@@ -10,7 +10,7 @@ description: "What the exit codes mean, and which environment variables change X
 |------|---------|----------|
 | 0 | Done, or every check passed. A run with skipped checks also exits 0 and ends with a warning, unless `--strict` is set. Declining a question also exits 0 where nothing was started. | all |
 | 1 | A check failed, a question was answered with no, or the command hit an error. | all |
-| 2 | The folder already holds code, a build file or history. | `new --autopilot`, `new` |
+| 2 | The folder already holds code, a build file or history. | `create --autopilot`, `create` |
 | 3 | Nothing was downloaded or looked up because nobody could be asked. The message names the command to run in a terminal. | `fetch`, `upgrade`, any project command whose pinned version is missing |
 | 4 | The hook manager or CI system is not supported. The message names the manual step. | `adopt` |
 | 5 | A download does not match the pinned checksum. Nothing was installed. | `fetch`, `upgrade` |
@@ -35,5 +35,6 @@ Only an explicit yes answers a question; anything else, including no answer, is 
 |----------|--------|
 | `XADEN_PLAIN=1` | Plain text instead of signs. Plain text is also used when `CI` is set, when output is not a terminal, and without a UTF-8 locale. |
 | `XADEN_HOME` | The parent folder of the installed versions. Default: `${XDG_DATA_HOME:-~/.local/share}/xaden`. |
+| `XADEN_UPDATE_CHECK` | Overrides `update-check` from `xaden/xaden.conf` on this machine: `off`, or an interval such as `12h`, `1d`, `7d`. |
 | `STRICT=1` | The same as `xaden check --strict`. |
 | `XADEN_RELEASES_URL`, `XADEN_ASSETS_URL`, `XADEN_LATEST_URL` | Where releases, signatures and the newest-release answer come from, for mirrors. A download is still checked against the pinned checksum and the signature. |

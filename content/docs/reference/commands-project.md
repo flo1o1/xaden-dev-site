@@ -89,7 +89,7 @@ Guide: [Update a classic project]({{< relref "docs/admin-guide/update-a-classic-
 
 ## `xaden version`
 
-Prints the installed Xaden version, for example `0.2.3`.
+Prints the installed Xaden version, for example `0.3.0`.
 
 ```text
 xaden version
