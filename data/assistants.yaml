@@ -1,0 +1,23 @@
+# The assistants of the picker (REQ-022). `id` is what the URL hash, localStorage and the
+# markup use; `shows` is the command form (slash = "/name", skill = "$name", prompt = "xaden prompt name");
+# `needs` is the --assistants value that writes the command files (empty: nothing to add).
+- id: claude-code
+  name: Claude Code
+  shows: slash
+  needs: ""
+- id: chatgpt-codex
+  name: ChatGPT Codex
+  shows: skill
+  needs: codex
+- id: github-copilot
+  name: GitHub Copilot
+  shows: slash
+  needs: copilot
+- id: mistral-vibe
+  name: Mistral Vibe
+  shows: slash
+  needs: vibe
+- id: other
+  name: Other
+  shows: prompt
+  needs: ""

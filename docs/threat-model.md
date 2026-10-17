@@ -23,7 +23,9 @@ https://xaden.dev. There is no server code, database, login, form or comment fun
 
 ## Sensitive data
 
-- The site stores no personal data. Visitor IP addresses are processed by GitHub Pages as the host
+- The site stores no personal data on its side. The browser of a visitor keeps one preference, the chosen
+  assistant (`xaden-assistant` in `localStorage`, REQ-022); it is read by the page itself and never sent anywhere.
+  A link ending in `#assistant=<name>` sets it; a value that is not in the list is ignored. Visitor IP addresses are processed by GitHub Pages as the host
   (see the privacy notice); the owner has no access to them.
 - Messages sent to hello@xaden.dev sit in the mailbox at Netcup (sender address and content). They are
   used only to answer and deleted when the matter is closed.
@@ -77,6 +79,7 @@ Verification standard: OWASP ASVS (what to build), OWASP WSTG (how to test it).
 
 | Threat | Asset | Mitigation | Requirement / test |
 |--------|-------|------------|--------------------|
+| Release text uses the shortcode syntax or a link sets a bad assistant value | Integrity of the pages | The only shortcodes that print text are `cmd` and `prompt`, which show fixed commands from `data/assistants.yaml` and arguments escaped as text; assistant.js accepts only ids from the picker list and writes no HTML | REQ-006, REQ-022; `scripts/check-site.sh` |
 | A visitor copies a tampered install command | Visitors' machines, reputation | `main` accepts only commits that passed CI; only the deploy job publishes and only from `main`; commands point to github.com/flo1o1/xaden-dev; the owner reviews every pull request | REQ-007; ruleset on `main` |
 | Hostile or broken text in a Xaden release is rendered into the docs | Integrity of the pages | Raw HTML is off; version bumps arrive as a pull request that renders and checks the new docs; the check fails on inline script, foreign origins, rule IDs and script paths | REQ-006, REQ-012; `scripts/check-site.sh` |
 | A page loads something from another site or tracks visitors | Visitor privacy | Policy `default-src 'none'` with only same-origin script, style, font and image; fonts self-hosted; the check fails on any other origin | REQ-011; `scripts/check-site.sh` |

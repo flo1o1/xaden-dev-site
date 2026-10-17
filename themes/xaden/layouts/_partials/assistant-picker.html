@@ -1,0 +1,7 @@
+{{/* REQ-022: hidden until assistant.js runs; without JavaScript the docs show the Claude Code commands. */}}
+<div class="assistant-picker" data-assistant-picker hidden>
+  <label for="assistant-select" class="eyebrow">Your assistant</label>
+  <select id="assistant-select" class="assistant-select">
+    {{ range hugo.Data.assistants }}<option value="{{ .id }}">{{ .name }}</option>{{ end }}
+  </select>
+</div>

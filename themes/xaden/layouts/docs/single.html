@@ -4,6 +4,7 @@
   <article class="min-w-0">
     {{ if ne .Parent.RelPermalink "/docs/" }}<p class="eyebrow"><a href="{{ .Parent.RelPermalink }}" class="hover:text-accent">{{ .Parent.Title }}</a></p>{{ end }}
     <h1 class="mb-6 mt-2 text-3xl font-bold md:text-4xl">{{ .Title }}</h1>
+    {{ partial "assistant-picker.html" . }}
     <div class="prose prose-xaden max-w-none">{{ .Content }}</div>
     {{ partial "docs-pager.html" . }}
     {{ partial "docs-stamp.html" . }}

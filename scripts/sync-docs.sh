@@ -115,6 +115,22 @@ rewrite_for_readers() {
   '
 }
 
+# assistant_commands: from stdin, the per-assistant commands of the guides turned into the picker blocks of
+# REQ-022 (shortcodes `prompt` and `cmd`, see themes/xaden/layouts/shortcodes/). Each rule matches the
+# wording of the guides; render_page fails when a page that must have blocks has none (the wording changed).
+assistant_commands() {
+  perl -0pe '
+    # a pair of code blocks: the slash command, then the plain prompt
+    s{([^\n]*?)In Claude Code, type:\n\n```text\n/([a-z-]+) ([^\n]*)\n```\n\n(.*?)In any other assistant, tell it:\n\n```text\nRun `xaden prompt ([a-z-]+)` and follow it\. ([^:\n]+): [^\n]*\n```\n}{$1Start it with:\n\n\{\{< prompt "$2" "$5" "$6" "$3" >\}\}\n\n$4}s;
+    # the table of other tasks: one column with the command of the chosen assistant
+    s{\| You want to \| Claude Code \| Tell another assistant to run \|\n\|[-|]+\|\n}{| You want to | Run |\n|-------------|-----|\n};
+    s{^\| ([^|\n]+) \| `/([a-z-]+)` \| `xaden prompt ([a-z-]+)` \|$}{| $1 | \{\{< cmd "$2" "$3" >\}\} |}mg;
+    # sentences
+    s{In Claude Code, type `/release` for the checklist the assistant follows, including the security review before every release\. In any\nother assistant, tell it to run `xaden prompt release`\.}{For the checklist the assistant follows, including the security review before every release, use \{\{< cmd "release" "release" >\}\}.};
+    s{In Claude Code, type\n`/feature <what users can do afterwards>`; in any other assistant, tell it to run `xaden prompt feature`\.}{Then start a feature with \{\{< cmd "feature" "feature" "<what users can do afterwards>" >\}\}.};
+  '
+}
+
 # source_to_url <source file>: the site URL of a page generated from that file, or of a site page.
 source_to_url() {
   local entry section page source target
@@ -166,8 +182,13 @@ render_page() {
   {
     printf -- '---\ntitle: "%s"\nweight: %s\ndescription: "%s"\n---\n\n' "$title" "$weight" "$summary"
     awk '!skipped && /^# / { skipped = 1; next } { print }' "$release/$source" |
-      strip_shell_comments | rewrite_for_readers | rewrite_links "$source"
+      strip_shell_comments | rewrite_for_readers | assistant_commands | rewrite_links "$source"
   } >"$file"
+  case "$source" in
+    *kick-off-with-your-assistant.md|*build-features.md|*release-a-version.md|*join-a-project.md)
+      grep -q '{{< \(prompt\|cmd\) ' "$file" ||
+        die "REQ-022: $source has no assistant commands after the rewrite; its wording changed, update assistant_commands in scripts/sync-docs.sh" ;;
+  esac
 }
 
 # check_every_guide_has_a_page <release dir>: a guide file without a page would be dropped silently.
