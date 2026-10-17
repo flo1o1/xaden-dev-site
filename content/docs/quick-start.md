@@ -43,25 +43,16 @@ Want the recommended checks for a stack without choosing each tool? Use `xaden c
 
 ## 3. Tell your assistant what to build
 
-Open your assistant in `my-app` and type the line for your tool:
+Open your assistant in `my-app` and tell it:
 
-| Tool | Type | Needs |
-|------|------|-------|
-| Claude Code | `/kickoff <your idea>` | nothing, `xaden create` writes it |
-| Codex CLI (ChatGPT) | `$kickoff <your idea>` | `xaden create --assistants codex my-app` |
-| GitHub Copilot (Chat in VS Code) | `/kickoff <your idea>` | `xaden create --assistants copilot my-app` |
-| Any other assistant | `Run `xaden prompt kickoff` and follow it. My idea: <your idea>` | nothing |
-
-`--assistants claude,codex,copilot` takes several at once. In an existing project, `xaden adopt` finds the tools in use and offers
-their commands. The last row works in every assistant that can read your files and run commands. Chat windows without file access,
-such as the Copilot or ChatGPT website, do not work with Xaden.
+```text
+Run `xaden prompt kickoff` and follow it. My idea: <your idea>
+```
 
 The assistant asks questions. You approve the requirements, the stack and the threat model. Then it builds a minimal
 skeleton that runs. Details: [Kick off with your assistant]({{< relref "docs/developer-guide/kick-off-with-your-assistant" >}}).
 
 ## 4. Build your first feature
-
-In the same way, type `/feature <what users can do afterwards>` (Codex CLI: `$feature ...`), or in any other assistant:
 
 ```text
 Run `xaden prompt feature` and follow it. Feature: <what users can do afterwards>
