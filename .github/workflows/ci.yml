@@ -1,8 +1,10 @@
 name: ci
 
+# Only a pushed release tag publishes the site (REQ-023); main and pull requests are checked, never deployed.
 on:
   push:
     branches: [main]
+    tags: ["v*"]
   pull_request:
 
 permissions:
@@ -44,8 +46,8 @@ jobs:
           curl -fsSLo tailwindcss "https://github.com/tailwindlabs/tailwindcss/releases/download/v${TAILWIND_VERSION}/tailwindcss-linux-x64"
           echo "${TAILWIND_SHA256}  tailwindcss" | sha256sum -c -
           sudo install tailwindcss /usr/local/bin/tailwindcss
-      - name: Test the docs version bump
-        run: tests/bump-docs-version.sh
+      - name: Test the site release cycle
+        run: tests/release-site.sh
       - name: Test the local preview guards of the docs sync
         run: tests/sync-docs-local.sh
       - name: Render the docs of the pinned Xaden release
@@ -61,19 +63,24 @@ jobs:
       - name: SAST with semgrep registry rules (broader, needs network)
         run: semgrep scan --config p/default --metrics=off --error --quiet
       - name: Commit messages (contributors may not have local hooks)
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }} # a tag adds no commit; its commits passed as a pull request
         env:
           EVENT_NAME: ${{ github.event_name }}
           BASE_REF: ${{ github.base_ref }}
           BEFORE_SHA: ${{ github.event.before }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         run: scripts/verify-commits.sh --ci
-      # REQ-007: the site that was just checked is the one that goes live. It is built from this exact
-      # commit, only on a push to main, and only the deploy job below publishes it.
+      # REQ-007, REQ-023: the site that was just checked is the one that goes live. It is built from this exact
+      # commit, only on a pushed release tag that is the newest one and on main, and only the deploy job
+      # below publishes it.
+      - name: Check that the tag may publish
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: scripts/check-release-tag.sh "$GITHUB_REF_NAME"
       - name: Build the site for publishing
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: startsWith(github.ref, 'refs/tags/v')
         run: hugo --gc --minify --destination public
       - name: Upload the site
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: public
@@ -82,7 +89,7 @@ jobs:
   deploy:
     name: deploy
     needs: check
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     # Only this job may write to Pages, and only with a short-lived token for that.
     permissions:
