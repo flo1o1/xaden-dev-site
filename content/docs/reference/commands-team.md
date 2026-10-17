@@ -1,7 +1,7 @@
 ---
 title: "Team commands"
 weight: 30
-description: "setup, doctor, fetch, upgrade, rules, hook and ignore-list."
+description: "setup, doctor, fetch, upgrade, update-check, rules, hook and ignore-list."
 ---
 
 Commands for keeping a team on the same Xaden version, the same hooks and the same rules. They work inside a project that adopted Xaden.
@@ -68,6 +68,22 @@ Asks before any network access and before downloading a version that is not inst
 checksum of the download is pinned and Xaden says so.
 
 Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing looked up or downloaded; `5` checksum mismatch; `6` signature mismatch.
+
+## `xaden update-check`
+
+Looks for a newer Xaden and for outdated dependencies. It only reports; it never installs or changes anything.
+
+```text
+xaden update-check [--if-due|--now]
+```
+
+Checks now, whatever the interval, and prints the result. The check is off by default (`update-check = off` in `xaden/xaden.conf`) and the command
+refuses while it is off; `--now` looks anyway. `--if-due` checks only when the interval has passed, prints nothing and exits `0` when the network is
+down. The `XADEN_UPDATE_CHECK` environment variable takes the same values and overrides the project setting on your machine.
+
+The one network request goes to the GitHub release API. The result is cached in the repository's git folder and never committed.
+
+Guide: [Check for updates]({{< relref "docs/admin-guide/check-for-updates" >}}).
 
 ## `xaden rules`
 
