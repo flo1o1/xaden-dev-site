@@ -11,7 +11,7 @@ updated: 2026-10-13
 
 ## Quality goal
 
-Every page works with JavaScript disabled, and scripts are optional enhancements only (the copy buttons and the pointer shadows), and the home page transfers at most 250 KB including fonts and logo (raised from 100 KB when the Empyrean design added fonts and the logo)
+Every page works with JavaScript disabled, and scripts are optional enhancements only (the copy buttons, the pointer shadows and the assistant picker; without JavaScript the docs show the Claude Code commands, REQ-022), and the home page transfers at most 250 KB including fonts and logo (raised from 100 KB when the Empyrean design added fonts and the logo)
 
 ## Acceptance criteria
 
