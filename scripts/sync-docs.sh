@@ -199,7 +199,8 @@ check_reference_covers_commands() {
 use_local_source() {
   local source=$1 tag=$2
   [ -z "${CI:-}" ] || die "REQ-006: XADEN_SOURCE is for local previews and is refused when CI is set"
-  [ -f "$source/$GETTING_STARTED" ] && [ -f "$source/VERSION" ] || die "REQ-006: $source is not a Xaden checkout ($GETTING_STARTED or VERSION missing)"
+  [ -f "$source/$GETTING_STARTED" ] || die "REQ-006: $source is not a Xaden checkout ($GETTING_STARTED or VERSION missing)"
+  [ -f "$source/VERSION" ] || die "REQ-006: $source is not a Xaden checkout ($GETTING_STARTED or VERSION missing)"
   if git -C "$source" rev-parse -q --verify "refs/tags/$tag^{commit}" >/dev/null 2>&1; then
     warn "PREVIEW of the local tag $tag from $source: content/docs/ is git-ignored, do not publish this build"
     git -C "$source" archive "$tag" | tar -x -C "$WORK_DIR/release"
