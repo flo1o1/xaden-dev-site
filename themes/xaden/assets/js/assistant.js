@@ -17,7 +17,7 @@
     try { localStorage.setItem(KEY, id); } catch (e) { /* private mode: the choice lasts for this page only */ }
   }
   function fromHash() {
-    var m = /^#assistant=([a-z]+)$/.exec(location.hash);
+    var m = /^#assistant=([a-z-]+)$/.exec(location.hash);
     return m && ok(m[1]) ? m[1] : null;
   }
 
@@ -27,7 +27,7 @@
   }
 
   var linked = fromHash();
-  var start = linked || (ok(stored()) ? stored() : "claude");
+  var start = linked || (ok(stored()) ? stored() : "claude-code");
   if (linked) store(linked);
   show(start);
   picker.hidden = false;

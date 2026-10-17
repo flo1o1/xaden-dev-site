@@ -19,7 +19,7 @@ When I read the docs with my own AI coding assistant, I want to pick it once and
 - Given nothing was chosen, or JavaScript is off, then the page shows the Claude Code commands and no picker
 - Given the choice "Other", then the page shows the `xaden prompt <name>` commands
 - Given a choice, when another docs page is opened later in the same browser, then that page shows the same assistant (kept in the browser's `localStorage`, never sent anywhere)
-- Given a link that ends in `#assistant=codex` (or claude, copilot, vibe, other), when it is opened, then the page shows that assistant, and the choice is kept
+- Given a link that ends in `#assistant=chatgpt-codex` (or claude-code, github-copilot, mistral-vibe, other), when it is opened, then the page shows that assistant, and the choice is kept
 - Given ChatGPT Codex, GitHub Copilot or Mistral Vibe, then the command is followed by a note that the project needs their command files, and how to get them (`--assistants`, `xaden adopt`)
 - Given the pages generated from the Xaden release, then `scripts/sync-docs.sh` turns the per-assistant commands of the guides into the same blocks, and fails when a known place no longer matches (the guides changed their wording)
 - Given the site check, then it fails when a page that offers the picker lacks the commands of one assistant, or when the build holds an inline script or another origin (REQ-011, REQ-012)

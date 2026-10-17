@@ -228,12 +228,12 @@
 
 /* assistant picker (REQ-022): the Claude Code commands are the default; assistant.js sets html[data-assistant] */
 .assistant-variant { display: none; }
-.assistant-variant[data-assistant="claude"] { display: revert; }
+.assistant-variant[data-assistant="claude-code"] { display: revert; }
 html[data-assistant] .assistant-variant { display: none; }
-html[data-assistant="claude"] .assistant-variant[data-assistant="claude"],
-html[data-assistant="codex"] .assistant-variant[data-assistant="codex"],
-html[data-assistant="copilot"] .assistant-variant[data-assistant="copilot"],
-html[data-assistant="vibe"] .assistant-variant[data-assistant="vibe"],
+html[data-assistant="claude-code"] .assistant-variant[data-assistant="claude-code"],
+html[data-assistant="chatgpt-codex"] .assistant-variant[data-assistant="chatgpt-codex"],
+html[data-assistant="github-copilot"] .assistant-variant[data-assistant="github-copilot"],
+html[data-assistant="mistral-vibe"] .assistant-variant[data-assistant="mistral-vibe"],
 html[data-assistant="other"] .assistant-variant[data-assistant="other"] { display: revert; }
 .assistant-picker { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
 .assistant-picker[hidden] { display: none; }
