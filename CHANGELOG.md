@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- The generated guide pages no longer end in a "Next" section; the previous and next buttons below the page already link there.
 - Docs describe Xaden v0.4.0: the generated slash commands and skills carry the `xaden-` prefix (`/xaden-feature`, `$xaden-feature`, ...); the assistant picker shows them, and `scripts/sync-docs.sh` keeps turning the guides into picker blocks (REQ-022).
 
 ### Added
