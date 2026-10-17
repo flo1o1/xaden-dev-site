@@ -49,7 +49,7 @@ A fast subset runs in a git hook on every commit. The full set runs in CI, where
   unsafe deserialization and open redirects.
 - [shellcheck](https://www.shellcheck.net) checks shell scripts.
 - Your own test and lint commands run too. For Python and Node, Xaden's preset adds linters and
-  dependency audits, for example bandit and pip-audit for Python or the audit of your package manager for
+  dependency audits, for example bandit and pip-audit for Python or `npm audit` for
   Node, which report known vulnerable dependencies.
 
 When you add Xaden to a repository that already has findings, they are recorded in a baseline that only
