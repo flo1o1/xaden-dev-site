@@ -126,8 +126,8 @@ assistant_commands() {
     s{\| You want to \| Claude Code \| Tell another assistant to run \|\n\|[-|]+\|\n}{| You want to | Run |\n|-------------|-----|\n};
     s{^\| ([^|\n]+) \| `/([a-z-]+)` \| `xaden prompt ([a-z-]+)` \|$}{| $1 | \{\{< cmd "$2" "$3" >\}\} |}mg;
     # sentences
-    s{In Claude Code, type `/release` for the checklist the assistant follows, including the security review before every release\. In any\nother assistant, tell it to run `xaden prompt release`\.}{For the checklist the assistant follows, including the security review before every release, use \{\{< cmd "release" "release" >\}\}.};
-    s{In Claude Code, type\n`/feature <what users can do afterwards>`; in any other assistant, tell it to run `xaden prompt feature`\.}{Then start a feature with \{\{< cmd "feature" "feature" "<what users can do afterwards>" >\}\}.};
+    s{In Claude Code, type `/xaden-release` for the checklist the assistant follows, including the security review before every release\. In any\nother assistant, tell it to run `xaden prompt release`\.}{For the checklist the assistant follows, including the security review before every release, use \{\{< cmd "xaden-release" "release" >\}\}.};
+    s{In Claude Code, type\n`/xaden-feature <what users can do afterwards>`; in any other assistant, tell it to run `xaden prompt feature`\.}{Then start a feature with \{\{< cmd "xaden-feature" "feature" "<what users can do afterwards>" >\}\}.};
   '
 }
 

@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Changed
+- Docs describe Xaden v0.4.0: the generated slash commands and skills carry the `xaden-` prefix (`/xaden-feature`, `$xaden-feature`, ...); the assistant picker shows them, and `scripts/sync-docs.sh` keeps turning the guides into picker blocks (REQ-022).
+
 ### Added
 - Assistant picker (REQ-022): a list under the title of each docs page lets readers choose Claude Code, ChatGPT Codex, GitHub Copilot, Mistral Vibe or Other, and the commands on the page change to that tool's. Default and no-JavaScript view: Claude Code; Other shows the `xaden prompt` commands. The choice lives in `localStorage` and in a `#assistant=<name>` link. Quick start and the generated guides use it (`scripts/sync-docs.sh` rewrites the guide wording; it fails when that wording changes); the site check verifies every assistant has its commands.
 - Prepare the site before a Xaden release is published: `XADEN_SOURCE=<checkout> scripts/sync-docs.sh` renders the tag named in `XADEN_DOCS_VERSION` from the checkout's git (REQ-006); `XADEN_DOCS_VERSION` is now v0.3.0 with the new Check for updates page and the `xaden update-check` Reference entry.
