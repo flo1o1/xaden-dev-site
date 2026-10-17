@@ -1,0 +1,17 @@
+{{/* Previous and next page of the guide or reference the page belongs to. */}}
+{{ $current := . }}
+{{ $siblings := .Parent.Pages }}
+{{ if ne .Parent.RelPermalink "/docs/" }}
+  {{ $previous := false }}
+  {{ $next := false }}
+  {{ range $i, $page := $siblings }}
+    {{ if eq $page $current }}
+      {{ if gt $i 0 }}{{ $previous = index $siblings (sub $i 1) }}{{ end }}
+      {{ if lt (add $i 1) (len $siblings) }}{{ $next = index $siblings (add $i 1) }}{{ end }}
+    {{ end }}
+  {{ end }}
+  <nav aria-label="Previous and next page" class="mt-10 flex flex-wrap justify-between gap-4 text-sm">
+    {{ with $previous }}<a href="{{ .RelPermalink }}" class="btn btn-ghost">← {{ .Title }}</a>{{ else }}<span></span>{{ end }}
+    {{ with $next }}<a href="{{ .RelPermalink }}" class="btn btn-ghost">{{ .Title }} →</a>{{ end }}
+  </nav>
+{{ end }}

@@ -1,11 +1,12 @@
 ---
 title: "Quick start"
 weight: 1
+description: "From nothing to your first checked feature, in five steps."
 ---
 
-From nothing to your first feature in a few commands. You need Linux or macOS with git and bash. On
-Windows use WSL (untested). Details for every step are on the [Admins](/docs/admins/) and
-[Developers](/docs/developers/) pages.
+By the end of this page you have a project whose first feature passed Xaden's checks. You need Linux or
+macOS with git and bash. On Windows use WSL (untested). Already have a repository? Skip to
+[Add Xaden to a repository]({{< relref "docs/developer-guide/add-xaden-to-a-repository" >}}). Every step links to the guide page with the details.
 
 ## 1. Install the xaden command
 
@@ -25,57 +26,63 @@ export PATH="$HOME/.local/bin:$PATH"
 ```
 
 This puts `~/.local/bin` in front of the folders your shell searches for commands, so it finds `xaden`.
+Check it with `xaden version`; it prints the installed version. Details: [Install Xaden]({{< relref "docs/admin-guide/install-xaden" >}}).
 
-## 2. Create a project
+## 2. Create your project
 
 ```bash
 xaden create my-app
 cd my-app
 ```
 
-- `xaden create my-app`: creates the folder `my-app` in the current directory from Xaden's template (only files git tracks there), starts a git repository in it, switches on the git hooks and makes the first commit, on which the pre-commit checks run. If anything fails, it removes the half-created folder.
+- `xaden create my-app`: creates the folder `my-app` in the current directory with its own git repository, the folder `xaden/` for requirements and rules, git hooks that run the checks, a CI workflow, and a first commit. If anything fails, it removes the half-created folder.
 - `cd my-app`: moves your terminal into the new project.
 
-## 3. Kick off
+Want the recommended checks for a stack without choosing each tool? Use `xaden create --autopilot --stack python my-app`
+(or `--stack node`). It prints one plan and asks once. Details: [Create a project]({{< relref "docs/developer-guide/create-a-project" >}}).
 
-With Claude Code, start it in `my-app` and run:
+## 3. Tell your assistant what to build
 
-```text
-/kickoff <your idea>
-```
-
-With another tool, open the folder and ask it to follow `prompts/kickoff.md`. The assistant asks
-questions and you approve the requirements and the stack.
-
-## 4. Build a feature
+Open your assistant in `my-app` and tell it:
 
 ```text
-/feature <what users can do afterwards>
+Run `xaden prompt kickoff` and follow it. My idea: <your idea>
 ```
 
-The assistant links the work to a requirement, writes the test first and runs the checks. Run them
-yourself at any time, from anywhere inside the project:
+The assistant asks questions. You approve the requirements, the stack and the threat model. Then it builds a minimal
+skeleton that runs. Details: [Kick off with your assistant]({{< relref "docs/developer-guide/kick-off-with-your-assistant" >}}).
+
+## 4. Build your first feature
+
+```text
+Run `xaden prompt feature` and follow it. Feature: <what users can do afterwards>
+```
+
+The assistant links the work to a requirement, writes the test first, runs the checks and commits. Run
+the checks yourself at any time, from anywhere inside the project:
 
 ```bash
 xaden check
 ```
 
-- `xaden check`: runs the project's static analysis (shellcheck, gitleaks for secrets, semgrep and the linters of your stack) and ends with a summary of what passed, failed or was skipped.
+- `xaden check`: runs the project's checks and ends with a summary of what passed, failed or was skipped.
 
-## 5. Release
+A run that skipped a check ends with a warning, not a success sign. Install the missing tool and run it again.
+Details: [Build features]({{< relref "docs/developer-guide/build-features" >}}).
 
-```text
-/release
-```
-
-The assistant proposes a version, you confirm, and the release is checked and tagged locally.
-
-## Update
+## 5. Release when you decide to
 
 ```bash
-git -C ~/.xaden pull
-xaden update
+xaden release minor
 ```
 
-- `git -C ~/.xaden pull`: fetches the newest Xaden into the `~/.xaden` folder without leaving your project.
-- `xaden update`: run inside your project, it only lists what the newer Xaden would change. Add `--apply` to stage those changes in git, and review them with `git diff --cached` before you commit.
+- `xaden release minor`: checks everything, stamps the version and the changelog, and tags locally. It never pushes. You push when you are ready.
+
+Details: [Release a version]({{< relref "docs/developer-guide/release-a-version" >}}).
+
+## Where to go next
+
+- Stuck on a step? See [Troubleshooting]({{< relref "docs/troubleshooting" >}}).
+- Using a chat window or a local model? See [Other assistants and local models]({{< relref "docs/developer-guide/other-assistants-and-local-models" >}}).
+- Working in a team? Read [Pin one Xaden version per project]({{< relref "docs/admin-guide/pin-one-version-per-project" >}}).
+- Updating Xaden later? See [Update Xaden]({{< relref "docs/admin-guide/update-xaden" >}}).

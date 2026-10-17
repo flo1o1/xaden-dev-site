@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Renders the documentation of one Xaden release into content/docs/ (REQ-006): one page per role,
-# Admins and Developers, with a section per task (REQ-002). Source: the release tarball of the tag
-# in XADEN_DOCS_VERSION; unreleased changes never appear. A missing source, a missing or unmapped
-# heading, or an unreadable tarball fails the run, so nothing is dropped silently.
-# Usage: scripts/sync-docs.sh [tag]    (needs curl, tar, awk)
+# Renders the guide pages of one Xaden release into content/docs/ (REQ-006): one page per source file,
+# the Developer Guide and the Admin Guide (REQ-002). Source: the release tarball of the tag in
+# XADEN_DOCS_VERSION; unreleased changes never appear. A missing source, an unknown link target, a guide
+# file without a page, or an unreadable tarball fails the run, so nothing is dropped silently. The pages
+# that the site writes itself (Quick start, Reference, Security, Troubleshooting) live in content/.
+# Usage: scripts/sync-docs.sh [tag]    (needs curl, tar, awk, perl)
 #        XADEN_SOURCE=<xaden checkout> scripts/sync-docs.sh    local preview of unreleased docs (not in CI)
 set -euo pipefail
 
@@ -15,38 +16,31 @@ source "$SCRIPTS/lib.sh"
 XADEN_REPOSITORY="flo1o1/xaden"
 DOCS_DIR="$ROOT/content/docs"
 GETTING_STARTED="GETTING-STARTED.md"
-# Pages: role | page title | summary. Sections of each page follow in the order below.
-ROLE_PAGES=(
-  "admins|Admins|Install, extend and update Xaden"
-  "developers|Developers|Create a project, build with your assistant, release"
-  "security|Security|How Xaden helps keep your project secure"
+# Pages generated from the release: section | page name | source file in the release | summary.
+# The order is the order in the menu and in the "previous / next" links. Every file under docs/guide/
+# of the release must be listed here, or the run fails.
+PAGES=(
+  "developer-guide|create-a-project|docs/guide/developer/create-a-project.md|Start a new project with Xaden's rules, checks and requirements from the first commit."
+  "developer-guide|add-xaden-to-a-repository|docs/guide/developer/add-xaden-to-a-repository.md|Put Xaden beneath a repository you already have without changing its build."
+  "developer-guide|check-modes-and-baselines|docs/guide/developer/check-modes-and-baselines.md|Decide how strict the checks are, and adopt without failing on old findings."
+  "developer-guide|kick-off-with-your-assistant|docs/guide/developer/kick-off-with-your-assistant.md|Turn an idea into approved requirements, a stack and a first skeleton."
+  "developer-guide|build-features|docs/guide/developer/build-features.md|Add a feature from a requirement, test first, checked before every commit."
+  "developer-guide|release-a-version|docs/guide/developer/release-a-version.md|Cut a checked, stamped and tagged version when you decide to."
+  "developer-guide|join-a-project|docs/guide/developer/join-a-project.md|Start contributing to a repository whose team already uses Xaden."
+  "developer-guide|other-assistants-and-local-models|template/docs/local-llm.md|Use Xaden in a chat window or with a model on your own machine."
+  "admin-guide|requirements-and-platforms|docs/guide/admin/requirements-and-platforms.md|What Xaden needs, and what differs on Linux, macOS and Windows."
+  "admin-guide|install-xaden|docs/guide/admin/install-xaden.md|Get Xaden onto your machine with git or from a zip archive."
+  "admin-guide|update-xaden|docs/guide/admin/update-xaden.md|Move the Xaden on your machine to a newer version."
+  "admin-guide|pin-one-version-per-project|docs/guide/admin/pin-one-version-per-project.md|Make a team use one Xaden version, and move it together."
+  "admin-guide|verify-releases|docs/guide/admin/verify-releases.md|Check checksums and signatures, and know what they prove."
+  "admin-guide|optional-tools-and-plugins|template/docs/optional-tools.md|Extra checks and assistant plugins, and their risks."
+  "admin-guide|update-a-classic-project|docs/guide/admin/update-a-classic-project.md|Update a project that keeps its own copy of the tooling."
+  "admin-guide|uninstall|docs/guide/admin/uninstall.md|Remove Xaden from a repository or from a machine."
 )
-# Parts of each page, in order: role | kind | reference | title | argument.
-#   section     "## <reference>" of Getting started as a section called <title>; the argument names
-#               an "###" subsection to leave out (it is placed elsewhere)
-#   subsection  the "###" <argument> under "## <reference>" of Getting started, as "### <title>"
-#   file        a whole file of the release, titled by its H1 (reference = path in the release)
-#   own         a text of this site in docs-parts/ (@TAG@ and @VERSION@ are filled in); with an
-#               empty title it brings its own sections
-# A part of role "none" is never published; it marks a section as covered by an own text.
-# Add a line when a release adds a section of Getting started: the run fails on any unmapped one.
-# The template's admin and user guides are placeholders for generated projects: not published.
-PARTS=(
-  "admins|section|1. Prerequisites|Prerequisites|Optional: the \`xaden\` command"
-  'admins|own|docs-parts/admins-install.md|Install|'
-  "admins|subsection|1. Prerequisites|The \`xaden\` command|Optional: the \`xaden\` command"
-  'admins|file|template/docs/optional-tools.md||'
-  'admins|section|Getting scaffold improvements into your project|Update a project|'
-  'developers|section|3. Create your project|Create your project|'
-  'developers|own|docs-parts/developers-existing-project.md|Adopt an existing project|'
-  'developers|section|4. Kickoff|Kickoff|'
-  'developers|section|5. Build features (repeat)|Build features|'
-  'developers|section|6. Release|Release|'
-  'developers|section|Joining an existing project|Join an existing project|'
-  'developers|file|template/docs/local-llm.md||'
-  'security|own|docs-parts/security.md||'
-  'none|section|2. Get Xaden|not published|'
-  'none|section|Security review quality|not published|'
+# Site pages that sources link to: source file | page URL.
+SITE_TARGETS=(
+  "template/docs/security.md|/docs/security/"
+  "$GETTING_STARTED|/docs/quick-start/"
 )
 WORK_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK_DIR"' EXIT
@@ -104,9 +98,13 @@ rewrite_for_readers() {
   perl -0pe '
     s/ \((?:`?AGENTS\.md`? )?(?:§ ?[0-9]+|section [0-9]+)\)//g;
     s/ \(CC-[0-9]+\)//g;
-    s/see `template\/docs\/local-llm\.md`/see [Using the scaffold with other LLMs](#using-the-scaffold-with-other-llms)/g;
-    s/list in `template\/docs\/optional-tools\.md`/list in [Optional tools](#optional-tools)/g;
-    s/are in `template\/docs\/optional-tools\.md` → "Assistant\s+plugins" \(in a generated project: `docs\/optional-tools\.md`\)/are in the [Optional tools](#optional-tools) section "Assistant plugins"/g;
+    s/the risks to know before installing are in `template\/docs\/optional-tools\.md` → "Assistant\s+plugins" \(in a generated project: `docs\/optional-tools\.md`\)/the risks to know before installing are in [Optional tools and assistant plugins](\/docs\/admin-guide\/optional-tools-and-plugins\/#assistant-plugins-claude-code)/g;
+    s/list in `template\/docs\/optional-tools\.md`/list in [Optional tools and assistant plugins](\/docs\/admin-guide\/optional-tools-and-plugins\/)/g;
+    s/ \(`?AGENTS\.md`? §[0-9]+\)//g;
+    s/\(§[0-9]+\)/(see the rules in AGENTS.md)/g;
+    s/ `AGENTS\.md` §[0-9]+//g;
+    s/`AGENTS\.md` §[0-9]+/`AGENTS.md`/g;
+    s/AGENTS\.md §[0-9]+/AGENTS.md/g;
     s/tracked by git in `template\/`/tracked by git in Xaden\x27s template folder/g;
     s/comes from `template\/`/comes from Xaden\x27s template folder/g;
     s/--brief REQ-003 feature/--brief <requirement> feature/g;
@@ -114,134 +112,82 @@ rewrite_for_readers() {
   '
 }
 
-# prefer_xaden_command: from stdin, the text with the `xaden` command wherever it has an equivalent
-# (REQ-002). The Xaden docs show the scripts first and `xaden` as an option; the site makes `xaden`
-# the first choice. Block rewrites come first, the plain command swaps last. Text that no longer
-# matches (a release that already says it this way) is left alone.
-prefer_xaden_command() {
-  perl -0pe '
-    # Create your project: `xaden create` creates ./<name>, so the folder to enter changes too.
-    s/```bash\nscripts\/new-project\.sh my-app\nscripts\/new-project\.sh my-app ~\/code\/x\ncd \.\.\/my-app\n```\n\n- `scripts\/new-project\.sh my-app`: [^\n]*\n- `scripts\/new-project\.sh my-app ~\/code\/x`: [^\n]*\n\nWith the `xaden` command: [^\n]*\n/```bash\nxaden create my-app\ncd my-app\n```\n\n- `xaden create my-app`: creates the folder `my-app` in the current directory, with its own git repository and hooks\n- `cd my-app`: moves your terminal into the new project\n\nTo create the project somewhere else, add the folder: `xaden create my-app ~\/code\/x`.\n/;
-    s/Then clone your copy and run\n`scripts\/new-project\.sh my-app` from it the same way\./Then clone your copy and run its `scripts\/install.sh`; `xaden create my-app` then works the same way./;
-    # Update a project: run inside the project.
-    s/Pull the newest scaffold, then from the scaffold directory:.*?inside the project\./Pull the newest Xaden (`git pull` in its folder), then run this inside your project:\n\n```bash\nxaden update\nxaden update --apply\n```\n\n- `xaden update`: dry run, lists what would change\n- `xaden update --apply`: stages the changes; review them with `git diff --cached`/s;
-    # The xaden command is the way in, not an option.
-    s/so you can\nuse the scaffold from any directory\./so you can\nuse Xaden from any directory./;
-    s/is: the link points into it\./is: the link points into it. Every command in these docs assumes the command is installed./;
-    s/\| `scripts\/new-project\.sh`, creating `\.\/my-app` \(or `dir`\)([^|\n]*) \|/| creates `.\/my-app` (or `dir`) with its own git repository and hooks$1 |/;
-    s/\| `scripts\/update-scaffold\.sh` for the project you are in \|/| brings the project you are in to this Xaden version; a dry run without `--apply` |/;
-    s/\| the project\x27s own `scripts\/setup\.sh`, `check\.sh`, `req\.sh`, `pack-context\.sh`, `release\.sh`, from anywhere inside it \|/| activate the git hooks, run the checks, manage requirements, build a context pack, cut a release; from anywhere inside the project |/;
-    # Everything else: the plain command swaps.
-    s/scripts\/new-project\.sh/xaden create/g;
-    s/scripts\/update-scaffold\.sh/xaden update/g;
-    s/scripts\/setup\.sh/xaden setup/g;
-    s/scripts\/check\.sh/xaden check/g;
-    s/scripts\/req\.sh/xaden req/g;
-    s/scripts\/pack-context\.sh/xaden pack/g;
-    s/scripts\/release\.sh/xaden release/g;
-  '
+# source_to_url <source file>: the site URL of a page generated from that file, or of a site page.
+source_to_url() {
+  local entry section page source target
+  for entry in "${PAGES[@]}"; do
+    IFS='|' read -r section page source _ <<<"$entry"
+    [ "$source" = "$1" ] && { printf '/docs/%s/%s/' "$section" "$page"; return 0; }
+  done
+  for entry in "${SITE_TARGETS[@]}"; do
+    IFS='|' read -r source target <<<"$entry"
+    [ "$source" = "$1" ] && { printf '%s' "$target"; return 0; }
+  done
+  return 1
 }
 
-# demote_headings: from stdin, every Markdown heading one level deeper, except inside code fences.
-demote_headings() {
-  awk '/^```/ { fence = !fence } !fence && /^#+ / { print "#" $0; next } { print }'
+# resolve_path <directory> <relative path>: the path with "." and ".." segments folded away.
+resolve_path() {
+  perl -e 'my @out; for my $part (split m{/}, "$ARGV[0]/$ARGV[1]") { next if $part eq "" || $part eq "."; if ($part eq "..") { pop @out } else { push @out, $part } } print join("/", @out)' "$1" "$2"
 }
 
-# section_body <file> <heading>: the lines under "## <heading>" up to the next "## ".
-section_body() {
-  awk -v heading="## $2" '
-    /^```/ { fence = !fence }
-    !fence && /^## / { inside = ($0 == heading); next }
-    inside { print }
-  ' "$1"
+# rewrite_links <source file>: from stdin, relative links between source files turned into site URLs.
+# A link to a file that has no page fails the run.
+rewrite_links() {
+  local source=$1 dir text link target anchor url map
+  dir="$(dirname "$source")"
+  text="$(cat)"
+  map="$(mktemp)"
+  while IFS= read -r link; do
+    [ -n "$link" ] || continue
+    target="${link%%#*}"
+    anchor=""
+    case "$link" in *'#'*) anchor="#${link#*#}" ;; esac
+    url="$(source_to_url "$(resolve_path "$dir" "$target")")" ||
+      die "REQ-006: $source links to $link, which has no page on the site (add it to PAGES in scripts/sync-docs.sh)"
+    printf '%s\t%s\n' "$link" "$url$anchor" >>"$map"
+  done < <(printf '%s\n' "$text" | grep -oE '\]\([^)#:]+\.md(#[^)]*)?\)' | sed -e 's/^](//' -e 's/)$//' | sort -u)
+  # perl, not bash substitution: older bash keeps the quotes of a quoted replacement
+  printf '%s\n' "$text" | perl -pe 'BEGIN { open my $fh, "<", $ARGV[0] or die; while (<$fh>) { chomp; my ($from, $to) = split /\t/; $m{$from} = $to } @ARGV = () } s/\]\(([^)]+)\)/exists $m{$1} ? "]($m{$1})" : $&/ge' "$map"
+  rm -f "$map"
 }
 
-# without_subsection <heading>: from stdin, the text without the "### <heading>" block.
-without_subsection() {
-  awk -v heading="### $1" '
-    /^### / { skipping = ($0 == heading) }
-    !skipping { print }
-  '
-}
-
-# subsection_body <file> <h2 heading> <h3 heading>: the lines under that "###", up to the next heading.
-subsection_body() {
-  section_body "$1" "$2" | awk -v heading="### $3" '
-    /^### / { inside = ($0 == heading); next }
-    inside { print }
-  '
-}
-
-# check_all_headings_mapped <file>: every "## " heading of Getting started is used by a part.
-check_all_headings_mapped() {
-  local heading entry rest kind reference
-  while IFS= read -r heading; do
-    for entry in "${PARTS[@]}"; do
-      rest="${entry#*|}"
-      kind="${rest%%|*}"
-      rest="${rest#*|}"
-      reference="${rest%%|*}"
-      case "$kind" in section | subsection) [ "$reference" = "${heading#\#\# }" ] && continue 2 ;; esac
-    done
-    die "REQ-006: heading '${heading#\#\# }' of $GETTING_STARTED has no part; add it to PARTS"
-  done < <(awk '/^```/ { fence = !fence } !fence && /^## / { print }' "$1")
-}
-
-# emit_section <title> <demote|keep>: "## title" and the body from stdin, with shell comments moved
-# out of the code blocks and, when the source heading was the file's H1, headings one level deeper.
-emit_section() {
-  printf '## %s\n\n' "$1"
-  if [ "$2" = demote ]; then strip_shell_comments | demote_headings; else strip_shell_comments; fi
-  printf '\n'
-}
-
-# render_part <kind> <reference> <title> <argument> <release dir> <tag> <version>: one part of a page.
-render_part() {
-  local kind="$1" reference="$2" title="$3" argument="$4" release="$5" tag="$6" version="$7" body file_title
-  case "$kind" in
-    section)
-      body="$(section_body "$release/$GETTING_STARTED" "$reference")"
-      [ -n "$body" ] || die "REQ-006: section '$reference' is missing or empty in $GETTING_STARTED of $tag"
-      [ -z "$argument" ] || printf '%s\n' "$body" | grep -qxF "### $argument" ||
-        die "REQ-006: subsection '$argument' is missing in section '$reference' of $tag"
-      printf '%s\n' "$body" | { if [ -n "$argument" ]; then without_subsection "$argument"; else cat; fi; } | emit_section "$title" keep
-      ;;
-    subsection)
-      body="$(subsection_body "$release/$GETTING_STARTED" "$reference" "$argument")"
-      [ -n "$body" ] || die "REQ-006: subsection '$argument' is missing or empty in section '$reference' of $tag"
-      printf '### %s\n\n' "$title"
-      printf '%s\n' "$body" | strip_shell_comments
-      printf '\n'
-      ;;
-    file)
-      [ -f "$release/$reference" ] || die "REQ-006: $reference is missing in the $tag release"
-      file_title="$(sed -n 's/^# \(.*\)$/\1/p' "$release/$reference" | head -n 1)"
-      [ -n "$file_title" ] || die "REQ-006: $reference has no top-level heading"
-      awk '!skipped && /^# / { skipped = 1; next } { print }' "$release/$reference" | emit_section "$file_title" demote
-      ;;
-    own)
-      [ -f "$ROOT/$reference" ] || die "REQ-006: $reference is missing in this repository"
-      # without a title the text brings its own sections: its "###" headings become "##"
-      sed -e "s/@TAG@/$tag/g" -e "s/@VERSION@/$version/g" "$ROOT/$reference" |
-        { if [ -n "$title" ]; then emit_section "$title" keep; else sed 's/^### /## /'; printf '\n'; fi; }
-      ;;
-    *) die "unknown part kind '$kind'" ;;
-  esac
-}
-
-# render_role_page <role> <title> <summary> <release dir> <tag> <date>
-render_role_page() {
-  local role="$1" title="$2" summary="$3" release="$4" tag="$5" date="$6" entry part_role kind reference part_title argument
+# render_page <section> <name> <source> <summary> <weight> <release dir>: writes one page.
+render_page() {
+  local section=$1 name=$2 source=$3 summary=$4 weight=$5 release=$6 title file
+  file="$DOCS_DIR/$section/$name.md"
+  [ -f "$release/$source" ] || die "REQ-006: $source is missing in the release"
+  title="$(sed -n 's/^# \(.*\)$/\1/p' "$release/$source" | head -n 1)"
+  [ -n "$title" ] || die "REQ-006: $source has no top-level heading"
+  mkdir -p "$DOCS_DIR/$section"
   {
-    printf -- '---\ntitle: "%s"\nrole: %s\nsummary: "%s"\n---\n\n' "$title" "$role" "$summary"
-    printf '_Describes Xaden %s, released %s._\n\n' "$tag" "$date"
-    for entry in "${PARTS[@]}"; do
-      IFS='|' read -r part_role kind reference part_title argument <<<"$entry"
-      [ "$part_role" = "$role" ] || continue
-      render_part "$kind" "$reference" "$part_title" "$argument" "$release" "$tag" "${tag#v}"
+    printf -- '---\ntitle: "%s"\nweight: %s\ndescription: "%s"\n---\n\n' "$title" "$weight" "$summary"
+    awk '!skipped && /^# / { skipped = 1; next } { print }' "$release/$source" |
+      strip_shell_comments | rewrite_for_readers | rewrite_links "$source"
+  } >"$file"
+}
+
+# check_every_guide_has_a_page <release dir>: a guide file without a page would be dropped silently.
+check_every_guide_has_a_page() {
+  local file entry known
+  while IFS= read -r file; do
+    known=0
+    for entry in "${PAGES[@]}"; do
+      case "$entry" in *"|$file|"*) known=1 ;; esac
     done
-  } | rewrite_for_readers | prefer_xaden_command | sed "s#<xaden-repo-url>#https://github.com/$XADEN_REPOSITORY#g" >"$DOCS_DIR/$role.md"
-  # <xaden-repo-url> would be read as raw HTML, which the site forbids, and swallow the text after it.
+    [ "$known" = 1 ] || die "REQ-006: $file of the release has no page; add it to PAGES in scripts/sync-docs.sh"
+  done < <(cd "$1" && find docs/guide -name '*.md' | LC_ALL=C sort)
+}
+
+# check_reference_covers_commands <release dir>: every command in `xaden help` has a heading in the
+# Reference (REQ-002). Read from the usage text; no code of the release runs.
+check_reference_covers_commands() {
+  local command missing=""
+  [ -f "$1/scripts/xaden.sh" ] || return 0
+  while IFS= read -r command; do
+    grep -rqE "^#{2,3} \`xaden $command" "$DOCS_DIR/reference" || missing="$missing $command"
+  done < <(awk '/^usage\(\) \{/ { in_usage = 1 } in_usage && /<<.EOF.$/ { inside = 1; next } inside && /^EOF$/ { exit } inside && /^  [a-z]/ { print $1 }' "$1/scripts/xaden.sh" | sort -u)
+  [ -z "$missing" ] || die "REQ-002: commands in 'xaden help' without a Reference entry:$missing (add a '## \`xaden <command>\`' heading to content/docs/reference/)"
 }
 
 # use_local_source <checkout>: preview of unreleased docs. Copies the checkout (working tree, so
@@ -257,11 +203,12 @@ use_local_source() {
 }
 
 main() {
-  local tag="${1:-$(tr -d '[:space:]' <"$ROOT/XADEN_DOCS_VERSION")}" date entry
+  local tag="${1:-$(tr -d '[:space:]' <"$ROOT/XADEN_DOCS_VERSION")}" date entry section page source summary weight=0 preview=false
   mkdir "$WORK_DIR/release"
   if [ -n "${XADEN_SOURCE:-}" ]; then
     tag="$(use_local_source "$XADEN_SOURCE")"
     date="$(date +%F)"
+    preview=true
   else
     printf '%s' "$tag" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$' || die "REQ-006: '$tag' is not a release tag like v1.2.3"
     has_command curl || die "curl not found"
@@ -272,14 +219,19 @@ main() {
     date="$(release_date "$tag")"
     [ -n "$date" ] || die "REQ-006: could not read the release date of $tag"
   fi
-  check_all_headings_mapped "$WORK_DIR/release/$GETTING_STARTED"
-  # everything generated goes; _index.md and quick-start.md are hand-written
-  find "$DOCS_DIR" -type f ! -name '_index.md' ! -name 'quick-start.md' -delete
-  for entry in "${ROLE_PAGES[@]}"; do
-    IFS='|' read -r role title summary <<<"$entry"
-    render_role_page "$role" "$title" "$summary" "$WORK_DIR/release" "$tag" "$date"
+  [ -d "$WORK_DIR/release/docs/guide" ] || die "REQ-006: docs/guide/ is missing in the $tag release; use a release that has the guides"
+  check_every_guide_has_a_page "$WORK_DIR/release"
+  # everything generated goes; the hand-written _index.md files stay
+  find "$DOCS_DIR/developer-guide" "$DOCS_DIR/admin-guide" -type f ! -name '_index.md' -delete 2>/dev/null || true
+  for entry in "${PAGES[@]}"; do
+    IFS='|' read -r section page source summary <<<"$entry"
+    weight=$((weight + 10))
+    render_page "$section" "$page" "$source" "$summary" "$weight" "$WORK_DIR/release"
   done
-  info "docs of $tag rendered: ${#ROLE_PAGES[@]} pages"
+  check_reference_covers_commands "$WORK_DIR/release"
+  mkdir -p "$ROOT/data"
+  printf 'tag: "%s"\ndate: "%s"\npreview: %s\n' "$tag" "$date" "$preview" >"$ROOT/data/release.yaml"
+  info "docs of $tag rendered: ${#PAGES[@]} pages"
 }
 
 main "$@"

@@ -16,7 +16,7 @@ scripts/build-css.sh
 hugo server
 ```
 
-- `scripts/sync-docs.sh`: downloads the Xaden release named in `XADEN_DOCS_VERSION` and renders its documentation into `content/docs/`. It stops with an error if the release has a section it does not know.
+- `scripts/sync-docs.sh`: downloads the Xaden release named in `XADEN_DOCS_VERSION` and renders its guide files into `content/docs/`. It stops with an error if the release has a guide file it does not know or a link it cannot resolve. `XADEN_SOURCE=<xaden checkout> scripts/sync-docs.sh` previews unreleased guides (never in CI).
 - `scripts/build-css.sh`: builds the stylesheet with Tailwind into `themes/xaden/assets/css/style.css`, a generated file that git ignores.
 - `hugo server`: serves the site at http://localhost:1313 and rebuilds when you edit a file.
 
@@ -31,11 +31,10 @@ scripts/check-site.sh
 
 | Path | Purpose |
 |------|---------|
-| `content/` | Pages you write: home (`_index.md`), About, imprint, privacy, Quick start |
-| `docs-parts/` | Texts for the Admins and Security pages that the site writes itself |
+| `content/` | Pages you write: home (`_index.md`), About, imprint, privacy, and in `content/docs/` Quick start, the guide overviews, Reference, Security and Troubleshooting |
 | `themes/xaden/` | Layouts, Tailwind stylesheet, fonts, logo and artwork |
 | `XADEN_DOCS_VERSION` | The Xaden release the documentation describes |
-| `scripts/sync-docs.sh` | Builds the Admins, Developers and Security pages from that release |
+| `scripts/sync-docs.sh` | Builds the pages of the Developer Guide and the Admin Guide from the guide files of that release (`PAGES` in the script is the list and the order) |
 | `static/` | Files copied as they are, such as `security.txt` and the `CNAME` for xaden.dev |
 | `docs/requirements/` | What the site must do, one file per requirement |
 | `docs/threat-model.md`, `SECURITY.md` | Security of the site and how to report a problem |
