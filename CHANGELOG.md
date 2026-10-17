@@ -5,7 +5,6 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Added
-- Quick start: step 3 shows the kickoff line for Claude Code, Codex CLI and GitHub Copilot, with the `--assistants` option each needs; step 4 names the `/feature` and `$feature` forms.
 - Prepare the site before a Xaden release is published: `XADEN_SOURCE=<checkout> scripts/sync-docs.sh` renders the tag named in `XADEN_DOCS_VERSION` from the checkout's git (REQ-006); `XADEN_DOCS_VERSION` is now v0.3.0 with the new Check for updates page and the `xaden update-check` Reference entry.
 - Reference: commands in three groups (project, work, team), the settings of `xaden/xaden.conf`, files and folders, exit codes and environment. The build fails when a command in `xaden help` has no entry.
 - Troubleshooting: one page, grouped by area, symptom with cause and fix.
