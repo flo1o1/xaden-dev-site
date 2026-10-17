@@ -5,7 +5,9 @@
 # file without a page, or an unreadable tarball fails the run, so nothing is dropped silently. The pages
 # that the site writes itself (Quick start, Reference, Security, Troubleshooting) live in content/.
 # Usage: scripts/sync-docs.sh [tag]    (needs curl, tar, awk, perl)
-#        XADEN_SOURCE=<xaden checkout> scripts/sync-docs.sh    local preview of unreleased docs (not in CI)
+#        XADEN_SOURCE=<xaden checkout> scripts/sync-docs.sh    local preview (not in CI): renders the tag in
+#        XADEN_DOCS_VERSION from the checkout's git, so a release can be prepared before it is published;
+#        without that local tag it renders the working tree, uncommitted edits included
 set -euo pipefail
 
 SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -31,6 +33,7 @@ PAGES=(
   "admin-guide|requirements-and-platforms|docs/guide/admin/requirements-and-platforms.md|What Xaden needs, and what differs on Linux, macOS and Windows."
   "admin-guide|install-xaden|docs/guide/admin/install-xaden.md|Get Xaden onto your machine with git or from a zip archive."
   "admin-guide|update-xaden|docs/guide/admin/update-xaden.md|Move the Xaden on your machine to a newer version."
+  "admin-guide|check-for-updates|docs/guide/admin/check-for-updates.md|Let Xaden report newer versions and dependencies, as often as you choose."
   "admin-guide|pin-one-version-per-project|docs/guide/admin/pin-one-version-per-project.md|Make a team use one Xaden version, and move it together."
   "admin-guide|verify-releases|docs/guide/admin/verify-releases.md|Check checksums and signatures, and know what they prove."
   "admin-guide|optional-tools-and-plugins|template/docs/optional-tools.md|Extra checks and assistant plugins, and their risks."
@@ -190,24 +193,32 @@ check_reference_covers_commands() {
   [ -z "$missing" ] || die "REQ-002: commands in 'xaden help' without a Reference entry:$missing (add a '## \`xaden <command>\`' heading to content/docs/reference/)"
 }
 
-# use_local_source <checkout>: preview of unreleased docs. Copies the checkout (working tree, so
-# uncommitted edits show) into the release folder; prints its version tag. Never used in CI.
+# use_local_source <checkout> <tag>: preview of unreleased docs. Extracts the local git tag from the
+# checkout when it exists (a release prepared before it is published), else copies the working tree
+# (uncommitted edits show) into the release folder. Prints "<version tag>|<date>". Never used in CI.
 use_local_source() {
-  local source=$1
+  local source=$1 tag=$2
   [ -z "${CI:-}" ] || die "REQ-006: XADEN_SOURCE is for local previews and is refused when CI is set"
   [ -f "$source/$GETTING_STARTED" ] && [ -f "$source/VERSION" ] || die "REQ-006: $source is not a Xaden checkout ($GETTING_STARTED or VERSION missing)"
-  warn "PREVIEW of unreleased files from $source: content/docs/ is git-ignored, do not publish this build"
+  if git -C "$source" rev-parse -q --verify "refs/tags/$tag^{commit}" >/dev/null 2>&1; then
+    warn "PREVIEW of the local tag $tag from $source: content/docs/ is git-ignored, do not publish this build"
+    git -C "$source" archive "$tag" | tar -x -C "$WORK_DIR/release"
+    printf '%s|%s' "$tag" "$(git -C "$source" log -1 --format=%as "$tag")"
+    return
+  fi
+  warn "PREVIEW of unreleased files from $source (no local tag $tag): content/docs/ is git-ignored, do not publish this build"
   tar -C "$source" --exclude=./.git --exclude=./inbox --exclude=./node_modules -cf - . |
     tar -x -C "$WORK_DIR/release"
-  printf 'v%s' "$(tr -d '[:space:]' <"$source/VERSION")"
+  printf 'v%s|%s' "$(tr -d '[:space:]' <"$source/VERSION")" "$(date +%F)"
 }
 
 main() {
   local tag="${1:-$(tr -d '[:space:]' <"$ROOT/XADEN_DOCS_VERSION")}" date entry section page source summary weight=0 preview=false
   mkdir "$WORK_DIR/release"
   if [ -n "${XADEN_SOURCE:-}" ]; then
-    tag="$(use_local_source "$XADEN_SOURCE")"
-    date="$(date +%F)"
+    entry="$(use_local_source "$XADEN_SOURCE" "$tag")"
+    tag="${entry%%|*}"
+    date="${entry#*|}"
     preview=true
   else
     printf '%s' "$tag" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$' || die "REQ-006: '$tag' is not a release tag like v1.2.3"

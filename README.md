@@ -22,7 +22,7 @@ scripts/build-css.sh
 hugo server
 ```
 
-- `scripts/sync-docs.sh`: downloads the Xaden release named in `XADEN_DOCS_VERSION` and renders its guide files into `content/docs/`. It stops with an error if the release has a guide file it does not know or a link it cannot resolve. `XADEN_SOURCE=<xaden checkout> scripts/sync-docs.sh` previews unreleased guides (never in CI).
+- `scripts/sync-docs.sh`: downloads the Xaden release named in `XADEN_DOCS_VERSION` and renders its guide files into `content/docs/`. It stops with an error if the release has a guide file it does not know or a link it cannot resolve. `XADEN_SOURCE=<xaden checkout> scripts/sync-docs.sh` previews unreleased guides (never in CI): it renders the tag from `XADEN_DOCS_VERSION` out of the checkout's git, or the working tree if that tag does not exist there.
 - `scripts/build-css.sh`: builds the stylesheet with Tailwind into `themes/xaden/assets/css/style.css`, a generated file that git ignores.
 - `hugo server`: serves the site at http://localhost:1313 and rebuilds when you edit a file.
 
@@ -45,6 +45,12 @@ scripts/check-site.sh
 | `docs/requirements/` | What the site must do, one file per requirement |
 | `docs/threat-model.md`, `SECURITY.md` | Security of the site and how to report a problem |
 | `CLAUDE.md` | Rules for AI assistants working on this repository |
+
+## Prepare the site for a release that is not published yet
+
+1. In the Xaden checkout, create the tag of the coming release locally (for example `v0.3.0`).
+2. On a site branch, set `XADEN_DOCS_VERSION` to that tag and run `XADEN_SOURCE=../code scripts/sync-docs.sh`, then `scripts/dev.sh`.
+3. Change the site, run `scripts/check.sh` and `scripts/check-site.sh`, commit. Open the pull request once the tag is pushed to GitHub: CI downloads the tag, so it stays red until then. Merge when it is green.
 
 ## How a change goes live
 

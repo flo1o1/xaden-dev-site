@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Added
+- Prepare the site before a Xaden release is published: `XADEN_SOURCE=<checkout> scripts/sync-docs.sh` renders the tag named in `XADEN_DOCS_VERSION` from the checkout's git (REQ-006); `XADEN_DOCS_VERSION` is now v0.3.0 with the new Check for updates page and the `xaden update-check` Reference entry.
+
 ### Changed
 - The documentation is restructured by kind of use. Docs menu: Quick start, Developer Guide, Admin Guide, Reference, Security, Troubleshooting. The two guides have one page per task (Developer Guide: create a project, add Xaden to a repository, check modes and baselines, kick off, build features, release, join a project, other assistants and local models; Admin Guide: requirements and platforms, install, update, pin one version per project, verify releases, optional tools and plugins, update a classic project, uninstall). Every page starts with the shortest path and ends with the special cases; headings say what the reader does.
 - The guide pages are generated from one source file each in the Xaden release (`docs/guide/` and the shipped guides), not cut out of Getting started with patterns. `scripts/sync-docs.sh` lists the pages, resolves links between them, and fails on a guide file without a page. Releases before v0.2.4 have no `docs/guide/`, so `XADEN_DOCS_VERSION` must move to the release that has them before CI can render the site.
