@@ -9,7 +9,9 @@ ROOT="$(cd "$SCRIPTS/.." && pwd)"
 
 # Re-render unless the last render was a release render of the pinned tag. With XADEN_SOURCE set it always
 # re-renders (the checkout may have changed); that is local and quick.
-tag="$(tr -d '[:space:]' <"$ROOT/XADEN_DOCS_VERSION")"
+# shellcheck source=SCRIPTDIR/lib.sh
+source "$SCRIPTS/lib.sh"
+tag="v$(xaden_version "$(tr -d '[:space:]' <"$ROOT/VERSION")")"
 if [ -n "${XADEN_SOURCE:-}" ] || ! grep -qx "tag: \"$tag\"" "$ROOT/data/release.yaml" 2>/dev/null ||
   ! grep -qx "preview: false" "$ROOT/data/release.yaml" 2>/dev/null; then
   "$SCRIPTS/sync-docs.sh"

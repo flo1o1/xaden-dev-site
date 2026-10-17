@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Renders the guide pages of one Xaden release into content/docs/ (REQ-006): one page per source file,
-# the Developer Guide and the Admin Guide (REQ-002). Source: the release tarball of the tag in
-# XADEN_DOCS_VERSION; unreleased changes never appear. A missing source, an unknown link target, a guide
-# file without a page, or an unreadable tarball fails the run, so nothing is dropped silently. The pages
+# the Developer Guide and the Admin Guide (REQ-002). Source: the release tarball of the Xaden
+# tag that VERSION names, without a re-publish sequence (REQ-023); unreleased changes never appear. A missing
+# source, an unknown link target, a guide file without a page, or an unreadable tarball fails the run, so nothing is dropped silently. The pages
 # that the site writes itself (Quick start, Reference, Security, Troubleshooting) live in content/.
 # Usage: scripts/sync-docs.sh [tag]    (needs curl, tar, awk, perl)
 #        XADEN_SOURCE=<xaden checkout> scripts/sync-docs.sh    local preview (not in CI): renders the tag in
-#        XADEN_DOCS_VERSION from the checkout's git, so a release can be prepared before it is published;
+#        VERSION from the checkout's git, so a release can be prepared before it is published;
 #        without that local tag it renders the working tree, uncommitted edits included
 set -euo pipefail
 
@@ -235,7 +235,7 @@ use_local_source() {
 }
 
 main() {
-  local tag="${1:-$(tr -d '[:space:]' <"$ROOT/XADEN_DOCS_VERSION")}" date entry section page source summary weight=0 preview=false
+  local tag="${1:-v$(xaden_version "$(tr -d '[:space:]' <"$ROOT/VERSION")")}" date entry section page source summary weight=0 preview=false
   mkdir "$WORK_DIR/release"
   if [ -n "${XADEN_SOURCE:-}" ]; then
     entry="$(use_local_source "$XADEN_SOURCE" "$tag")"

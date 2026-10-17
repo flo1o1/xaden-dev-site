@@ -30,7 +30,7 @@ printf '# Getting started\n' >"$WORK/xaden/GETTING-STARTED.md"
 printf '0.0.1\n' >"$WORK/xaden/VERSION"
 git -C "$WORK/xaden" add -A
 git -C "$WORK/xaden" -c user.name=t -c user.email=t@example.com commit -q -m init
-pinned="$(tr -d '[:space:]' <"$ROOT/XADEN_DOCS_VERSION")"
+pinned="v$(tr -d '[:space:]' <"$ROOT/VERSION" | sed 's/-.*//')"
 expect_refusal "without the pinned tag the working tree is rendered" "no local tag $pinned" -u CI XADEN_SOURCE="$WORK/xaden"
 git -C "$WORK/xaden" tag "$pinned"
 expect_refusal "the pinned tag is rendered from the checkout's git" "PREVIEW of the local tag $pinned" -u CI XADEN_SOURCE="$WORK/xaden"
