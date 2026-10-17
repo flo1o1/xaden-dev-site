@@ -1,10 +1,12 @@
 {{ define "main" }}
-<div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-[14rem_1fr]">
+<div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-[16rem_1fr]">
   <aside class="md:sticky md:top-6 md:self-start">{{ partial "docs-nav.html" . }}</aside>
   <article class="min-w-0">
-    {{ with .Params.role }}<p class="eyebrow">{{ . | title }}</p>{{ end }}
+    {{ if ne .Parent.RelPermalink "/docs/" }}<p class="eyebrow"><a href="{{ .Parent.RelPermalink }}" class="hover:text-accent">{{ .Parent.Title }}</a></p>{{ end }}
     <h1 class="mb-6 mt-2 text-3xl font-bold md:text-4xl">{{ .Title }}</h1>
     <div class="prose prose-xaden max-w-none">{{ .Content }}</div>
+    {{ partial "docs-pager.html" . }}
+    {{ partial "docs-stamp.html" . }}
   </article>
 </div>
 {{ end }}

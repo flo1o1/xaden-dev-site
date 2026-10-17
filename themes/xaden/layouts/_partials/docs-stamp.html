@@ -1,0 +1,6 @@
+{{/* Which Xaden release the docs describe (written by scripts/sync-docs.sh). */}}
+{{ with hugo.Data.release }}
+<p class="mt-10 border-t border-line pt-4 text-sm text-muted">
+  {{ if .preview }}Preview of unreleased documentation after Xaden {{ .tag }}. It is not for publishing.{{ else }}These pages describe Xaden {{ .tag }}, released {{ .date }}.{{ end }}
+</p>
+{{ end }}

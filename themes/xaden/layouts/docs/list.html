@@ -1,27 +1,42 @@
 {{ define "main" }}
+{{ if eq .RelPermalink "/docs/" }}
+{{/* the docs landing page: one card per guide or page, in menu order */}}
 <div class="mx-auto max-w-6xl px-4 py-12">
   <p class="eyebrow">Documentation</p>
   <h1 class="mt-2 text-4xl font-bold">{{ .Title }}</h1>
   <div class="prose prose-lg prose-xaden mt-4 max-w-2xl">{{ .Content }}</div>
-  <div class="mt-10 grid gap-8 lg:grid-cols-3 md:grid-cols-2">
-    {{ range hugo.Data.roles }}
-      {{ $role := .id }}
-      <section id="{{ $role }}" class="card" aria-labelledby="{{ $role }}-title">
-        <p class="eyebrow">{{ .name }}</p>
-        <h2 id="{{ $role }}-title" class="mt-2 text-2xl font-bold">{{ .title }}</h2>
-        <p class="mt-2 text-muted">{{ .text }}</p>
-        {{ $page := site.GetPage (printf "/docs/%s" $role) }}
+  <div class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    {{ range .Pages }}
+      <section class="card" aria-labelledby="{{ .File.BaseFileName | urlize }}-title">
+        <h2 id="{{ .File.BaseFileName | urlize }}-title" class="text-2xl font-bold">{{ .Title }}</h2>
+        <p class="mt-2 text-muted">{{ .Description }}</p>
+        {{ if .IsSection }}
         <ul class="mt-5 space-y-2">
-          {{/* the page has no h1, so Hugo wraps its h2 sections in one untitled root heading */}}
-          {{ range $page.Fragments.Headings }}
-            {{ range .Headings }}
-              <li><a href="{{ $page.RelPermalink }}#{{ .ID }}" class="font-semibold text-accent hover:underline">{{ .Title | plainify }}</a></li>
-            {{ end }}
-          {{ end }}
+          {{ range .Pages }}<li><a href="{{ .RelPermalink }}" class="font-semibold text-accent hover:underline">{{ .Title }}</a></li>{{ end }}
         </ul>
-        <p class="mt-6"><a href="{{ $page.RelPermalink }}" class="btn btn-primary">Open the {{ .name }} page</a></p>
+        {{ end }}
+        <p class="mt-6"><a href="{{ .RelPermalink }}" class="btn btn-primary">Open {{ .Title }}</a></p>
       </section>
     {{ end }}
   </div>
+  {{ partial "docs-stamp.html" . }}
 </div>
+{{ else }}
+{{/* the overview of a guide or of the reference: its text, then its pages */}}
+<div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-[16rem_1fr]">
+  <aside class="md:sticky md:top-6 md:self-start">{{ partial "docs-nav.html" . }}</aside>
+  <article class="min-w-0">
+    <p class="eyebrow">Documentation</p>
+    <h1 class="mb-6 mt-2 text-3xl font-bold md:text-4xl">{{ .Title }}</h1>
+    <div class="prose prose-xaden max-w-none">{{ .Content }}</div>
+    <h2 class="mt-10 text-2xl font-bold">Pages in this section</h2>
+    <ul class="mt-4 space-y-3">
+      {{ range .Pages }}
+      <li><a href="{{ .RelPermalink }}" class="font-semibold text-accent hover:underline">{{ .Title }}</a><span class="block text-sm text-muted">{{ .Description }}</span></li>
+      {{ end }}
+    </ul>
+    {{ partial "docs-stamp.html" . }}
+  </article>
+</div>
+{{ end }}
 {{ end }}

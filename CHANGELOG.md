@@ -4,6 +4,22 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Added
+- Prepare the site before a Xaden release is published: `XADEN_SOURCE=<checkout> scripts/sync-docs.sh` renders the tag named in `XADEN_DOCS_VERSION` from the checkout's git (REQ-006); `XADEN_DOCS_VERSION` is now v0.3.0 with the new Check for updates page and the `xaden update-check` Reference entry.
+
+### Changed
+- The documentation is restructured by kind of use. Docs menu: Quick start, Developer Guide, Admin Guide, Reference, Security, Troubleshooting. The two guides have one page per task (Developer Guide: create a project, add Xaden to a repository, check modes and baselines, kick off, build features, release, join a project, other assistants and local models; Admin Guide: requirements and platforms, install, update, pin one version per project, verify releases, optional tools and plugins, update a classic project, uninstall). Every page starts with the shortest path and ends with the special cases; headings say what the reader does.
+- The guide pages are generated from one source file each in the Xaden release (`docs/guide/` and the shipped guides), not cut out of Getting started with patterns. `scripts/sync-docs.sh` lists the pages, resolves links between them, and fails on a guide file without a page. Releases before v0.2.4 have no `docs/guide/`, so `XADEN_DOCS_VERSION` must move to the release that has them before CI can render the site.
+- Home page copy: a headline about AI code crossing the parapet and what Xaden checks on every step, benefit cards that state the means, four paths into the docs. `xaden create` replaces `xaden new` everywhere.
+- Security, Quick start and the guide overviews are written on the site (`content/docs/`); `docs-parts/` is gone.
+
+### Added
+- Reference: commands in three groups (project, work, team), the settings of `xaden/xaden.conf`, files and folders, exit codes and environment. The build fails when a command in `xaden help` has no entry.
+- Troubleshooting: one page, grouped by area, symptom with cause and fix.
+- Docs sidebar tree, previous and next links, and a stamp on every docs page with the Xaden release it describes (or "preview").
+- Site check: every internal link and `#anchor` resolves.
+- Requirement REQ-021: the site speaks plainly, with a light touch of the Empyrean world.
+
 ### Removed
 - The install command and its note in the home page hero; the hero button "Quick start" leads to the install steps. REQ-018 is dropped, its remaining criteria moved to REQ-002.
 - The Xaden scaffold: prompts, presets, personas, stack checks, requirements tooling, the pre-commit hook, the release script and the configuration of other AI tools. `scripts/check.sh` now runs shellcheck and gitleaks; `CLAUDE.md` holds the few rules that remain. The requirements and the threat model stay as plain files.

@@ -46,6 +46,8 @@ jobs:
           sudo install tailwindcss /usr/local/bin/tailwindcss
       - name: Test the docs version bump
         run: tests/bump-docs-version.sh
+      - name: Test the local preview guards of the docs sync
+        run: tests/sync-docs-local.sh
       - name: Render the docs of the pinned Xaden release
         env:
           GITHUB_TOKEN: ${{ github.token }} # read-only (contents: read); lifts the API rate limit for the release date

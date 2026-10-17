@@ -105,6 +105,26 @@ check_docs_prefer_xaden() {
 $found"
 }
 
+# check_internal_links: REQ-002, every link to a page of this site, and every #anchor in one, resolves.
+check_internal_links() {
+  local broken
+  broken="$(perl -MFile::Find -e '
+    my ($root, %ids, %pages) = ($ARGV[0]);
+    find(sub { return unless /\.html$/; my $rel = $File::Find::name; $rel =~ s/^\Q$root\E//; $rel =~ s/index\.html$//;
+      open my $fh, "<", $_ or die; local $/; my $html = <$fh>; $pages{$rel} = $html; $ids{$rel}{$1} = 1 while $html =~ /\sid="?([^"\s>]+)/g }, $root);
+    my %seen;
+    for my $page (sort keys %pages) {
+      while ($pages{$page} =~ /href="?(\/[^"\s>#]*)(#[^"\s>]*)?/g) {
+        my ($path, $anchor) = ($1, $2); next if $path =~ m{^/(img|css|js|\.well-known|fonts|CNAME)} || $path =~ /\.[a-z0-9]+$/;
+        my $key = exists $pages{$path} ? $path : "$path/"; $key =~ s{//$}{/};
+        my $problem = !exists $pages{$key} ? "page missing" : ($anchor && !$ids{$key}{substr($anchor, 1)}) ? "anchor missing" : next;
+        print "$page -> $path" . ($anchor // "") . " ($problem)\n" unless $seen{"$path$anchor$problem"}++;
+      }
+    }' "$OUTPUT_DIR" | head -n 10)"
+  [ -z "$broken" ] || die "REQ-002: broken internal links:
+$broken"
+}
+
 main() {
   info "build"
   build_site
@@ -118,6 +138,8 @@ main() {
   check_docs_have_no_internal_references
   info "docs use the xaden command (REQ-002)"
   check_docs_prefer_xaden
+  info "internal links and anchors (REQ-002)"
+  check_internal_links
   info "security.txt (REQ-009)"
   check_security_txt
   info "site checks passed"
