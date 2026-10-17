@@ -11,6 +11,8 @@ Florian Auer, see the [imprint](/imprint/). Contact: [hello@xaden.dev](mailto:he
 This site sets no cookies, uses no analytics and loads nothing from other websites: fonts, styles and
 images come from this site itself. It has no forms, accounts or comments.
 
+If you choose your assistant on a docs page, your browser remembers the choice (`localStorage`, key `xaden-assistant`) so the other docs pages show the right commands. The choice stays in your browser and is never sent. Clearing the site data in your browser removes it.
+
 ## Hosting
 
 The site is hosted on GitHub Pages, a service of GitHub, Inc. (USA). When you visit a page, GitHub
