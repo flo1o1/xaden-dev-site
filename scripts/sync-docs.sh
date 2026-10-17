@@ -181,7 +181,7 @@ render_page() {
   mkdir -p "$DOCS_DIR/$section"
   {
     printf -- '---\ntitle: "%s"\nweight: %s\ndescription: "%s"\n---\n\n' "$title" "$weight" "$summary"
-    awk '!skipped && /^# / { skipped = 1; next } { print }' "$release/$source" |
+    awk '!skipped && /^# / { skipped = 1; next } /^## Next$/ { exit } { print }' "$release/$source" |
       strip_shell_comments | rewrite_for_readers | assistant_commands | rewrite_links "$source"
   } >"$file"
   case "$source" in
