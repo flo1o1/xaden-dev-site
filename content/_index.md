@@ -4,7 +4,7 @@ description: "Xaden is an open source starter that makes AI-generated code meet 
 hero:
   eyebrow: "Guardrails for AI Supported Software Development"
   title: "Your AI crosses the parapet. Xaden checks every step."
-  lead: "Vibe coding is like crossing a parapet without a railing. To protect your business from falling, Xaden provides your AI with a set of rules, conducts essential survival tests, and assigns every change to a specific requirement. Anything that doesn’t meet the rules is torched before yout get in trouble."
+  lead: "Vibe coding is like crossing a parapet without a railing. To protect your business from falling, Xaden provides your AI with a set of rules, conducts essential survival tests, and assigns every change to a specific requirement. Anything that doesn’t meet the rules is torched before you get in trouble."
   primary: "Quick start"
   secondary: "View on GitHub"
 benefits:
