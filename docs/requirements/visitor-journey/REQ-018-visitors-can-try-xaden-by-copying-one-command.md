@@ -15,7 +15,7 @@ When I am curious about Xaden and have a terminal open, I want to copy one comma
 
 ## Acceptance criteria
 
-- Given the home page, then the first screen shows one command with a copy button, and the command installs the `xaden` command from a fresh clone and creates a project with `xaden new`
+- Given the home page, then the first screen shows one command with a copy button, and the command installs the `xaden` command from a fresh clone and creates a project with `xaden create`
 - Given the copy button, when pressed, then the command is on the clipboard and the button says so
 - Given JavaScript disabled, then the command is still shown and can be selected and copied by hand
 - Given every code block on the docs pages, then it has a copy button too
