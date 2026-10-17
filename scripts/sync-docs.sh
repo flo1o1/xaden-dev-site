@@ -13,7 +13,7 @@ ROOT="$(cd "$SCRIPTS/.." && pwd)"
 # shellcheck source=SCRIPTDIR/lib.sh
 source "$SCRIPTS/lib.sh"
 
-XADEN_REPOSITORY="flo1o1/xaden"
+XADEN_REPOSITORY="flo1o1/xaden-dev"
 DOCS_DIR="$ROOT/content/docs"
 GETTING_STARTED="GETTING-STARTED.md"
 # Pages generated from the release: section | page name | source file in the release | summary.
@@ -53,7 +53,7 @@ release_date() {
 }
 
 # strip_shell_comments: from stdin, shell code blocks (bash, sh, shell or unlabeled) without comments,
-# so a copied block pastes into a terminal as is (REQ-018). What a comment said moves into a list
+# so a copied block pastes into a terminal as is (REQ-002). What a comment said moves into a list
 # after the block ("- `command`: comment") so the explanation stays next to the code. Other
 # languages keep their comments.
 strip_shell_comments() {

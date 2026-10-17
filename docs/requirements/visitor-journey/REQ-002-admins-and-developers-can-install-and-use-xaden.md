@@ -4,7 +4,7 @@ type: job
 epic: visitor-journey
 priority: must
 status: approved
-updated: 2026-10-15
+updated: 2026-10-17
 ---
 
 # Visitors can install, use, adopt and operate Xaden from the documentation alone
@@ -34,3 +34,6 @@ When I decide to try Xaden, I want task-oriented instructions to install, update
 - Given any command in the docs, then it uses the `xaden` command wherever one exists, and `scripts/install.sh` appears only to install `xaden`
 - Given any link to a page of the site or to an anchor on it, then it resolves, and the site build fails when one does not
 - Given the Security page, then it holds all security information, at a high level: it explains how Xaden helps at each stage (before building, while building, on every commit, when downloading, before a release, when something goes wrong) and links to deeper sources such as OWASP, instead of reproducing a checklist
+- Given every code block on the docs pages and the Quick start page, then it has a copy button, and when pressed the code is on the clipboard and the button says so
+- Given any shell code block on the site, then it holds only commands, with no comments, so a copied block can be pasted into a terminal as is, and what each command does is explained in the text next to the block
+- Given the hero button "Quick start" on the home page, when followed, then it opens a Quick start page that leads from the clone to the first feature in a few commands, each with a copy button, and links to the Developer Guide and the Admin Guide for details

@@ -18,6 +18,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 - Requirement REQ-021: the site speaks plainly, with a light touch of the Empyrean world.
 
 ### Removed
+- The install command and its note in the home page hero; the hero button "Quick start" leads to the install steps. REQ-018 is dropped, its remaining criteria moved to REQ-002.
 - The Xaden scaffold: prompts, presets, personas, stack checks, requirements tooling, the pre-commit hook, the release script and the configuration of other AI tools. `scripts/check.sh` now runs shellcheck and gitleaks; `CLAUDE.md` holds the few rules that remain. The requirements and the threat model stay as plain files.
 
 ### Added
