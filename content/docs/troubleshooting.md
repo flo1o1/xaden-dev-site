@@ -96,6 +96,11 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 **Cause:** the commit skipped the hook (`--no-verify`, or a clone that never ran `xaden setup`). The workflow `xaden adopt` writes runs `xaden verify-commits --ci` on every commit a push or pull request brings, and the log names the commit and the rule.
 **Fix:** reword the commit (`git commit --amend` or an interactive rebase on your own branch) so it cites `Refs: REQ-nnn` or, for a `fix`, `Refs: none`, and push again. A project adopted before this check existed gets the step with `xaden pin`.
 
+### CI fails with `the checkout is shallow` or `cannot read the commit range`
+
+**Cause:** `xaden verify-commits --ci` could not read the commits of the run, so it did not check them. The usual reason is a checkout with the default depth of 1 (`actions/checkout` without `fetch-depth: 0`), or a pull request whose target branch is not in the checkout. Exit status `2` means "could not check", and it applies under every commit convention. Older versions printed `commit messages OK` after looking at one commit.
+**Fix:** check out the full history: `fetch-depth: 0` in the `actions/checkout` step. The workflow `xaden adopt` writes sets it already; a workflow you edited or another CI system must do the same.
+
 ### A warning says `commit references: advisory only`
 
 **Cause:** `commit-convention` in `xaden/xaden.conf` is `other`, so the `Refs:` checks only advise. `xaden adopt` sets it when the history does not follow Conventional Commits (with fewer than 5 commits, when any subject does not).

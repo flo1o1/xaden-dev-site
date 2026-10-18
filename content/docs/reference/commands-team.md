@@ -139,9 +139,11 @@ xaden verify-commits --ci
 xaden verify-commits <revision-range>
 ```
 
-`--ci` derives the range from the variables the workflow passes: `EVENT_NAME`, `BASE_REF`, `BEFORE_SHA` and `DEFAULT_BRANCH`. For a pull request that is every commit since the target branch, for a push every commit since the previous tip. A range it cannot derive fails; it is never read as empty. Merge commits are skipped; every commit they bring in is checked.
+`--ci` derives the range from the variables the workflow passes: `EVENT_NAME`, `BASE_REF`, `BEFORE_SHA` and `DEFAULT_BRANCH`. For a pull request that is every commit since the target branch, for a push every commit since the previous tip. A range it cannot derive or read fails; it is never read as empty. In an adopted project, a first push or a force-push of the default branch checks only the commits after the one that added `xaden/xaden.conf`, so history from before the adoption never fails the step. Merge commits are skipped; every commit they bring in is checked.
 
-With `commit-convention = conventional` a wrong format, a `feat` without `Refs: REQ-nnn`, a `fix` without a requirement ID or `none`, or an unknown `REQ-nnn` or `CC-nn` fails the command and the log names the commit. With `other` the same findings are warnings and the exit status is `0`. A workflow from before this command exists gets the step when you run [`xaden pin`]({{< relref "docs/reference/commands-team#xaden-pin" >}}).
+The command needs the full history. In a shallow checkout, or when git cannot list the range, it exits with status `2` and names `fetch-depth: 0`, whatever the commit convention. Status `1` means a commit failed the checks.
+
+With `commit-convention = conventional` a wrong format, a `feat` without `Refs: REQ-nnn`, a `fix` without a requirement ID or `none`, or an unknown `REQ-nnn` or `CC-nn` fails the command and the log names the commit. With `other` the same findings are warnings and the exit status is `0`; a run that could not read its range still exits with `2`. A workflow from before this command exists gets the step when you run [`xaden pin`]({{< relref "docs/reference/commands-team#xaden-pin" >}}).
 
 The command works in a project that adopted Xaden.
 
