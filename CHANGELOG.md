@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Changed
+- `scripts/dev.sh` renders the guides from the main of the Xaden checkout next to the site (`scripts/sync-docs.sh --main`), so the local preview shows what Xaden's `main` holds, including pages newer than the pinned release. Without that checkout it renders the pinned release as before.
+
 ### Added
 - A **Contributing** section next to the guides, below Reference: Install with git, Architecture, Work on Xaden, Release and sign Xaden, and Threat model and requirements. Its pages are generated from the Xaden release like the guides (`docs/guide/contributing/`); a release that does not carry them yet leaves the section empty. Contributing is exempt from the checks that keep repository paths and rule IDs out of the guides (REQ-005).
 
