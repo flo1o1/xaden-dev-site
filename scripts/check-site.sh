@@ -120,6 +120,12 @@ check_docs_prefer_xaden() {
 $found"
 }
 
+# check_rule_file: Xaden REQ-112, this repository's rule file says the user merges and the site's main mirrors Xaden's main.
+check_rule_file() {
+  grep -q 'the user merges' "$SCRIPTS/../CLAUDE.md" || die "Xaden REQ-112: CLAUDE.md no longer says the user merges"
+  grep -q "must show what Xaden's .main. does" "$SCRIPTS/../CLAUDE.md" || die "Xaden REQ-112: CLAUDE.md no longer says the site's main mirrors Xaden's main"
+}
+
 # check_internal_links: REQ-002, every link to a page of this site, and every #anchor in one, resolves.
 check_internal_links() {
   local broken
@@ -159,6 +165,8 @@ main() {
   check_internal_links
   info "security.txt (REQ-009)"
   check_security_txt
+  info "rule file (Xaden REQ-112)"
+  check_rule_file
   info "site checks passed"
 }
 

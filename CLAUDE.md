@@ -11,7 +11,7 @@ Static Hugo site for https://xaden.dev. See `README.md` for build, check and pub
 - To prepare the site before a Xaden release is published: tag it locally in the Xaden checkout, set `VERSION`, render with `XADEN_SOURCE=<checkout> scripts/sync-docs.sh`; the PR goes green only after the tag is on GitHub. Never push or create the tag yourself.
 - The site is published only from a version tag (`vX.Y.Z`, or `vX.Y.Z-0001` for a re-publish): release with `scripts/release-site.sh`, then tag the merge commit (README.md "Release the site"). Never create or push the tag yourself; releases happen only when the user asks.
 - Run `scripts/check.sh` and `scripts/check-site.sh` before declaring work done.
-- The site's `main` must show what Xaden's `main` does. After a change lands on Xaden's `main`, render the guides (`scripts/sync-docs.sh --main`) and grep every hand-written page (Quick start, Reference, Troubleshooting, Security, home, About) for the old behaviour; list any `xaden help` command the Reference lacks. Read `inbox/` drafts before scoping this work. If the whole goal cannot be reached, say so and ask. Deploying stays tied to a release tag.
+- The site's `main` must show what Xaden's `main` does. After a change lands on Xaden's `main`, render the guides (`scripts/sync-docs.sh --main`), grep every hand-written page (Quick start, Reference, Troubleshooting, Security, home, About) for the old behaviour, and compare the Reference with `xaden help` by hand. Read the drafts in the main checkout's `inbox/` (git-ignored, so a worktree has none) before scoping this work. If the whole goal cannot be reached, say so and ask. Deploying stays tied to a release tag.
 - Never read or commit `.env` files or secrets.
 
 ## Batch mode for small changes
