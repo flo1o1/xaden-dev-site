@@ -33,7 +33,7 @@ check.lint = make lint
 | `version` | `MAJOR.MINOR.PATCH` | The Xaden version the project pins. The tooling that runs is this version; `xaden doctor` compares it with the installed one. |
 | `checksum` | 64 hexadecimal characters | SHA-256 of the paths and contents of the pinned release. A download is installed only if it matches. |
 | `mode` | `advisory`, `changed-files`, `strict` | What a new finding does. See below. Default when missing: `strict`. |
-| `commit-convention` | `conventional`, `other` | `conventional` enforces Conventional Commits and the `Refs:` trailer; `other` lets the `Refs:` checks only advise. |
+| `commit-convention` | `conventional`, `other` | `conventional` enforces Conventional Commits and the `Refs:` trailer, in the commit hook and in CI; `other` lets the `Refs:` checks only advise. `xaden adopt` reads it from the history: `conventional` with no history, with at least 60 percent of the last 30 subjects (from 5 commits on) or with every subject (fewer than 5 commits) following Conventional Commits; otherwise `other`. A full `xaden check` prints a `TIP:` while it is `other`. |
 | `assistants` | comma-separated names, or `none` | The assistants the team uses. `claude` means `CLAUDE.md` exists with the line `@AGENTS.md`. |
 | `hook-checks` | comma-separated check names | The checks the pre-commit hook runs. Default: `lint`. The full run and CI run all checks. |
 | `expect` | comma-separated kinds: `test`, `lint`, `typecheck` | The kinds of checks the repository should have. A kind without a `check.<kind>` command is a gap. When the line is missing, Xaden looks at the files (`package.json`, `pyproject.toml`). |

@@ -38,6 +38,7 @@ Adds Xaden to the repository you are in, on a new branch and worktree. Run it in
 ```text
 xaden adopt [--scan | --plan] [--yes] [--assistants <list>] [--mode <mode>]
             [--check <kind>=<command>]... [--preset | --no-preset] [--skip-hooks] [--skip-ci]
+            [--commit-convention <conventional|other>]
 ```
 
 | Option | Meaning |
@@ -50,6 +51,7 @@ xaden adopt [--scan | --plan] [--yes] [--assistants <list>] [--mode <mode>]
 | `--check <kind>=<command>` | Name a check command the scan did not find, for example `--check test="make verify"`. Repeatable. |
 | `--preset`, `--no-preset` | Add Xaden's preset for Python or Node as a separate commit, or never. Without either, a terminal gets a question. |
 | `--skip-hooks`, `--skip-ci` | Do not chain into the git hooks, or do not add the workflow. |
+| `--commit-convention conventional\|other` | Overrides what the scan reads from the history. Without it the scan shows its evidence, for example `conventional (3 of 3 subjects)`. |
 
 Without a terminal and without `--yes`, `adopt` stops after the plan. It creates the branch `chore/adopt-xaden` in the folder
 `<repo>-adopt-xaden`; in a repository without commits it works in place.

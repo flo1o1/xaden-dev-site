@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Reference, Troubleshooting and Security describe the commit check in the adopted CI: the new `xaden verify-commits` entry, the `--commit-convention` option of `xaden adopt`, how the scan chooses `commit-convention`, and two Troubleshooting entries (REQ-107, REQ-108 of Xaden).
 - Reference: `findings-status.<name>` is recorded by `xaden adopt` only for status 1, and `require-signature` refuses an empty value and git checkouts of Xaden.
 - `scripts/dev.sh` renders the guides from the main of the Xaden checkout next to the site (`scripts/sync-docs.sh --main`), so the local preview shows what Xaden's `main` holds, including pages newer than the pinned release. Without that checkout it renders the pinned release as before.
 
