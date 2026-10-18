@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Reference and Troubleshooting describe the new settings and messages of the gate fixes on Xaden `main`: `findings-status.<name>`, `require-signature`, the change scope in CI (`EVENT_NAME`, `BASE_REF`, `BEFORE_SHA`), and exit code 6 under the policy.
 - Quick start installs Xaden with one command (`curl -fsSL https://xaden.dev/install | bash`) and points to the signed zip for people who want to verify it themselves. The reference describes `xaden upgrade` (updates Xaden itself) and `xaden pin` (moves a project), the `-dist` files, and the changed troubleshooting entries. This describes the next Xaden release; the generated guide pages follow with it.
 
 ## [0.5.0] - 2026-10-18

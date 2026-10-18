@@ -71,6 +71,16 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 **Cause:** the finding is not in the baseline and is in a file your change touches (`changed-files`), or anywhere (`strict`).
 **Fix:** fix it. If it existed before Xaden was adopted, ask the team whether it belongs in the baseline; letting a baseline grow is an approval point.
 
+### A check fails with `failed (exit status N)` although it printed nothing new
+
+**Cause:** the tool exited with a status Xaden does not know as "violations found", so it did not run to the end (a crash, a wrong option, a missing file). In earlier versions such a run could pass when its output was baselined.
+**Fix:** read the output above the message and fix the tool. If the status is how your tool reports findings, declare it: `findings-status.<name> = N` in `xaden/xaden.conf`. For `test` this is not possible.
+
+### A warning says `cannot tell which files this run changes`
+
+**Cause:** in `changed-files` mode Xaden had no previous tip or target branch to compare with (a first push, rewritten history, a shallow clone, CI without the event variables). That run checked all files, as `strict` does. `xaden.conf` is unchanged.
+**Fix:** let the workflow pass `EVENT_NAME`, `BASE_REF` and `BEFORE_SHA` to the check step and check out the full history (`fetch-depth: 0`). The workflow `xaden adopt` writes does.
+
 ### A warning says baselined findings are fixed
 
 **Cause:** findings in the baseline no longer occur, and this run could not shorten the file (CI, or the pre-commit hook).
@@ -102,6 +112,11 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 
 **Cause:** the signature of the release does not verify against the keys in `release-signers`. Nothing was installed.
 **Fix:** treat it as an attack until proven otherwise. Compare the key in `release-signers` with the one published on this site ([Verify releases]({{< relref "docs/admin-guide/verify-releases" >}})).
+
+### Xaden refuses to run: the project requires signed releases
+
+**Cause:** `require-signature = true` is set, and the installed Xaden has no verified signature on record or its files differ from the signed checksum.
+**Fix:** run `xaden fetch <version>` in a terminal; after a yes it checks the installed copy against the signed checksum and records the result. If it exits with code 6, do not work around it ([Verify releases]({{< relref "docs/admin-guide/verify-releases" >}})).
 
 ### `xaden check` says this is one Xaden version and the project pins another
 
