@@ -34,3 +34,7 @@ pinned="v$(tr -d '[:space:]' <"$ROOT/VERSION" | sed 's/-.*//')"
 expect_refusal "without the pinned tag the working tree is rendered" "no local tag $pinned" -u CI XADEN_SOURCE="$WORK/xaden"
 git -C "$WORK/xaden" tag "$pinned"
 expect_refusal "the pinned tag is rendered from the checkout's git" "PREVIEW of the local tag $pinned" -u CI XADEN_SOURCE="$WORK/xaden"
+# --main renders the working tree even though the pinned tag exists in the checkout
+output="$(env -u CI XADEN_SOURCE="$WORK/xaden" "$ROOT/scripts/sync-docs.sh" --main 2>&1 || true)"
+grep -q "PREVIEW of unreleased files" <<<"$output" || { printf 'FAIL: --main did not render the working tree:\n%s\n' "$output" >&2; exit 1; }
+printf 'ok: --main renders the working tree even when the pinned tag exists\n'

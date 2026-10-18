@@ -8,6 +8,8 @@
 #        XADEN_SOURCE=<xaden checkout> scripts/sync-docs.sh    local preview (not in CI): renders the tag in
 #        VERSION from the checkout's git, so a release can be prepared before it is published;
 #        without that local tag it renders the working tree, uncommitted edits included
+#        scripts/sync-docs.sh --main    local preview of what code's main holds: renders the working tree of the
+#        Xaden checkout next to this one (or XADEN_SOURCE), whatever tags it has; scripts/dev.sh does this
 set -euo pipefail
 
 SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -240,19 +242,24 @@ use_local_source() {
   [ -z "${CI:-}" ] || die "REQ-006: XADEN_SOURCE is for local previews and is refused when CI is set"
   [ -f "$source/$GETTING_STARTED" ] || die "REQ-006: $source is not a Xaden checkout ($GETTING_STARTED or VERSION missing)"
   [ -f "$source/VERSION" ] || die "REQ-006: $source is not a Xaden checkout ($GETTING_STARTED or VERSION missing)"
-  if git -C "$source" rev-parse -q --verify "refs/tags/$tag^{commit}" >/dev/null 2>&1; then
+  if [ "${SYNC_MAIN:-0}" != 1 ] && git -C "$source" rev-parse -q --verify "refs/tags/$tag^{commit}" >/dev/null 2>&1; then
     warn "PREVIEW of the local tag $tag from $source: content/docs/ is git-ignored, do not publish this build"
     git -C "$source" archive "$tag" | tar -x -C "$WORK_DIR/release"
     printf '%s|%s' "$tag" "$(git -C "$source" log -1 --format=%as "$tag")"
     return
   fi
-  warn "PREVIEW of unreleased files from $source (no local tag $tag): content/docs/ is git-ignored, do not publish this build"
-  tar -C "$source" --exclude=./.git --exclude=./inbox --exclude=./node_modules -cf - . |
+  warn "PREVIEW of unreleased files from $source (no local tag $tag, or --main): content/docs/ is git-ignored, do not publish this build"
+  tar -C "$source" --exclude=./.git --exclude=./inbox --exclude=./node_modules --exclude=./worktrees -cf - . |
     tar -x -C "$WORK_DIR/release"
   printf 'v%s|%s' "$(tr -d '[:space:]' <"$source/VERSION")" "$(date +%F)"
 }
 
 main() {
+  if [ "${1:-}" = "--main" ]; then
+    shift
+    export SYNC_MAIN=1
+    XADEN_SOURCE="${XADEN_SOURCE:-$ROOT/../code}"
+  fi
   local tag="${1:-v$(xaden_version "$(tr -d '[:space:]' <"$ROOT/VERSION")")}" date entry section page source summary weight=0 preview=false skipped=""
   mkdir "$WORK_DIR/release"
   if [ -n "${XADEN_SOURCE:-}" ]; then
