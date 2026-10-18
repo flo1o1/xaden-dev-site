@@ -39,6 +39,11 @@ PAGES=(
   "admin-guide|optional-tools-and-plugins|template/docs/optional-tools.md|Extra checks and assistant plugins, and their risks."
   "admin-guide|update-a-classic-project|docs/guide/admin/update-a-classic-project.md|Update a project that keeps its own copy of the tooling."
   "admin-guide|uninstall|docs/guide/admin/uninstall.md|Remove Xaden from a repository or from a machine."
+  "contributing|install-with-git|docs/guide/contributing/install-with-git.md|Clone Xaden to read its history, contribute or work on it."
+  "contributing|architecture|docs/guide/contributing/architecture.md|How the repository is organised and how the xaden command finds a version."
+  "contributing|work-on-xaden|docs/guide/contributing/work-on-xaden.md|How a change to Xaden is made, checked and landed."
+  "contributing|release-and-signing|docs/guide/contributing/release-and-signing.md|How a Xaden release is cut and signed."
+  "contributing|threat-model-and-requirements|docs/guide/contributing/threat-model-and-requirements.md|What Xaden protects, what it accepts, and where its requirements live."
 )
 # Site pages that sources link to: source file | page URL.
 SITE_TARGETS=(
@@ -182,13 +187,26 @@ render_page() {
   {
     printf -- '---\ntitle: "%s"\nweight: %s\ndescription: "%s"\n---\n\n' "$title" "$weight" "$summary"
     awk '!skipped && /^# / { skipped = 1; next } /^## Next$/ { exit } { print }' "$release/$source" |
-      strip_shell_comments | rewrite_for_readers | assistant_commands | rewrite_links "$source"
+      strip_shell_comments | if [ "$section" = contributing ]; then cat; else rewrite_for_readers; fi | assistant_commands | rewrite_links "$source"
   } >"$file"
   case "$source" in
     *kick-off-with-your-assistant.md|*build-features.md|*release-a-version.md|*join-a-project.md)
       grep -q '{{< \(prompt\|cmd\) ' "$file" ||
         die "REQ-022: $source has no assistant commands after the rewrite; its wording changed, update assistant_commands in scripts/sync-docs.sh" ;;
   esac
+}
+
+# section_is_newer_than_release <section> <release dir>: true when none of the section's source files is in the
+# release, so a section added after that release does not fail the pinned release's render (a section with
+# only some of its files still fails in render_page).
+section_is_newer_than_release() {
+  local entry entry_section source
+  for entry in "${PAGES[@]}"; do
+    IFS='|' read -r entry_section _ source _ <<<"$entry"
+    [ "$entry_section" = "$1" ] || continue
+    [ ! -f "$2/$source" ] || return 1
+  done
+  return 0
 }
 
 # check_every_guide_has_a_page <release dir>: a guide file without a page would be dropped silently.
@@ -235,7 +253,7 @@ use_local_source() {
 }
 
 main() {
-  local tag="${1:-v$(xaden_version "$(tr -d '[:space:]' <"$ROOT/VERSION")")}" date entry section page source summary weight=0 preview=false
+  local tag="${1:-v$(xaden_version "$(tr -d '[:space:]' <"$ROOT/VERSION")")}" date entry section page source summary weight=0 preview=false skipped=""
   mkdir "$WORK_DIR/release"
   if [ -n "${XADEN_SOURCE:-}" ]; then
     entry="$(use_local_source "$XADEN_SOURCE" "$tag")"
@@ -255,10 +273,14 @@ main() {
   [ -d "$WORK_DIR/release/docs/guide" ] || die "REQ-006: docs/guide/ is missing in the $tag release; use a release that has the guides"
   check_every_guide_has_a_page "$WORK_DIR/release"
   # everything generated goes; the hand-written _index.md files stay
-  find "$DOCS_DIR/developer-guide" "$DOCS_DIR/admin-guide" -type f ! -name '_index.md' -delete 2>/dev/null || true
+  find "$DOCS_DIR/developer-guide" "$DOCS_DIR/admin-guide" "$DOCS_DIR/contributing" -type f ! -name '_index.md' -delete 2>/dev/null || true
   for entry in "${PAGES[@]}"; do
     IFS='|' read -r section page source summary <<<"$entry"
     weight=$((weight + 10))
+    if section_is_newer_than_release "$section" "$WORK_DIR/release"; then
+      case " $skipped " in *" $section "*) ;; *) warn "the $tag release has no $section pages yet; that section stays empty until a release carries them"; skipped="$skipped $section" ;; esac
+      continue
+    fi
     render_page "$section" "$page" "$source" "$summary" "$weight" "$WORK_DIR/release"
   done
   check_reference_covers_commands "$WORK_DIR/release"

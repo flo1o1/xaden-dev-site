@@ -55,6 +55,7 @@ Xaden's blocks are delimited by `<!-- xaden:begin -->` and `<!-- xaden:end -->` 
 
 | Path | What |
 |------|------|
-| `~/.xaden` | the Xaden folder of a git install (any folder for a zip install) |
-| `~/.local/bin/xaden` | the link to `scripts/xaden.sh` in that folder |
-| `~/.local/share/xaden/versions/<version>/` | other Xaden versions installed for pinned projects; `XADEN_HOME` moves the parent folder |
+| `~/.local/bin/xaden` | the link to `scripts/xaden.sh` of the current version (of the clone, for a git install) |
+| `~/.local/share/xaden/versions/<version>/` | every installed Xaden version, one folder each; `XADEN_HOME` moves the parent folder |
+| `~/.local/share/xaden/current` | a link to the active version; `xaden upgrade` moves it |
+| `~/.xaden` | the Xaden folder of a git install, for contributors ([Contributing]({{< relref "docs/contributing" >}})) |

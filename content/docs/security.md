@@ -1,6 +1,6 @@
 ---
 title: "Security"
-weight: 5
+weight: 6
 description: "How Xaden builds security into the workflow, and where to learn more."
 ---
 

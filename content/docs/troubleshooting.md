@@ -1,6 +1,6 @@
 ---
 title: "Troubleshooting"
-weight: 6
+weight: 7
 description: "Symptoms, causes and fixes, by area."
 ---
 
