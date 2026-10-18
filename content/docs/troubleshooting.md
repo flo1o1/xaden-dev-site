@@ -91,6 +91,16 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 **Cause:** the commit cites a requirement that does not exist, or a `feat` commit has no `Refs: REQ-nnn` trailer.
 **Fix:** look the requirement up with `xaden req list`, or create it with `xaden req new`. The trailer must be in the last paragraph of the message.
 
+### CI fails on a commit message although my hook did not complain
+
+**Cause:** the commit skipped the hook (`--no-verify`, or a clone that never ran `xaden setup`). The workflow `xaden adopt` writes runs `xaden verify-commits --ci` on every commit a push or pull request brings, and the log names the commit and the rule.
+**Fix:** reword the commit (`git commit --amend` or an interactive rebase on your own branch) so it cites `Refs: REQ-nnn` or, for a `fix`, `Refs: none`, and push again. A project adopted before this check existed gets the step with `xaden pin`.
+
+### A warning says `commit references: advisory only`
+
+**Cause:** `commit-convention` in `xaden/xaden.conf` is `other`, so the `Refs:` checks only advise. `xaden adopt` sets it when the history does not follow Conventional Commits (with fewer than 5 commits, when any subject does not).
+**Fix:** to enforce the rule set `commit-convention = conventional`; it tightens a gate, so your team reviews the change.
+
 ## Versions and downloads
 
 ### A command asks `Download and install Xaden <version> now?`

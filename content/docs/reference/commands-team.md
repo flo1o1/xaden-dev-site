@@ -1,7 +1,7 @@
 ---
 title: "Team commands"
 weight: 30
-description: "setup, doctor, fetch, pin, upgrade, update-check, rules, hook and ignore-list."
+description: "setup, doctor, fetch, pin, upgrade, update-check, rules, hook, verify-commits and ignore-list."
 ---
 
 Commands for keeping a team on the same Xaden version, the same hooks and the same rules. They work inside a project that adopted Xaden.
@@ -129,6 +129,21 @@ xaden hook commit-msg <message-file>
 
 `pre-commit` runs the staged checks. `commit-msg` checks the message against the commit convention in `xaden/xaden.conf`. In a clone whose
 branch does not carry Xaden yet, it does nothing.
+
+## `xaden verify-commits`
+
+Checks the messages of commits that exist already, with the rules of the commit hook. The workflow that `xaden adopt` writes runs it, because a git hook can be skipped (`git commit --no-verify`, a clone without `xaden setup`, an unattended assistant) and CI cannot.
+
+```text
+xaden verify-commits --ci
+xaden verify-commits <revision-range>
+```
+
+`--ci` derives the range from the variables the workflow passes: `EVENT_NAME`, `BASE_REF`, `BEFORE_SHA` and `DEFAULT_BRANCH`. For a pull request that is every commit since the target branch, for a push every commit since the previous tip. A range it cannot derive fails; it is never read as empty. Merge commits are skipped; every commit they bring in is checked.
+
+With `commit-convention = conventional` a wrong format, a `feat` without `Refs: REQ-nnn`, a `fix` without a requirement ID or `none`, or an unknown `REQ-nnn` or `CC-nn` fails the command and the log names the commit. With `other` the same findings are warnings and the exit status is `0`. A workflow from before this command exists gets the step when you run [`xaden pin`]({{< relref "docs/reference/commands-team#xaden-pin" >}}).
+
+The command works in a project that adopted Xaden.
 
 ## `xaden ignore-list`
 

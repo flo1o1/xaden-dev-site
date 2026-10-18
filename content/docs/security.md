@@ -42,7 +42,7 @@ xaden check
 
 - `xaden check`: runs the project's checks and ends with a summary of what passed, failed or was skipped.
 
-A fast subset runs in a git hook on every commit. The full set runs in CI, where a missing tool fails the run:
+A fast subset runs in a git hook on every commit. The full set runs in CI, where a missing tool fails the run. CI also checks the message of every commit a push or pull request brings, because a hook can be skipped: a commit must cite a requirement that exists. The checks in this list:
 
 - [gitleaks](https://github.com/gitleaks/gitleaks) looks for secrets in your files and history.
 - [semgrep](https://semgrep.dev) runs Xaden's own rules for common insecure patterns such as injection,
