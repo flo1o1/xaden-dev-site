@@ -13,10 +13,10 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 **Cause:** `~/.local/bin` is not on your `PATH`.
 **Fix:** add `export PATH="$HOME/.local/bin:$PATH"` to `~/.bashrc` or `~/.zshrc` and open a new terminal. Check with `xaden version`.
 
-### The installer says a file named `xaden` exists and is not this checkout's
+### The installer says a file named `xaden` exists and is not a link to a Xaden
 
 **Cause:** another file or link of that name is in the folder. The installer never overwrites it.
-**Fix:** remove or rename that file, then run `install.sh` again. To move the link to a newer zip extraction, run `--uninstall` from the old folder first ([Update Xaden]({{< relref "docs/admin-guide/update-xaden" >}})).
+**Fix:** remove or rename that file, then run the installer again. A link to a former Xaden is replaced without this message. To get a newer release, run `xaden upgrade` ([Update Xaden]({{< relref "docs/admin-guide/update-xaden" >}})).
 
 ### The checks end with INCOMPLETE
 
@@ -122,4 +122,4 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### The CI job fails at "Install Xaden"
 
 **Cause:** the downloaded Xaden does not match `XADEN_CHECKSUM` in `.github/workflows/xaden.yml`, or the version tag does not exist.
-**Fix:** the version and checksum in the workflow must equal `version` and `checksum` in `xaden/xaden.conf`. `xaden upgrade` updates both.
+**Fix:** the version and checksum in the workflow must equal `version` and `checksum` in `xaden/xaden.conf`. `xaden pin` updates both.

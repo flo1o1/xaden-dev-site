@@ -11,10 +11,10 @@ description: "What the exit codes mean, and which environment variables change X
 | 0 | Done, or every check passed. A run with skipped checks also exits 0 and ends with a warning, unless `--strict` is set. Declining a question also exits 0 where nothing was started. | all |
 | 1 | A check failed, a question was answered with no, or the command hit an error. | all |
 | 2 | The folder already holds code, a build file or history. | `create --autopilot`, `create` |
-| 3 | Nothing was downloaded or looked up because nobody could be asked. The message names the command to run in a terminal. | `fetch`, `upgrade`, any project command whose pinned version is missing |
+| 3 | Nothing was downloaded or looked up because nobody could be asked. The message names the command to run in a terminal. | `fetch`, `pin`, `upgrade`, any project command whose pinned version is missing |
 | 4 | The hook manager or CI system is not supported. The message names the manual step. | `adopt` |
-| 5 | A download does not match the pinned checksum. Nothing was installed. | `fetch`, `upgrade` |
-| 6 | The signature of a release does not verify. Nothing was installed. | `fetch`, `upgrade` |
+| 5 | A download does not match the pinned checksum. Nothing was installed. | `fetch`, `pin`, `upgrade` |
+| 6 | The signature of a release does not verify. Nothing was installed. | `fetch`, `pin`, `upgrade` |
 
 ## Messages
 

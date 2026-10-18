@@ -83,7 +83,7 @@ xaden update [--apply]
 ```
 
 Without `--apply` it is a dry run that lists what would change. With `--apply` it stages the changes in git. Run it inside the project. In a
-project with an `xaden/` folder it stops and points to `xaden upgrade`.
+project with an `xaden/` folder it stops and points to `xaden pin`.
 
 Guide: [Update a classic project]({{< relref "docs/admin-guide/update-a-classic-project" >}}).
 
