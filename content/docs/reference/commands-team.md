@@ -1,7 +1,7 @@
 ---
 title: "Team commands"
 weight: 30
-description: "setup, doctor, fetch, upgrade, update-check, rules, hook and ignore-list."
+description: "setup, doctor, fetch, pin, upgrade, update-check, rules, hook and ignore-list."
 ---
 
 Commands for keeping a team on the same Xaden version, the same hooks and the same rules. They work inside a project that adopted Xaden.
@@ -49,9 +49,29 @@ Exit status: `0` installed or already installed; `1` you answered no; `3` no ter
 
 Guide: [Pin one Xaden version per project]({{< relref "docs/admin-guide/pin-one-version-per-project" >}}).
 
+## `xaden pin`
+
+Moves the project to another Xaden version on a branch for a pull request, or looks for a newer release.
+
+```text
+xaden pin --check
+xaden pin [<version>]
+```
+
+| Form | Meaning |
+|------|---------|
+| `--check` | Ask, then look up the newest release on github.com and report it. Changes nothing. |
+| `<version>` | Create the branch `chore/upgrade-xaden-<version>` in a folder next to the project, bump version and checksum in `xaden/xaden.conf`, regenerate `xaden/RULES.md`, update the workflow, bring the command files up to date, and show the diff and the changelog entries. A command file you edited stays as it is and the new text is written next to it as `<file>-dist`. |
+| (no version) | Look up the newest release first, as `--check` does, then pin it. |
+
+Asks before any network access and before downloading a version that is not installed. A signed release pins the signed checksum; otherwise the
+checksum of the download is pinned and Xaden says so. In Xaden up to 0.5 this command was called `xaden upgrade`; `xaden upgrade <version>` inside a project still does the same, with a warning.
+
+Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing looked up or downloaded; `5` checksum mismatch; `6` signature mismatch.
+
 ## `xaden upgrade`
 
-Moves the project to a newer Xaden version on a branch for a pull request, or looks for a newer release.
+Updates Xaden itself on your machine. It never moves a project.
 
 ```text
 xaden upgrade --check
@@ -61,13 +81,16 @@ xaden upgrade [<version>]
 | Form | Meaning |
 |------|---------|
 | `--check` | Ask, then look up the newest release on github.com and report it. Changes nothing. |
-| `<version>` | Create the branch `chore/upgrade-xaden-<version>` in a folder next to the project, bump version and checksum in `xaden/xaden.conf`, regenerate `xaden/RULES.md`, update the workflow, and show the diff and the changelog entries. |
-| (no version) | Look up the newest release first, as `--check` does, then upgrade to it. |
+| (no version) | Look up the newest release, show version, source and checksum, ask, download, verify signature and checksum, install it into `~/.local/share/xaden/versions/<version>` and switch the `current` link to it. |
+| `<version>` | The same for that version. Inside a project that adopted Xaden this moves the project instead, as `xaden pin <version>`, and warns. |
 
-Asks before any network access and before downloading a version that is not installed. A signed release pins the signed checksum; otherwise the
-checksum of the download is pinned and Xaden says so.
+The `xaden` command links to `current`, so it never changes. A failed download or check leaves the old version active. Older versions stay, because
+projects that pin them use them. A Xaden that runs from a git clone is not touched; the command names `git -C <folder> pull`. A Xaden installed
+before this layout existed asks you to install once with the one command.
 
 Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing looked up or downloaded; `5` checksum mismatch; `6` signature mismatch.
+
+Guide: [Update Xaden]({{< relref "docs/admin-guide/update-xaden" >}}).
 
 ## `xaden update-check`
 

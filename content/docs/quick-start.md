@@ -10,32 +10,14 @@ macOS with git and bash. On Windows use WSL (untested). Already have a repositor
 
 ## 1. Install the xaden command
 
-Replace `0.5.0` with the release you want; the [releases page](https://github.com/flo1o1/xaden-dev/releases) lists them.
-
 ```bash
-base=https://github.com/flo1o1/xaden-dev/releases/download/v0.5.0
-curl -fsSLO "$base/xaden-0.5.0.zip"
-curl -fsSLO "$base/xaden-0.5.0.zip.sig"
+curl -fsSL https://xaden.dev/install | bash
 ```
 
-- `curl ...`: downloads the signed zip and its signature into the current folder, and stops with an error if a download fails.
+- `curl -fsSL https://xaden.dev/install`: downloads the installer script and stops with an error if the download fails. Read it first with `curl -fsSL https://xaden.dev/install | less`.
+- `| bash`: runs it. It shows the version and the source and asks `[y/N]` in your terminal before it downloads anything. It then checks the signature of the release zip against the maintainer's key, which is inside the script, and installs Xaden into `~/.local/share/xaden`. It creates one link, `~/.local/bin/xaden`, and never replaces a different file of that name.
 
-Check the signature before you extract. Take the key from the [About page]({{< relref "about" >}}#release-signing-key), not from the zip, and
-save it in a file `signers` as one line: `release@xaden.dev namespaces="xaden-release"` followed by the key line without its label.
-
-```bash
-ssh-keygen -Y verify -f signers -I release@xaden.dev -n xaden-release -s xaden-0.5.0.zip.sig < xaden-0.5.0.zip
-```
-
-- `ssh-keygen -Y verify ...`: prints `Good "xaden-release" signature` when the zip is the one the maintainer signed. Anything else: delete the zip.
-
-```bash
-unzip -q xaden-0.5.0.zip -d ~/tools
-~/tools/xaden-0.5.0/scripts/install.sh
-```
-
-- `unzip ...`: extracts Xaden into `~/tools/xaden-0.5.0`. Keep that folder where it is, because the `xaden` command runs from it.
-- `install.sh`: creates one link, `~/.local/bin/xaden`, pointing into that folder. It changes nothing else and never replaces a different file of that name.
+Want to verify the signed zip yourself before anything runs? Follow [Install Xaden]({{< relref "docs/admin-guide/install-xaden" >}}) (section "Install from a signed zip") instead.
 
 If `~/.local/bin` is not on your `PATH`, the script says so. Add this line to `~/.bashrc` (bash) or
 `~/.zshrc` (zsh) and open a new terminal:
@@ -45,7 +27,7 @@ export PATH="$HOME/.local/bin:$PATH"
 ```
 
 This puts `~/.local/bin` in front of the folders your shell searches for commands, so it finds `xaden`.
-Check it with `xaden version`; it prints the installed version. Details: [Install Xaden]({{< relref "docs/admin-guide/install-xaden" >}}).
+Check it with `xaden version`; it prints the installed version. Later, `xaden upgrade` brings Xaden to the newest release. Details: [Install Xaden]({{< relref "docs/admin-guide/install-xaden" >}}).
 
 ## 2. Create your project
 

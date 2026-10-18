@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Changed
+- Quick start installs Xaden with one command (`curl -fsSL https://xaden.dev/install | bash`) and points to the signed zip for people who want to verify it themselves. The reference describes `xaden upgrade` (updates Xaden itself) and `xaden pin` (moves a project), the `-dist` files, and the changed troubleshooting entries. This describes the next Xaden release; the generated guide pages follow with it.
+
 ## [0.5.0] - 2026-10-18
 
 ### Changed
