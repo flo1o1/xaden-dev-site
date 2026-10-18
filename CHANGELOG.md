@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Quick start installs Xaden from the signed release zip (download, check the signature against the key on the About page, extract, `install.sh`); cloning stays described on the Install Xaden page for contributors. The docs describe Xaden v0.5.0.
 - **Release cycle (REQ-023):** the site is published only from a version tag, no longer from every push to `main`. The site has the version of the Xaden release it describes (`VERSION`, replacing `XADEN_DOCS_VERSION`); `scripts/release-site.sh <X.Y.Z>` prepares the release commit, and `scripts/release-site.sh republish` a re-publish under the same Xaden release (`vX.Y.Z-0001`, `-0002`). CI publishes a tag only when it is the newest one, equals `VERSION` and is on `main`. The daily `bump-docs` workflow and the `DOCS_BUMP_TOKEN` secret are gone.
 - The generated guide pages no longer end in a "Next" section; the previous and next buttons below the page already link there.
 - Docs describe Xaden v0.4.0: the generated slash commands and skills carry the `xaden-` prefix (`/xaden-feature`, `$xaden-feature`, ...); the assistant picker shows them, and `scripts/sync-docs.sh` keeps turning the guides into picker blocks (REQ-022).
