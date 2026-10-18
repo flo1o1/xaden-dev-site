@@ -10,13 +10,32 @@ macOS with git and bash. On Windows use WSL (untested). Already have a repositor
 
 ## 1. Install the xaden command
 
+Replace `0.5.0` with the release you want; the [releases page](https://github.com/flo1o1/xaden-dev/releases) lists them.
+
 ```bash
-git clone https://github.com/flo1o1/xaden-dev.git ~/.xaden
-~/.xaden/scripts/install.sh
+base=https://github.com/flo1o1/xaden-dev/releases/download/v0.5.0
+curl -fsSLO "$base/xaden-0.5.0.zip"
+curl -fsSLO "$base/xaden-0.5.0.zip.sig"
 ```
 
-- `git clone ...`: downloads Xaden into the hidden folder `.xaden` in your home directory. Keep that folder, because the `xaden` command runs from it.
-- `~/.xaden/scripts/install.sh`: creates one link, `~/.local/bin/xaden`, pointing into that folder. It changes nothing else and never replaces a different file of that name.
+- `curl ...`: downloads the signed zip and its signature into the current folder, and stops with an error if a download fails.
+
+Check the signature before you extract. Take the key from the [About page]({{< relref "about" >}}#release-signing-key), not from the zip, and
+save it in a file `signers` as one line: `release@xaden.dev namespaces="xaden-release"` followed by the key line without its label.
+
+```bash
+ssh-keygen -Y verify -f signers -I release@xaden.dev -n xaden-release -s xaden-0.5.0.zip.sig < xaden-0.5.0.zip
+```
+
+- `ssh-keygen -Y verify ...`: prints `Good "xaden-release" signature` when the zip is the one the maintainer signed. Anything else: delete the zip.
+
+```bash
+unzip -q xaden-0.5.0.zip -d ~/tools
+~/tools/xaden-0.5.0/scripts/install.sh
+```
+
+- `unzip ...`: extracts Xaden into `~/tools/xaden-0.5.0`. Keep that folder where it is, because the `xaden` command runs from it.
+- `install.sh`: creates one link, `~/.local/bin/xaden`, pointing into that folder. It changes nothing else and never replaces a different file of that name.
 
 If `~/.local/bin` is not on your `PATH`, the script says so. Add this line to `~/.bashrc` (bash) or
 `~/.zshrc` (zsh) and open a new terminal:
