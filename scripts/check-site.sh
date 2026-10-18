@@ -102,18 +102,20 @@ check_security_txt() {
   [ "$expires" \> "$limit" ] || die "REQ-009: security.txt expires on $expires; renew it (needs at least $SECURITY_TXT_MIN_DAYS days, i.e. after $limit)"
 }
 
-# check_docs_have_no_internal_references: REQ-002, readers have not seen the Xaden repository.
+# check_docs_have_no_internal_references: REQ-002, readers have not seen the Xaden repository. Contributing is
+# the exception: its readers work in that repository, so its pages name rule IDs and paths.
 check_docs_have_no_internal_references() {
   local found
-  found="$(grep -rnE 'REQ-[0-9]+|CC-[0-9]+|§|template/' "$OUTPUT_DIR/docs" --include='*.html' | cut -c1-160 | head -n 5 || true)"
+  found="$(grep -rnE 'REQ-[0-9]+|CC-[0-9]+|§|template/' "$OUTPUT_DIR/docs" --include='*.html' --exclude-dir=contributing | cut -c1-160 | head -n 5 || true)"
   [ -z "$found" ] || die "REQ-002: docs pages hold rule IDs, section references or repository paths (extend rewrite_for_readers in scripts/sync-docs.sh):
 $found"
 }
 
-# check_docs_prefer_xaden: REQ-002, the xaden command comes first wherever it exists.
+# check_docs_prefer_xaden: REQ-002, the xaden command comes first wherever it exists. Contributing is exempt: its
+# readers maintain Xaden and run the repository's own scripts.
 check_docs_prefer_xaden() {
   local found
-  found="$(grep -rnoE 'scripts/(new-project|update-scaffold|setup|check|req|pack-context|release)\.sh' "$OUTPUT_DIR/docs" --include='*.html' | head -n 5 || true)"
+  found="$(grep -rnoE 'scripts/(new-project|update-scaffold|setup|check|req|pack-context|release)\.sh' "$OUTPUT_DIR/docs" --include='*.html' --exclude-dir=contributing | head -n 5 || true)"
   [ -z "$found" ] || die "REQ-002: docs pages show a script where the xaden command exists (extend prefer_xaden_command in scripts/sync-docs.sh):
 $found"
 }

@@ -15,9 +15,7 @@ curl -fsSL https://xaden.dev/install | bash
 ```
 
 - `curl -fsSL https://xaden.dev/install`: downloads the installer script and stops with an error if the download fails. Read it first with `curl -fsSL https://xaden.dev/install | less`.
-- `| bash`: runs it. It shows the version and the source and asks `[y/N]` in your terminal before it downloads anything. It then checks the signature of the release zip against the maintainer's key, which is inside the script, and installs Xaden into `~/.local/share/xaden`. It creates one link, `~/.local/bin/xaden`, and never replaces a different file of that name.
-
-Want to verify the signed zip yourself before anything runs? Follow [Install Xaden]({{< relref "docs/admin-guide/install-xaden" >}}) (section "Install from a signed zip") instead.
+- `| bash`: runs it. It shows the version and the source and asks `[y/N]` in your terminal before it downloads anything. It then checks the signature of the release against the maintainer's key, which is inside the script, and installs Xaden into `~/.local/share/xaden`. It creates one link, `~/.local/bin/xaden`, and never replaces a different file of that name.
 
 If `~/.local/bin` is not on your `PATH`, the script says so. Add this line to `~/.bashrc` (bash) or
 `~/.zshrc` (zsh) and open a new terminal:
@@ -83,3 +81,4 @@ Details: [Release a version]({{< relref "docs/developer-guide/release-a-version"
 - Using a chat window or a local model? See [Other assistants and local models]({{< relref "docs/developer-guide/other-assistants-and-local-models" >}}).
 - Working in a team? Read [Pin one Xaden version per project]({{< relref "docs/admin-guide/pin-one-version-per-project" >}}).
 - Updating Xaden later? See [Update Xaden]({{< relref "docs/admin-guide/update-xaden" >}}).
+- Want to contribute to Xaden or read how it works? See [Contributing]({{< relref "docs/contributing" >}}).

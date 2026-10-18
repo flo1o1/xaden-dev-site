@@ -4,9 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Added
+- A **Contributing** section next to the guides, below Reference: Install with git, Architecture, Work on Xaden, Release and sign Xaden, and Threat model and requirements. Its pages are generated from the Xaden release like the guides (`docs/guide/contributing/`); a release that does not carry them yet leaves the section empty. Contributing is exempt from the checks that keep repository paths and rule IDs out of the guides (REQ-005).
+
 ### Changed
 - Reference and Troubleshooting describe the new settings and messages of the gate fixes on Xaden `main`: `findings-status.<name>`, `require-signature`, the change scope in CI (`EVENT_NAME`, `BASE_REF`, `BEFORE_SHA`), and exit code 6 under the policy.
-- Quick start installs Xaden with one command (`curl -fsSL https://xaden.dev/install | bash`) and points to the signed zip for people who want to verify it themselves. The reference describes `xaden upgrade` (updates Xaden itself) and `xaden pin` (moves a project), the `-dist` files, and the changed troubleshooting entries. This describes the next Xaden release; the generated guide pages follow with it.
+- Quick start installs Xaden with one command (`curl -fsSL https://xaden.dev/install | bash`). The reference describes `xaden upgrade` (updates Xaden itself) and `xaden pin` (moves a project), the `-dist` files, and the changed troubleshooting entries. This describes the next Xaden release; the generated guide pages follow with it.
 
 ## [0.5.0] - 2026-10-18
 

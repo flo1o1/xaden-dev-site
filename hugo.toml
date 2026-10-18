@@ -51,15 +51,20 @@ disableKinds = ["taxonomy", "term", "rss"]
   parent = "docs"
   weight = 4
 [[menus.main]]
+  name = "Contributing"
+  pageRef = "/docs/contributing"
+  parent = "docs"
+  weight = 5
+[[menus.main]]
   name = "Security"
   pageRef = "/docs/security"
   parent = "docs"
-  weight = 5
+  weight = 6
 [[menus.main]]
   name = "Troubleshooting"
   pageRef = "/docs/troubleshooting"
   parent = "docs"
-  weight = 6
+  weight = 7
 [[menus.main]]
   name = "About"
   pageRef = "/about"
