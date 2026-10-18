@@ -2,7 +2,7 @@
 
 Static Hugo site for https://xaden.dev. See `README.md` for build, check and publish.
 
-- Work on a branch and open a pull request; never push to `main`. CI must pass before merge.
+- Work on a branch and open a pull request; never push to `main`. CI must pass before merge, and the user merges: open the PR and stop, run `gh pr merge <n> --merge --delete-branch` only when the user tells you in that session to merge that named PR. Never ask for a merge before `check` is green. With several PRs, merge in dependency order and re-check `gh pr view <n> --json mergeable` before each; if one conflicts, merge `main` into the branch, push, wait for CI and ask again. A failed merge is fixed at its cause and reported; never use `--admin`.
 - Commits follow Conventional Commits (`feat`, `fix`, `docs`, `chore`, `ci`, ...); `scripts/verify-commits.sh` checks them in CI.
 - What the site must do is in `docs/requirements/` (one file per requirement). Change it there first, then the code.
 - Security of the site: `SECURITY.md`, `docs/threat-model.md`. Update the threat model when a change adds an entry point, a data type or an external service.
@@ -11,6 +11,7 @@ Static Hugo site for https://xaden.dev. See `README.md` for build, check and pub
 - To prepare the site before a Xaden release is published: tag it locally in the Xaden checkout, set `VERSION`, render with `XADEN_SOURCE=<checkout> scripts/sync-docs.sh`; the PR goes green only after the tag is on GitHub. Never push or create the tag yourself.
 - The site is published only from a version tag (`vX.Y.Z`, or `vX.Y.Z-0001` for a re-publish): release with `scripts/release-site.sh`, then tag the merge commit (README.md "Release the site"). Never create or push the tag yourself; releases happen only when the user asks.
 - Run `scripts/check.sh` and `scripts/check-site.sh` before declaring work done.
+- The site's `main` must show what Xaden's `main` does. After a change lands on Xaden's `main`, render the guides (`scripts/sync-docs.sh --main`) and grep every hand-written page (Quick start, Reference, Troubleshooting, Security, home, About) for the old behaviour; list any `xaden help` command the Reference lacks. Read `inbox/` drafts before scoping this work. If the whole goal cannot be reached, say so and ask. Deploying stays tied to a release tag.
 - Never read or commit `.env` files or secrets.
 
 ## Batch mode for small changes
@@ -22,5 +23,5 @@ Many small edits (copy, spacing, typos) go in one branch and one pull request. T
 - A requirement is only needed when behaviour changes; copy and layout edits need none.
 - One CHANGELOG entry and one COMPLETION REPORT per pull request.
 - `scripts/sync-docs.sh` runs once per worktree; it needs the network.
-- CI runs only on pull requests: open the PR, merge when `check` is green.
+- CI runs only on pull requests: open the PR right after the push; the user merges once `check` is green.
 
