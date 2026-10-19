@@ -174,8 +174,11 @@ rewrite_links() {
     target="${link%%#*}"
     anchor=""
     case "$link" in *'#'*) anchor="#${link#*#}" ;; esac
-    url="$(source_to_url "$(resolve_path "$dir" "$target")")" ||
-      die "REQ-006: $source links to $link, which has no page on the site (add it to PAGES in scripts/sync-docs.sh)"
+    if ! url="$(source_to_url "$(resolve_path "$dir" "$target")")"; then
+      [ "${SYNC_MAIN:-0}" = 1 ] || die "REQ-006: $source links to $link, which has no page on the site (add it to PAGES in scripts/sync-docs.sh)"
+      warn "$source links to $link, which has no page on the site; the link stays as written in this preview"
+      continue
+    fi
     printf '%s\t%s\n' "$link" "$url$anchor" >>"$map"
   done < <(printf '%s\n' "$text" | grep -oE '\]\([^)#:]+\.md(#[^)]*)?\)' | sed -e 's/^](//' -e 's/)$//' | sort -u)
   # perl, not bash substitution: older bash keeps the quotes of a quoted replacement
@@ -224,8 +227,24 @@ check_every_guide_has_a_page() {
     for entry in "${PAGES[@]}"; do
       case "$entry" in *"|$file|"*) known=1 ;; esac
     done
-    [ "$known" = 1 ] || die "REQ-006: $file of the release has no page; add it to PAGES in scripts/sync-docs.sh"
+    [ "$known" = 1 ] && continue
+    if [ "${SYNC_MAIN:-0}" = 1 ]; then add_preview_page "$file"; else die "REQ-006: $file of the release has no page; add it to PAGES in scripts/sync-docs.sh"; fi
   done < <(cd "$1" && find docs/guide -name '*.md' | LC_ALL=C sort)
+}
+
+# add_preview_page <guide file>: a preview of main must render even when the file is not in PAGES yet (REQ-006).
+# Warns, and appends an entry derived from the path (section by folder, page name by file name); a folder the site
+# has no section for is skipped with the same warning. A release build never gets here: it fails instead.
+add_preview_page() {
+  local file=$1 section
+  case "$file" in
+    docs/guide/developer/*) section=developer-guide ;;
+    docs/guide/admin/*) section=admin-guide ;;
+    docs/guide/contributing/*) section=contributing ;;
+    *) warn "$file has no page and no section to put it in; add it to PAGES in scripts/sync-docs.sh"; return 0 ;;
+  esac
+  warn "$file is not in PAGES yet; the preview renders it as is. Add it to PAGES in scripts/sync-docs.sh before the release"
+  PAGES+=("$section|$(basename "$file" .md)|$file|Preview of a page that is not in the page list yet.|unreleased")
 }
 
 # check_reference_covers_commands <release dir>: every command in `xaden help` has a heading in the
@@ -236,7 +255,12 @@ check_reference_covers_commands() {
   while IFS= read -r command; do
     grep -rqE "^#{2,3} \`xaden $command" "$DOCS_DIR/reference" || missing="$missing $command"
   done < <(awk '/^usage\(\) \{/ { in_usage = 1 } in_usage && /<<.EOF.$/ { inside = 1; next } inside && /^EOF$/ { exit } inside && /^  [a-z]/ { print $1 }' "$1/scripts/xaden.sh" | sort -u)
-  [ -z "$missing" ] || die "REQ-002: commands in 'xaden help' without a Reference entry:$missing (add a '## \`xaden <command>\`' heading to content/docs/reference/)"
+  [ -z "$missing" ] && return 0
+  if [ "${SYNC_MAIN:-0}" = 1 ]; then # a preview of main shows what is missing, a release build refuses
+    warn "REQ-002: commands in 'xaden help' without a Reference entry:$missing (add a '## \`xaden <command>\`' heading to content/docs/reference/)"
+    return 0
+  fi
+  die "REQ-002: commands in 'xaden help' without a Reference entry:$missing (add a '## \`xaden <command>\`' heading to content/docs/reference/)"
 }
 
 # use_local_source <checkout> <tag>: preview of unreleased docs. Extracts the local git tag from the
@@ -261,7 +285,8 @@ use_local_source() {
 
 # page_is_not_in_release <flag> <release dir> <source>: true for a page marked "unreleased" whose source the
 # release does not have yet; every other missing source still fails in render_page.
-page_is_not_in_release() { [ "$1" = unreleased ] && [ ! -f "$2/$3" ]; }
+# A preview of main (SYNC_MAIN) also skips a listed page whose source main removed or moved.
+page_is_not_in_release() { { [ "$1" = unreleased ] || [ "${SYNC_MAIN:-0}" = 1 ]; } && [ ! -f "$2/$3" ]; }
 
 main() {
   if [ "${1:-}" = "--main" ]; then
@@ -298,7 +323,7 @@ main() {
       continue
     fi
     if page_is_not_in_release "$flag" "$WORK_DIR/release" "$source"; then
-      warn "$source is not in the $tag release yet; its page appears when a release carries it"
+      warn "$source is not in the $tag docs (unreleased, or removed on main); its page is skipped"
       continue
     fi
     render_page "$section" "$page" "$source" "$summary" "$weight" "$WORK_DIR/release"
