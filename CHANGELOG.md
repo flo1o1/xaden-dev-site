@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- The Contributing section lists "Xaden and the AI-Driven Development Manifesto", the page Xaden's `main` added to map the manifesto to its rules. Its entry in `scripts/sync-docs.sh` is marked `unreleased`, so `scripts/sync-docs.sh --main` renders again; it sits in Contributing because the page names rule IDs and repository paths, which the other guides must not (REQ-002, REQ-006).
 - Reference and Troubleshooting describe the audit kinds of Xaden `main`: `audit` and `security` in `expect` and the check kinds table, the `NOT COVERED:` line, the presets that map `pip-audit`, `bandit` and `npm audit`, the scan finding `unittest` and Makefile or npm `audit` commands, and four Troubleshooting entries (REQ-105, REQ-106 of Xaden, plus the hook fix for an untracked `xaden/` folder).
 - `scripts/sync-docs.sh --main` renders even when Xaden's `main` has a guide page that the pinned release lacks: a `PAGES` entry marked `unreleased` renders when its source exists and is skipped with a warning otherwise (REQ-006). `scripts/dev.sh` also finds the Xaden checkout from a worktree of the site.
 - Reference and Troubleshooting describe the commit check fix on Xaden `main`: exit status `2` and the shallow-checkout failure of `xaden verify-commits --ci`, and that an adopted project's check starts after the adoption (REQ-109 of Xaden).

@@ -50,6 +50,7 @@ PAGES=(
   "contributing|work-on-xaden|docs/guide/contributing/work-on-xaden.md|How a change to Xaden is made, checked and landed."
   "contributing|release-and-signing|docs/guide/contributing/release-and-signing.md|How a Xaden release is cut and signed."
   "contributing|threat-model-and-requirements|docs/guide/contributing/threat-model-and-requirements.md|What Xaden protects, what it accepts, and where its requirements live."
+  "contributing|xaden-and-the-aidd-manifesto|docs/guide/developer/xaden-and-the-aidd-manifesto.md|Which values and principles of the AI-Driven Development Manifesto Xaden meets, and which only partly.|unreleased"
 )
 # Site pages that sources link to: source file | page URL.
 SITE_TARGETS=(
