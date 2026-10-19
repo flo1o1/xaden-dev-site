@@ -1,7 +1,7 @@
 ---
 title: "Team commands"
 weight: 30
-description: "setup, doctor, fetch, pin, upgrade, update-check, rules, aidd, hook, verify-commits and ignore-list."
+description: "setup, doctor, fetch, pin, upgrade, update-check (deprecated), rules, aidd, hook, verify-commits and ignore-list."
 ---
 
 Commands for keeping a team on the same Xaden version, the same hooks and the same rules. They work inside a project that adopted Xaden.
@@ -74,13 +74,14 @@ Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing
 Updates Xaden itself on your machine. It never moves a project.
 
 ```text
-xaden upgrade --check
+xaden upgrade --check [--if-due]
 xaden upgrade [<version>]
 ```
 
 | Form | Meaning |
 |------|---------|
-| `--check` | Ask, then look up the newest release on github.com and report it. Changes nothing. |
+| `--check` | Ask, then look up the newest release on github.com and report it. Inside a project it also lists the outdated npm and pip dependencies and marks a newest version with a higher major number `(major)`. Looks now, whatever the `update-check` setting says. Changes nothing. |
+| `--check --if-due` | The quiet form for scripts: checks only when the `update-check` interval has passed, writes the cache, prints nothing and exits `0` when the network is down. Off means no check. |
 | (no version) | Look up the newest release, show version, source and checksum, ask, download, verify signature and checksum, install it into `~/.local/share/xaden/versions/<version>` and switch the `current` link to it. |
 | `<version>` | The same for that version. Inside a project that adopted Xaden this moves the project instead, as `xaden pin <version>`, and warns. |
 
@@ -92,9 +93,9 @@ Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing
 
 Guide: [Update Xaden]({{< relref "docs/admin-guide/update-xaden" >}}).
 
-## `xaden update-check`
+## `xaden update-check` (deprecated)
 
-Looks for a newer Xaden and for outdated dependencies. It only reports; it never installs or changes anything.
+The old name of `xaden upgrade --check`, which also reports the outdated dependencies. It still works, says on stderr that it is deprecated, and goes away in a later release. It only reports; it never installs or changes anything.
 
 ```text
 xaden update-check [--if-due|--now]
@@ -102,7 +103,7 @@ xaden update-check [--if-due|--now]
 
 Checks now, whatever the interval, and prints the result. The check is off by default (`update-check = off` in `xaden/xaden.conf`) and the command
 refuses while it is off; `--now` looks anyway. `--if-due` checks only when the interval has passed, prints nothing and exits `0` when the network is
-down. The `XADEN_UPDATE_CHECK` environment variable takes the same values and overrides the project setting on your machine.
+down; use `xaden upgrade --check --if-due` instead. The setting `update-check` and the `XADEN_UPDATE_CHECK` environment variable keep their names.
 
 The one network request goes to the GitHub release API. The result is cached in the repository's git folder and never committed.
 
