@@ -43,7 +43,7 @@ xaden adopt [--scan | --plan] [--yes] [--assistants <list>] [--mode <mode>]
 
 | Option | Meaning |
 |--------|---------|
-| `--scan` | Report what the repository has. Changes nothing. |
+| `--scan` | Report what the repository has: stacks, test runner (npm, pytest, `unittest`, make and others), linters, type checker, dependency audit, security linter, and the kinds of checks it lacks. Changes nothing. |
 | `--plan` (alias `--dry-run`) | Print the exact diff and the file list. Changes nothing. |
 | `--yes` | Apply the plan without the question. Use it in scripts. |
 | `--assistants <list>` | Comma-separated assistants. Default: pre-selected from what the scan finds, confirmed by you. |
@@ -52,6 +52,8 @@ xaden adopt [--scan | --plan] [--yes] [--assistants <list>] [--mode <mode>]
 | `--preset`, `--no-preset` | Add Xaden's preset for Python or Node as a separate commit, or never. Without either, a terminal gets a question. |
 | `--skip-hooks`, `--skip-ci` | Do not chain into the git hooks, or do not add the workflow. |
 | `--commit-convention conventional\|other` | Overrides what the scan reads from the history. Without it the scan shows its evidence, for example `conventional (3 of 3 subjects)`. |
+
+A new adoption expects `audit` for a Python or Node repository and `security` for Python (`expect` in `xaden/xaden.conf`): until a command maps them they are gaps. See [Configuration]({{< relref "docs/reference/configuration" >}}).
 
 Without a terminal and without `--yes`, `adopt` stops after the plan. It creates the branch `chore/adopt-xaden` in the folder
 `<repo>-adopt-xaden`; in a repository without commits it works in place.
