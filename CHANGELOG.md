@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Docs pages without headings no longer show an empty "On this page" block (for example Contributing).
 - The "Docs" entry of the main menu opens Quick start instead of the Documentation overview; the submenu is unchanged and the overview stays at `/docs/`.
 - The cards on the Documentation page no longer list the pages of their section; the card text and the Open button remain.
 - Reference describes the lookup commands and the smaller index of Xaden `main` (REQ-126, REQ-127): `xaden req list --epic/--status`, `show --brief`, `for <path>...` with the optional `paths:` line of a requirement, `find <word>...`, the short `INDEX.md` and the full `INDEX-full.md`, the warning of `xaden check` about a `paths:` entry that matches nothing, and `xaden doc rules-<topic>` for the rule sections that moved out of the always-loaded rules file; Files and folders lists `INDEX-full.md`.

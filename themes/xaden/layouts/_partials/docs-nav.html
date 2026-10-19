@@ -17,7 +17,8 @@
       </li>
     {{ end }}
   </ul>
-  {{ if and (ne $current.RelPermalink "/docs/") $current.TableOfContents }}
+  {{/* an empty table of contents is still an empty <nav>, so test for an item */}}
+  {{ if and (ne $current.RelPermalink "/docs/") (strings.Contains (string $current.TableOfContents) "<li>") }}
   <div>
     <p class="eyebrow">On this page</p>
     <div class="toc mt-3">{{ $current.TableOfContents }}</div>
