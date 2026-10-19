@@ -12,7 +12,7 @@ xaden/
   RULES.md              rules for assistants; generated, do not edit
   README.md             what this folder is
   footprint.txt         the paths outside xaden/ that Xaden touched
-  requirements/         one file per requirement, in epic folders, with INDEX.md
+  requirements/         one file per requirement, in epic folders, with INDEX.md (open work) and INDEX-full.md (every requirement)
   personas/             user personas
   security-reviews/     recorded security reviews
   baselines/            findings that existed at adoption

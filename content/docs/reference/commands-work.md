@@ -25,18 +25,24 @@ Guide: [Build features]({{< relref "docs/developer-guide/build-features" >}}).
 Looks up and creates requirements.
 
 ```text
-xaden req list
-xaden req show REQ-nnn
+xaden req list [--epic <epic>] [--status <status>]
+xaden req show REQ-nnn [--brief]
+xaden req for <path>...
+xaden req find <word>...
 xaden req new <epic> <job|quality> "<title>"
 xaden req index
 ```
 
 | Subcommand | Meaning |
 |------------|---------|
-| `list` | One line per requirement: ID, status, priority, title. |
-| `show REQ-nnn` | The file of one requirement. |
+| `list` | One line per requirement: ID, status, priority, title. `--epic` and `--status` narrow the list; an unknown status is refused. |
+| `show REQ-nnn` | The file of one requirement. `--brief` prints the ID, status, title, the job or quality goal and the acceptance criteria only. |
+| `for <path>...` | The requirements whose optional `paths:` front-matter line covers one of the files or folders. An entry ending in `/` covers the folder, an entry with `*`, `?` or `[` is a glob over the whole path (a `*` also crosses `/`), anything else is one file. A requirement without `paths:` never matches. |
+| `find <word>...` | The requirements whose title or text holds every word, ignoring case, one line each. |
 | `new <epic> <job\|quality> "<title>"` | Creates the next requirement as a draft and refreshes the index. The epic is lowercase words with hyphens. |
-| `index` | Rewrites the generated `INDEX.md`. |
+| `index` | Rewrites the generated `INDEX.md`, which lists only requirements that are not `done` or `dropped` and counts the others per epic, and `INDEX-full.md`, the full table that no tool imports, so the files an assistant loads stay small. |
+
+`xaden check` warns, and does not fail, about a `paths:` entry that matches no file or folder, because a stale entry hides its requirement.
 
 ## `xaden check`
 
@@ -96,8 +102,10 @@ Guide: [Release a version]({{< relref "docs/developer-guide/release-a-version" >
 Prints a guide that Xaden ships.
 
 ```text
-xaden doc <clean-code|security|optional-tools|local-llm>
+xaden doc <clean-code|security|optional-tools|local-llm|rules-<topic>>
 ```
+
+`rules-<topic>` prints one section of the rules that moved out of the always-loaded rules file: `rules-checks`, `rules-docs`, `rules-findings`, `rules-git`, `rules-requirements`, `rules-security` or `rules-working-style`. `xaden/RULES.md` names the one to read before a task; a classic project has the same text in `docs/rules/`.
 
 ## `xaden preset`
 
