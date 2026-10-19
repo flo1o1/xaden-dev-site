@@ -19,6 +19,7 @@ xaden/
   prompts/              optional: replaces a default prompt of the same name
   threat-model.md       written at kickoff (new projects start with a template)
 AGENTS.md               a marked block that points to xaden/RULES.md
+.aidd/                  optional: the AI-Driven Dev framework, written by `xaden aidd enable`; AGENTS.md then holds a second block, marked xaden:aidd
 CLAUDE.md               only for Claude Code users: the line @AGENTS.md
 .github/workflows/xaden.yml   the CI job, pinned to a version and checksum
 ```
