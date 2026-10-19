@@ -61,7 +61,7 @@ xaden pin [<version>]
 | Form | Meaning |
 |------|---------|
 | `--check` | Ask, then look up the newest release on github.com and report it. Changes nothing. |
-| `<version>` | Create the branch `chore/upgrade-xaden-<version>` in a folder next to the project, bump version and checksum in `xaden/xaden.conf`, regenerate `xaden/RULES.md`, update the workflow, bring the command files up to date, and show the diff and the changelog entries. A command file you edited stays as it is and the new text is written next to it as `<file>-dist`. |
+| `<version>` | Create the branch `chore/upgrade-xaden-<version>` in a folder next to the project, bump version and checksum in `xaden/xaden.conf`, regenerate `xaden/RULES.md`, update the workflow, bring the command files up to date, and show the diff and the changelog entries. A command file you edited stays as it is and the new text is written next to it as `<file>-dist`. When your CI workflow differs from the one the new version generates (for example it lacks the step that records the pinned checksum, which `require-signature = true` needs on a fresh runner), the new workflow is written next to yours as `.github/workflows/xaden.yml-dist` and `pin` prints the `diff` command; your workflow is never replaced. |
 | (no version) | Look up the newest release first, as `--check` does, then pin it. |
 
 Asks before any network access and before downloading a version that is not installed. A signed release pins the signed checksum; otherwise the
@@ -136,9 +136,9 @@ xaden aidd pin <cli-version> <release>
 | `disable` | Ask, then run the framework's own `clean`, remove the block from `AGENTS.md` and the three settings. A marketplace registration in your Claude Code user settings stays, as it does with the framework's own `clean`. |
 | `pin` | Ask, then create the branch `chore/pin-aidd-<release>` in a folder next to the project, run the installer there at the new pin, commit, and print a link to the framework's changes between the two releases. Nothing else moves the pin. |
 
-Needs Node 22.12 or later, `git` and `npx`, only for the framework's installer; Xaden itself needs none of them for this. The project must have adopted Xaden. Xaden never uses "latest": `enable` stops before it installs when the pinned CLI cannot be held to a release, and removes the installation again when a plugin does not come from the pinned release.
+Needs Node 22.12 or later, `git` and `npx`, only for the framework's installer; Xaden itself needs none of them for this. The project must have adopted Xaden. Xaden never uses "latest": `enable` stops before it installs when the pinned CLI cannot be held to a release (it asks that of the CLI only after your yes, because running it downloads it through `npx`), and removes the installation again when a plugin does not come from the pinned release.
 
-Asks before every download and needs a terminal, so a script or an assistant cannot switch it on for you.
+Asks before every download and needs a terminal, so a script or an assistant cannot switch it on for you. Until you say yes, the framework's CLI is neither downloaded nor started.
 
 Exit status: `0` done, or nothing to do; `1` you answered no, nobody could be asked, a prerequisite is missing, the installer failed, or the pin did not hold.
 
