@@ -1,7 +1,7 @@
 ---
 title: "Team commands"
 weight: 30
-description: "setup, doctor, fetch, pin, upgrade, update-check, rules, hook, verify-commits and ignore-list."
+description: "setup, doctor, fetch, pin, upgrade, update-check, rules, aidd, hook, verify-commits and ignore-list."
 ---
 
 Commands for keeping a team on the same Xaden version, the same hooks and the same rules. They work inside a project that adopted Xaden.
@@ -117,6 +117,32 @@ xaden rules
 ```
 
 Use it when `xaden check` reports that the rules file does not match the pinned version. Review the diff and commit it.
+
+## `xaden aidd`
+
+Switches the [AI-Driven Dev framework](https://github.com/ai-driven-dev/framework) (MIT) on or off in a project, at a pinned version. The framework is an optional add-on: its skills and agents take a task from spec to review, and Xaden stays the layer that sets the rules and runs the checks. Where a framework skill and Xaden's rules disagree, Xaden's rules win.
+
+```text
+xaden aidd enable [--ai <ids>]
+xaden aidd status
+xaden aidd disable
+xaden aidd pin <cli-version> <release>
+```
+
+| Form | Meaning |
+|------|---------|
+| `enable` | Show the exact command, ask, then run the framework's installer (`@ai-driven-dev/cli`, through `npx`) at the pinned CLI version and release. It writes `.aidd/` and the settings of the assistants, adds a block marked `xaden:aidd` to `AGENTS.md`, and records `aidd-cli`, `aidd-release` and `aidd-assistants` in `xaden/xaden.conf`. `--ai claude,cursor` chooses the assistants; without it Xaden uses the ones in `assistants`. |
+| `status` | Print the pin next to what is installed. Exit status `1` when an installed plugin does not come from the pinned release. |
+| `disable` | Ask, then run the framework's own `clean`, remove the block from `AGENTS.md` and the three settings. A marketplace registration in your Claude Code user settings stays, as it does with the framework's own `clean`. |
+| `pin` | Ask, then create the branch `chore/pin-aidd-<release>` in a folder next to the project, run the installer there at the new pin, commit, and print a link to the framework's changes between the two releases. Nothing else moves the pin. |
+
+Needs Node 22.12 or later, `git` and `npx`, only for the framework's installer; Xaden itself needs none of them for this. The project must have adopted Xaden. Xaden never uses "latest": `enable` stops before it installs when the pinned CLI cannot be held to a release, and removes the installation again when a plugin does not come from the pinned release.
+
+Asks before every download and needs a terminal, so a script or an assistant cannot switch it on for you.
+
+Exit status: `0` done, or nothing to do; `1` you answered no, nobody could be asked, a prerequisite is missing, the installer failed, or the pin did not hold.
+
+The Developer Guide page "Use the AIDD framework" explains the steps; it comes with the next Xaden release.
 
 ## `xaden hook`
 
