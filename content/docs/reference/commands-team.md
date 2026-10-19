@@ -1,7 +1,7 @@
 ---
 title: "Team commands"
 weight: 30
-description: "setup, doctor, fetch, pin, upgrade, update-check (deprecated), rules, aidd, hook, verify-commits and ignore-list."
+description: "setup, doctor, fetch, pin, upgrade, rules, aidd, hook, verify-commits and ignore-list."
 ---
 
 Commands for keeping a team on the same Xaden version, the same hooks and the same rules. They work inside a project that adopted Xaden.
@@ -65,7 +65,7 @@ xaden pin [<version>]
 | (no version) | Look up the newest release first, as `--check` does, then pin it. |
 
 Asks before any network access and before downloading a version that is not installed. A signed release pins the signed checksum; otherwise the
-checksum of the download is pinned and Xaden says so. In Xaden up to 0.5 this command was called `xaden upgrade`; `xaden upgrade <version>` inside a project still does the same, with a warning.
+checksum of the download is pinned and Xaden says so.
 
 Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing looked up or downloaded; `5` checksum mismatch; `6` signature mismatch.
 
@@ -83,7 +83,7 @@ xaden upgrade [<version>]
 | `--check` | Ask, then look up the newest release on github.com and report it. Inside a project it also lists the outdated npm and pip dependencies and marks a newest version with a higher major number `(major)`. Looks now, whatever the `update-check` setting says. Changes nothing. |
 | `--check --if-due` | The quiet form for scripts: checks only when the `update-check` interval has passed, writes the cache, prints nothing and exits `0` when the network is down. Off means no check. |
 | (no version) | Look up the newest release, show version, source and checksum, ask, download, verify signature and checksum, install it into `~/.local/share/xaden/versions/<version>` and switch the `current` link to it. |
-| `<version>` | The same for that version. Inside a project that adopted Xaden this moves the project instead, as `xaden pin <version>`, and warns. |
+| `<version>` | The same for that version. Inside a project that adopted Xaden it still installs on your machine only; the project stays where it is, and Xaden names `xaden pin <version>` for moving it. |
 
 The `xaden` command links to `current`, so it never changes. A failed download or check leaves the old version active. Older versions stay, because
 projects that pin them use them. A Xaden that runs from a git clone is not touched; the command names `git -C <folder> pull`. A Xaden installed
@@ -92,22 +92,6 @@ before this layout existed asks you to install once with the one command.
 Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing looked up or downloaded; `5` checksum mismatch; `6` signature mismatch.
 
 Guide: [Update Xaden]({{< relref "docs/admin-guide/update-xaden" >}}).
-
-## `xaden update-check` (deprecated)
-
-The old name of `xaden upgrade --check`, which also reports the outdated dependencies. It still works, says on stderr that it is deprecated, and goes away in a later release. It only reports; it never installs or changes anything.
-
-```text
-xaden update-check [--if-due|--now]
-```
-
-Checks now, whatever the interval, and prints the result. The check is off by default (`update-check = off` in `xaden/xaden.conf`) and the command
-refuses while it is off; `--now` looks anyway. `--if-due` checks only when the interval has passed, prints nothing and exits `0` when the network is
-down; use `xaden upgrade --check --if-due` instead. The setting `update-check` and the `XADEN_UPDATE_CHECK` environment variable keep their names.
-
-The one network request goes to the GitHub release API. The result is cached in the repository's git folder and never committed.
-
-Guide: [Check for updates]({{< relref "docs/admin-guide/check-for-updates" >}}).
 
 ## `xaden rules`
 
