@@ -33,6 +33,7 @@ PAGES=(
   "developer-guide|what-xaden-checks|docs/guide/developer/what-xaden-checks.md|See which checks each layout runs, which an adopted project does not, and how to make the gates blocking.|unreleased"
   "developer-guide|kick-off-with-your-assistant|docs/guide/developer/kick-off-with-your-assistant.md|Turn an idea into approved requirements, a stack and a first skeleton."
   "developer-guide|build-features|docs/guide/developer/build-features.md|Add a feature from a requirement, test first, checked before every commit."
+  "developer-guide|use-the-aidd-framework|docs/guide/developer/use-the-aidd-framework.md|Switch on the AI-Driven Dev framework in a project at a pinned version, and off again.|unreleased"
   "developer-guide|release-a-version|docs/guide/developer/release-a-version.md|Cut a checked, stamped and tagged version when you decide to."
   "developer-guide|join-a-project|docs/guide/developer/join-a-project.md|Start contributing to a repository whose team already uses Xaden."
   "developer-guide|other-assistants-and-local-models|template/docs/local-llm.md|Use Xaden in a chat window or with a model on your own machine."
@@ -113,6 +114,7 @@ rewrite_for_readers() {
   perl -0pe '
     s/ \((?:`?AGENTS\.md`? )?(?:§ ?[0-9]+|section [0-9]+)\)//g;
     s/ \(CC-[0-9]+\)//g;
+    s/ \(REQ-[0-9]+(?:, REQ-[0-9]+)*\)//g;
     s/the risks to know before installing are in `template\/docs\/optional-tools\.md` → "Assistant\s+plugins" \(in a generated project: `docs\/optional-tools\.md`\)/the risks to know before installing are in [Optional tools and assistant plugins](\/docs\/admin-guide\/optional-tools-and-plugins\/#assistant-plugins-claude-code)/g;
     s/list in `template\/docs\/optional-tools\.md`/list in [Optional tools and assistant plugins](\/docs\/admin-guide\/optional-tools-and-plugins\/)/g;
     s/ \(`?AGENTS\.md`? §[0-9]+\)//g;
