@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- `scripts/sync-docs.sh --main` renders even when Xaden's `main` has a guide page that the pinned release lacks: a `PAGES` entry marked `unreleased` renders when its source exists and is skipped with a warning otherwise (REQ-006). `scripts/dev.sh` also finds the Xaden checkout from a worktree of the site.
 - Reference and Troubleshooting describe the commit check fix on Xaden `main`: exit status `2` and the shallow-checkout failure of `xaden verify-commits --ci`, and that an adopted project's check starts after the adoption (REQ-109 of Xaden).
 - Reference, Troubleshooting and Security describe the commit check in the adopted CI: the new `xaden verify-commits` entry, the `--commit-convention` option of `xaden adopt`, how the scan chooses `commit-convention`, and two Troubleshooting entries (REQ-107, REQ-108 of Xaden).
 - Reference: `findings-status.<name>` is recorded by `xaden adopt` only for status 1, and `require-signature` refuses an empty value and git checkouts of Xaden.
