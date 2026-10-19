@@ -1,7 +1,7 @@
 ---
 title: "Project commands"
 weight: 10
-description: "new, adopt, remove, update, version and help."
+description: "create, adopt, remove, version and help."
 ---
 
 Commands that create a project, add Xaden to a repository, take it out again, and report the version. They work from any folder unless
@@ -14,7 +14,6 @@ Creates a project in the `xaden/` layout, with its own git repository, hooks, a 
 ```text
 xaden create [--assistants <list>] <name> [<dir>]
 xaden create --autopilot [--stack python|node] [--assistants <list>] <name> [<dir>]
-xaden create --classic <name> [<dir>]
 ```
 
 | Argument or option | Meaning |
@@ -24,7 +23,6 @@ xaden create --classic <name> [<dir>]
 | `--autopilot` | Add the stack's preset and print one plan; ask once before anything is created. |
 | `--stack python\|node` | The stack for autopilot. Without it, autopilot asks (in a terminal) or stops. |
 | `--assistants <list>` | Comma-separated assistants. `claude` adds `CLAUDE.md` with the line `@AGENTS.md`. Without it, a terminal gets a question and a script gets no `CLAUDE.md`. |
-| `--classic` | Create a project that keeps its own copy of the scripts, prompts and guides (update it with `xaden update`). |
 
 Exit status: `0` created, or nothing changed because you answered no or there is no terminal for autopilot; `2` the folder already holds
 code, a build file or history; `1` any other error. A failed run removes the folder it created.
@@ -77,19 +75,6 @@ terminal and without `--yes` it changes nothing.
 Exit status: `0` removed or nothing changed; `1` Xaden is not adopted here.
 
 Guide: [Uninstall]({{< relref "docs/admin-guide/uninstall" >}}).
-
-## `xaden update`
-
-Brings a project created with `xaden create --classic` to the installed Xaden version.
-
-```text
-xaden update [--apply]
-```
-
-Without `--apply` it is a dry run that lists what would change. With `--apply` it stages the changes in git. Run it inside the project. In a
-project with an `xaden/` folder it stops and points to `xaden pin`.
-
-Guide: [Update a classic project]({{< relref "docs/admin-guide/update-a-classic-project" >}}).
 
 ## `xaden version`
 

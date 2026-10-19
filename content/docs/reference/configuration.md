@@ -92,9 +92,8 @@ before it runs the checks.
 
 ## What a full run says about unmapped checks
 
-A project made by `xaden create` runs `bandit`, `pip-audit` (Python) and `npm audit` (Node) itself. An adopted project runs them only when
-`check.audit` or `check.security` maps them. When a full run of an adopted project finds a stack for which the classic project would run one
-of them and nothing maps it, it prints one line for each:
+A project runs `bandit`, `pip-audit` (Python) and `npm audit` (Node) only when `check.audit` or `check.security` maps them. When a full
+run finds a stack for which Xaden knows one of them and nothing maps it, it prints one line for each:
 
 ```text
 NOT COVERED: pip-audit; a project made by xaden create runs it. Map it with check.audit in xaden/xaden.conf (see "What Xaden checks")
