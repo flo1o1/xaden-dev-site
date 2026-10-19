@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Reference and Troubleshooting describe the audit kinds of Xaden `main`: `audit` and `security` in `expect` and the check kinds table, the `NOT COVERED:` line, the presets that map `pip-audit`, `bandit` and `npm audit`, the scan finding `unittest` and Makefile or npm `audit` commands, and four Troubleshooting entries (REQ-105, REQ-106 of Xaden, plus the hook fix for an untracked `xaden/` folder).
 - Reference and Troubleshooting describe the commit check fix on Xaden `main`: exit status `2` and the shallow-checkout failure of `xaden verify-commits --ci`, and that an adopted project's check starts after the adoption (REQ-109 of Xaden).
 - Reference, Troubleshooting and Security describe the commit check in the adopted CI: the new `xaden verify-commits` entry, the `--commit-convention` option of `xaden adopt`, how the scan chooses `commit-convention`, and two Troubleshooting entries (REQ-107, REQ-108 of Xaden).
 - Reference: `findings-status.<name>` is recorded by `xaden adopt` only for status 1, and `require-signature` refuses an empty value and git checkouts of Xaden.

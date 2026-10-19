@@ -20,10 +20,12 @@ mode = changed-files
 commit-convention = conventional
 assistants = claude
 hook-checks = lint
-expect = test,lint
+expect = test,lint,audit
 update-check = 1d
 check.test = npm test
 check.lint = make lint
+check.audit = npm audit --audit-level=high
+findings-status.audit = 1
 ```
 
 ## Settings
@@ -35,12 +37,12 @@ check.lint = make lint
 | `mode` | `advisory`, `changed-files`, `strict` | What a new finding does. See below. Default when missing: `strict`. |
 | `commit-convention` | `conventional`, `other` | `conventional` enforces Conventional Commits and the `Refs:` trailer, in the commit hook and in CI; `other` lets the `Refs:` checks only advise. `xaden adopt` reads it from the history: `conventional` with no history, with at least 60 percent of the last 30 subjects (from 5 commits on) or with every subject (fewer than 5 commits) following Conventional Commits; otherwise `other`. A full `xaden check` prints a `TIP:` while it is `other`. |
 | `assistants` | comma-separated names, or `none` | The assistants the team uses. `claude` means `CLAUDE.md` exists with the line `@AGENTS.md`. |
-| `hook-checks` | comma-separated check names | The checks the pre-commit hook runs. Default: `lint`. The full run and CI run all checks. |
-| `expect` | comma-separated kinds: `test`, `lint`, `typecheck` | The kinds of checks the repository should have. A kind without a `check.<kind>` command is a gap. When the line is missing, Xaden looks at the files (`package.json`, `pyproject.toml`). |
-| `findings-status.<name>` | a comma-separated list of exit statuses, 1 to 255 | The statuses with which the check `<name>` (`check.<name>` or a built-in one such as `shellcheck`) reports that it found violations. Only these go through the baseline and the mode. Any other non-zero status means the tool did not run to the end, and the check fails. Not allowed for `test`. `xaden adopt` records `= 1` for a mapped check that exits with status 1 while the baseline is recorded; any other status is not recorded, you add it yourself. Loosening it is an approval point. |
+| `hook-checks` | comma-separated check names | The checks the pre-commit hook runs. Default: `lint`. The full run and CI run all checks. The audits (`audit`, `security`) stay out of the hook: they need the network or are slow. |
+| `expect` | comma-separated kinds: `test`, `lint`, `typecheck`, `audit`, `security` | The kinds of checks the repository should have. A kind without a `check.<kind>` command is a gap. A new adoption of a Python or Node repository lists `audit` too, and `security` for Python; an adoption from before keeps its line, and no update adds to it. When the line is missing, Xaden looks at the files (`package.json`, `pyproject.toml`). |
+| `findings-status.<name>` | a comma-separated list of exit statuses, 1 to 255 | The statuses with which the check `<name>` (`check.<name>` or a built-in one such as `shellcheck`) reports that it found violations. Only these go through the baseline and the mode. Any other non-zero status means the tool did not run to the end, and the check fails. Not allowed for `test`. `xaden adopt` records `= 1` for a mapped check that exits with status 1 while the baseline is recorded, and `xaden preset` sets `= 1` for the checks it maps (`audit`, `security` included); any other status is not recorded, you add it yourself. Loosening it is an approval point. |
 | `require-signature` | `true`, `false` | `true`: only releases the maintainer signed are installed or run for this project. Default: `false`. Any other value, an empty one included, stops every `xaden` command. A git checkout of Xaden is never accepted. Setting it back is an approval point. |
 | `update-check` | `off`, or a whole number of hours or days of at least `1h`: `12h`, `1d`, `7d` | How often `xaden update-check` may look for a newer Xaden and outdated dependencies. It only reports. Default: `off`. The `XADEN_UPDATE_CHECK` environment variable overrides it on one machine. |
-| `check.<name>` | a shell command | A check Xaden runs from the repository root, for example `check.test = npm test`. The name is lowercase letters, digits and hyphens. |
+| `check.<name>` | a shell command | A check Xaden runs from the repository root, for example `check.test = npm test`. The name is lowercase letters, digits and hyphens. The kinds Xaden knows are listed under Check kinds below. |
 
 ## Modes
 
@@ -66,6 +68,40 @@ A check command runs with the repository as the working directory. Xaden judges 
 `path:line:column: message` (or a GitHub annotation `::warning file=path,line=N::message`) is one finding; Xaden records it without the numbers,
 so moving code does not make a finding new. If the first word of a command is not installed, the check is skipped and reported, or fails with
 `--strict`.
+
+## Check kinds
+
+Any name works for `check.<name>`; these five are the kinds Xaden knows. `expect` may name them, and `xaden adopt` and `xaden preset` fill them.
+
+| Kind | What it runs | Preset command (Python / Node) | Notes |
+|------|--------------|--------------------------------|-------|
+| `test` | the tests | `pytest -q` / `node --test` | A failing test names no file and is never baselined. |
+| `lint` | the linters | `ruff check .` / `npx eslint .` | The only kind the pre-commit hook runs by default. |
+| `typecheck` | the type checker | `mypy .` / `npx tsc --noEmit` | |
+| `audit` | the dependency audit, every stack | `pip-audit` / `npm audit --audit-level=high` | Needs the network, so the check is labelled `check: audit (needs the network)` and fails with the tool's own message when offline; it is never reported as passed. |
+| `security` | Bandit, Python only | `bandit -q -r . -x ./.venv,./node_modules,./tests` | |
+
+The scan finds an existing command by a Makefile target named `audit` or `security`, or an npm script named `audit`. A tool it only sees
+configured (a Bandit section in `pyproject.toml`) is listed as found without a command; nothing is guessed. The findings of `audit` and
+`security` name no file, so they cannot be baselined: they fail in `changed-files` and `strict` and only warn in `advisory`. The preset
+sets `findings-status` to `1` for both. The workflow `xaden adopt` writes installs the pinned `bandit` and `pip-audit` for a Python project
+before it runs the checks.
+
+## What a full run says about unmapped checks
+
+A project made by `xaden create` runs `bandit`, `pip-audit` (Python) and `npm audit` (Node) itself. An adopted project runs them only when
+`check.audit` or `check.security` maps them. When a full run of an adopted project finds a stack for which the classic project would run one
+of them and nothing maps it, it prints one line for each:
+
+```text
+NOT COVERED: pip-audit; a project made by xaden create runs it. Map it with check.audit in xaden/xaden.conf (see "What Xaden checks")
+TIP: name them in 'expect' once they are mapped (xaden preset <stack> maps the commands) so a missing mapping is a gap
+```
+
+The line only informs. When `expect` names the kind, the missing mapping is a gap instead (see Modes) and the line does not appear, so an
+adoption from before never turns red by an update. A project made by `xaden create` never prints it. The Developer Guide page "What Xaden
+checks" lists, per layout and stack, every check, whether a missing tool skips or fails it, which ones need the network and which run in the
+pre-commit hook.
 
 ## Baselines
 

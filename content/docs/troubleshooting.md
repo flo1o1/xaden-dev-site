@@ -59,7 +59,27 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### A gap: no `test` check is configured
 
 **Cause:** the repository has no test command that Xaden knows. In `strict` mode a gap is an error; otherwise it is a warning.
-**Fix:** add `check.test = <command>` to `xaden/xaden.conf`, or add Xaden's preset: `xaden preset python` or `xaden preset node`.
+**Fix:** add `check.test = <command>` to `xaden/xaden.conf`, or add Xaden's preset: `xaden preset python` or `xaden preset node`. A Python project that uses `unittest` is found by the scan from 0.6.0 on (a `tests/` or `test/` folder with a `test*.py` file that imports it, and no pytest setup); before that, name it: `check.test = python3 -m unittest discover -s tests`.
+
+### A gap: no `audit` (or `security`) check is configured
+
+**Cause:** the project was adopted with the dependency audit (and, for Python, Bandit) in `expect`, and no `check.audit` or `check.security` command maps them. In `strict` mode a gap is an error; otherwise it is a warning.
+**Fix:** run `xaden preset python` or `xaden preset node`, which maps `pip-audit` and `bandit`, or `npm audit --audit-level=high`, and install the tools it prints. Or name your own command: `check.audit = <command>`. If the team decides not to audit, take `audit` out of `expect`; that loosens a gate, so it is an approval point.
+
+### A line says `NOT COVERED: pip-audit` (or `bandit`, `npm audit`)
+
+**Cause:** an adopted project from before the audit kinds has no command for a check that a project made by `xaden create` runs for this stack. The line informs; nothing fails because of it.
+**Fix:** map the check as the line says (`check.audit` or `check.security`, `xaden preset <stack>` writes both), then add the kind to `expect` so a missing mapping becomes a gap. Leave it as it is if the team accepts that the audit does not run.
+
+### `check: audit (needs the network)` fails
+
+**Cause:** the audit asks a vulnerability database. Without a network (a train, a locked-down CI runner) it fails with the tool's own message; it is never reported as passed. With a network, the tool found a vulnerable dependency or exited with a status that `findings-status.audit` does not name.
+**Fix:** read the tool's output above the message. Offline: run the full check again with a network. A finding names no file, so it cannot go into the baseline: update the dependency, or accept it with the team. In `advisory` mode it only warns.
+
+### The pre-commit hook says `docs/requirements not found` in a repository where `xaden/` is not tracked
+
+**Cause:** the Xaden files are on disk but untracked (listed in `.git/info/exclude`, for example when you work in a repository you do not own). The hook checks the staged files only and used to find no `xaden/` there.
+**Fix:** update to a Xaden version that has the fix (0.6.0 or later); the hook then reads the working tree's `xaden/` folder. Until then `xaden check` by hand works, and `git commit --no-verify` is the last resort.
 
 ### `xaden check` says `xaden/RULES.md` does not match
 
