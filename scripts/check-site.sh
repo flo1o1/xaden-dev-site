@@ -3,6 +3,7 @@
 #   REQ-011  no reference to another origin, no inline script
 #   REQ-012  every page carries the Content-Security-Policy meta tag
 #   REQ-009  security.txt has Contact and Expires, and Expires is at least 60 days away
+#   REQ-024  every entry of the credits page has a link and a license; footer, About and the fonts carry the credits
 # Usage: scripts/check-site.sh   (needs hugo, extended build, and the tailwindcss CLI v4 on PATH)
 set -euo pipefail
 
@@ -28,13 +29,14 @@ build_site() {
 # list_origin_references: prints every http(s) URL a browser would request. In HTML that is
 # the value of a src, href, action, poster, srcset or data attribute outside plain links
 # (<a href>), so URLs shown as text or code are not requests; in CSS, JS, JSON and XML any URL
-# counts. Fonts are not read: their embedded licence metadata names URLs no browser requests.
+# counts. Fonts are not read: their embedded licence metadata names URLs no browser requests. Neither are the OFL texts
+# next to them (fonts/LICENSE-*.txt): they name the license and project URLs as text for readers (REQ-024).
 list_origin_references() {
   find "$OUTPUT_DIR" -name '*.html' -exec sed -E 's/<a [^>]*>//g' {} + |
     grep -hoE '(src|href|action|poster|srcset|data)=("[^"]*"|[^ >]*)' |
     grep -oE 'https?://[^"'"'"' )<>]+' || true
   grep -rhoE 'https?://[^"'"'"' )<>]+' "$OUTPUT_DIR" \
-    --include='*.css' --include='*.xml' --include='*.txt' --include='*.js' --include='*.json' || true
+    --include='*.css' --include='*.xml' --include='*.txt' --include='*.js' --include='*.json' --exclude='LICENSE-*.txt' || true
 }
 
 # check_no_foreign_origins: REQ-011.
@@ -120,6 +122,26 @@ check_docs_prefer_xaden() {
 $found"
 }
 
+# check_credits: REQ-024. Every list entry of content/about/credits.md reads "- [Name](https://...): <license>. ..." with a
+# license from CREDIT_LICENSES; the footer and the About page link to it; every font has a license file next to it.
+CREDIT_LICENSES='MIT|Apache-2\.0|GPL-3\.0|LGPL-2\.1|MPL-2\.0|BSD-3-Clause|ISC|CC BY-SA 4\.0|CC BY 4\.0|CC BY 3\.0|SIL OFL 1\.1'
+check_credits() {
+  local page="$ROOT/content/about/credits.md" bad font entries
+  [ -f "$page" ] || die "REQ-024: content/about/credits.md is missing"
+  entries="$(grep -c '^- \[' "$page" || true)"
+  [ "$entries" -gt 0 ] || die "REQ-024: the credits page lists no entry"
+  bad="$(grep '^- \[' "$page" | grep -Ev "^- \[[^]]+\]\(https://[^)]+\): ($CREDIT_LICENSES)[. ]" || true)"
+  [ -z "$bad" ] || die "REQ-024: credits entries without a link or a known license (form: - [Name](https://...): MIT. note):
+$bad"
+  grep -Eq 'href="?/about/credits/' "$OUTPUT_DIR/index.html" || die "REQ-024: the footer does not link to the credits page"
+  grep -Eq 'href="?/about/credits/' "$OUTPUT_DIR/about/index.html" || die "REQ-024: the About page does not link to the credits page"
+  for font in "$OUTPUT_DIR"/fonts/*.woff2; do
+    ls "$OUTPUT_DIR"/fonts/LICENSE-*.txt >/dev/null 2>&1 || die "REQ-024: fonts are served without a license file next to them"
+    [ -e "$font" ] || break
+  done
+  grep -q 'Copyright' "$OUTPUT_DIR"/fonts/LICENSE-*.txt || die "REQ-024: a font license file has no copyright line"
+}
+
 # check_rule_file: Xaden REQ-112, this repository's rule file says the user merges and the site's main mirrors Xaden's main.
 check_rule_file() {
   grep -q 'the user merges' "$SCRIPTS/../CLAUDE.md" || die "Xaden REQ-112: CLAUDE.md no longer says the user merges"
@@ -167,6 +189,8 @@ main() {
   check_security_txt
   info "rule file (Xaden REQ-112)"
   check_rule_file
+  info "credits and licenses (REQ-024)"
+  check_credits
   info "site checks passed"
 }
 
