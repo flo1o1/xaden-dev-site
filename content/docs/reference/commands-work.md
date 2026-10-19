@@ -58,7 +58,7 @@ xaden check [--staged] [--strict]
 | `--staged` | The pre-commit subset: staged files only, offline. |
 | `--strict` | A missing tool is a failure instead of a skipped check. CI uses it. |
 
-The full run of an adopted project also prints `NOT COVERED:` for each audit that the classic layout runs and nothing maps; see [Configuration]({{< relref "docs/reference/configuration" >}}).
+The full run also prints `NOT COVERED:` for each audit Xaden knows for your stack and nothing maps; see [Configuration]({{< relref "docs/reference/configuration" >}}).
 
 Every run ends with a summary of passed, failed and skipped checks. A run with skipped checks ends with a warning. How findings are judged
 is set by the mode; see [Configuration]({{< relref "docs/reference/configuration" >}}).

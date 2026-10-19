@@ -8,7 +8,7 @@ This section lists facts. It does not teach; each entry links to the guide page 
 
 | Look up | Page |
 |---------|------|
-| Commands that create, adopt and remove: `new`, `adopt`, `remove`, `update`, `version`, `help` | [Project commands]({{< relref "docs/reference/commands-project" >}}) |
+| Commands that create, adopt and remove: `create`, `adopt`, `remove`, `version`, `help` | [Project commands]({{< relref "docs/reference/commands-project" >}}) |
 | Commands for daily work: `prompt`, `req`, `check`, `persona`, `context`, `release`, `doc`, `preset` | [Work commands]({{< relref "docs/reference/commands-work" >}}) |
 | Commands for a team and its versions: `setup`, `doctor`, `fetch`, `pin`, `upgrade`, `rules`, `aidd`, `hook`, `ignore-list` | [Team commands]({{< relref "docs/reference/commands-team" >}}) |
 | Every setting in `xaden/xaden.conf` | [Configuration]({{< relref "docs/reference/configuration" >}}) |

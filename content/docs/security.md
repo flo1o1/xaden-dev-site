@@ -30,9 +30,7 @@ The assistant works from one rule file that every supported tool reads. For secu
 - Follow a secure coding checklist built on the OWASP ASVS, the OWASP Web Security Testing Guide and
   the OWASP Top 10. `xaden doc security` prints it.
 
-Projects created with `xaden create --classic` also get Claude Code permission rules that block reading
-`.env` files and force-pushing. They are a convenience guard, not a security boundary. The default layout
-adds no tool settings to your repository, so the rule file is what applies.
+Xaden adds no tool settings, such as Claude Code permission rules, to your repository, so the rule file is what applies.
 
 ## On every commit and in CI: automatic checks
 
