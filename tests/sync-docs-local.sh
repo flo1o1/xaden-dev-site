@@ -38,3 +38,17 @@ expect_refusal "the pinned tag is rendered from the checkout's git" "PREVIEW of 
 output="$(env -u CI XADEN_SOURCE="$WORK/xaden" "$ROOT/scripts/sync-docs.sh" --main 2>&1 || true)"
 grep -q "PREVIEW of unreleased files" <<<"$output" || { printf 'FAIL: --main did not render the working tree:\n%s\n' "$output" >&2; exit 1; }
 printf 'ok: --main renders the working tree even when the pinned tag exists\n'
+
+# An "unreleased" page of PAGES (one Xaden's main has and the pinned release lacks) is skipped with a warning only
+# while its source is missing, so --main always renders; a page without the mark still fails (REQ-006).
+# shellcheck source=SCRIPTDIR/../scripts/sync-docs.sh
+source "$ROOT/scripts/sync-docs.sh"
+mkdir -p "$WORK/release/docs"
+printf '# T\n' >"$WORK/release/docs/present.md"
+page_is_not_in_release unreleased "$WORK/release" docs/missing.md || { printf 'FAIL: an unreleased page without a source is not skipped\n' >&2; exit 1; }
+printf 'ok: an unreleased page without a source is skipped\n'
+! page_is_not_in_release unreleased "$WORK/release" docs/present.md || { printf 'FAIL: an unreleased page with a source is skipped\n' >&2; exit 1; }
+printf 'ok: an unreleased page with a source is rendered\n'
+! page_is_not_in_release "" "$WORK/release" docs/missing.md || { printf 'FAIL: a page without the mark is skipped, so a missing source would pass silently\n' >&2; exit 1; }
+printf 'ok: a page without the mark is never skipped\n'
+grep -q '|unreleased"$' "$ROOT/scripts/sync-docs.sh" || printf 'note: no page is marked unreleased now\n'
