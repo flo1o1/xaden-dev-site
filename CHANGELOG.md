@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- `inbox/` is git-ignored, as the site's `CLAUDE.md` already said: drafts and assets dropped there are never committed.
 - Docs pages without headings no longer show an empty "On this page" block (for example Contributing).
 - The "Docs" entry of the main menu opens Quick start instead of the Documentation overview; the submenu is unchanged and the overview stays at `/docs/`.
 - The cards on the Documentation page no longer list the pages of their section; the card text and the Open button remain.
