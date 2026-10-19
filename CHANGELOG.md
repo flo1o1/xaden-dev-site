@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- The "Docs" entry of the main menu opens Quick start instead of the Documentation overview; the submenu is unchanged and the overview stays at `/docs/`.
 - The cards on the Documentation page no longer list the pages of their section; the card text and the Open button remain.
 - Reference describes the lookup commands and the smaller index of Xaden `main` (REQ-126, REQ-127): `xaden req list --epic/--status`, `show --brief`, `for <path>...` with the optional `paths:` line of a requirement, `find <word>...`, the short `INDEX.md` and the full `INDEX-full.md`, the warning of `xaden check` about a `paths:` entry that matches nothing, and `xaden doc rules-<topic>` for the rule sections that moved out of the always-loaded rules file; Files and folders lists `INDEX-full.md`.
 - `scripts/sync-docs.sh --main` always renders: a guide file of Xaden's `main` that `PAGES` does not list yet gets an entry derived from its path, a command in `xaden help` without a Reference entry and a link to an unknown page only warn, and a listed page whose source `main` removed is skipped. A release or CI build still fails on each (REQ-006).
