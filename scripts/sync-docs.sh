@@ -22,11 +22,15 @@ DOCS_DIR="$ROOT/content/docs"
 GETTING_STARTED="GETTING-STARTED.md"
 # Pages generated from the release: section | page name | source file in the release | summary.
 # The order is the order in the menu and in the "previous / next" links. Every file under docs/guide/
-# of the release must be listed here, or the run fails.
+# of the release must be listed here, or the run fails. A fifth field "unreleased" marks a page that Xaden's main
+# already has but the pinned release does not: it renders when the source exists (a preview of main, or a release
+# that carries it) and is skipped with a warning otherwise, so scripts/sync-docs.sh --main always renders. Remove the
+# field in the pull request that pins a release holding the page.
 PAGES=(
   "developer-guide|create-a-project|docs/guide/developer/create-a-project.md|Start a new project with Xaden's rules, checks and requirements from the first commit."
   "developer-guide|add-xaden-to-a-repository|docs/guide/developer/add-xaden-to-a-repository.md|Put Xaden beneath a repository you already have without changing its build."
   "developer-guide|check-modes-and-baselines|docs/guide/developer/check-modes-and-baselines.md|Decide how strict the checks are, and adopt without failing on old findings."
+  "developer-guide|what-xaden-checks|docs/guide/developer/what-xaden-checks.md|See which checks each layout runs, which an adopted project does not, and how to make the gates blocking.|unreleased"
   "developer-guide|kick-off-with-your-assistant|docs/guide/developer/kick-off-with-your-assistant.md|Turn an idea into approved requirements, a stack and a first skeleton."
   "developer-guide|build-features|docs/guide/developer/build-features.md|Add a feature from a requirement, test first, checked before every commit."
   "developer-guide|release-a-version|docs/guide/developer/release-a-version.md|Cut a checked, stamped and tagged version when you decide to."
@@ -254,13 +258,17 @@ use_local_source() {
   printf 'v%s|%s' "$(tr -d '[:space:]' <"$source/VERSION")" "$(date +%F)"
 }
 
+# page_is_not_in_release <flag> <release dir> <source>: true for a page marked "unreleased" whose source the
+# release does not have yet; every other missing source still fails in render_page.
+page_is_not_in_release() { [ "$1" = unreleased ] && [ ! -f "$2/$3" ]; }
+
 main() {
   if [ "${1:-}" = "--main" ]; then
     shift
     export SYNC_MAIN=1
     XADEN_SOURCE="${XADEN_SOURCE:-$ROOT/../code}"
   fi
-  local tag="${1:-v$(xaden_version "$(tr -d '[:space:]' <"$ROOT/VERSION")")}" date entry section page source summary weight=0 preview=false skipped=""
+  local tag="${1:-v$(xaden_version "$(tr -d '[:space:]' <"$ROOT/VERSION")")}" date entry section page source summary flag weight=0 preview=false skipped=""
   mkdir "$WORK_DIR/release"
   if [ -n "${XADEN_SOURCE:-}" ]; then
     entry="$(use_local_source "$XADEN_SOURCE" "$tag")"
@@ -282,10 +290,14 @@ main() {
   # everything generated goes; the hand-written _index.md files stay
   find "$DOCS_DIR/developer-guide" "$DOCS_DIR/admin-guide" "$DOCS_DIR/contributing" -type f ! -name '_index.md' -delete 2>/dev/null || true
   for entry in "${PAGES[@]}"; do
-    IFS='|' read -r section page source summary <<<"$entry"
+    IFS='|' read -r section page source summary flag <<<"$entry"
     weight=$((weight + 10))
     if section_is_newer_than_release "$section" "$WORK_DIR/release"; then
       case " $skipped " in *" $section "*) ;; *) warn "the $tag release has no $section pages yet; that section stays empty until a release carries them"; skipped="$skipped $section" ;; esac
+      continue
+    fi
+    if page_is_not_in_release "$flag" "$WORK_DIR/release" "$source"; then
+      warn "$source is not in the $tag release yet; its page appears when a release carries it"
       continue
     fi
     render_page "$section" "$page" "$source" "$summary" "$weight" "$WORK_DIR/release"
@@ -296,4 +308,5 @@ main() {
   info "docs of $tag rendered: ${#PAGES[@]} pages"
 }
 
-main "$@"
+# sourced by tests/sync-docs-local.sh, which calls the functions without running a render
+[ "${BASH_SOURCE[0]}" != "$0" ] || main "$@"

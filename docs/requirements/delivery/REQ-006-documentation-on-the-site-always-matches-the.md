@@ -4,7 +4,7 @@ type: job
 epic: delivery
 priority: must
 status: in-progress
-updated: 2026-10-17
+updated: 2026-10-19
 ---
 
 # Documentation on the site always matches the latest released Xaden
@@ -23,3 +23,5 @@ When I publish a Xaden release, I want to rebuild the site from that release's d
 - Given `CI` is set, when `XADEN_SOURCE` is set, then `scripts/sync-docs.sh` refuses to run, so a deployed build always renders a release tarball
 - Given a path that is not a Xaden checkout, when `XADEN_SOURCE` names it, then `scripts/sync-docs.sh` fails and renders nothing
 - Given a maintainer who has tagged the next release in a local Xaden checkout but not published it, when they run `XADEN_SOURCE=<checkout> scripts/sync-docs.sh`, then the docs of the Xaden tag `v` plus `VERSION` without its sequence render from that checkout's git (the working tree is used only when that tag does not exist there), so the site can be prepared before the release is published; the pull request passes CI once the tag is on GitHub
+- Given a guide page that Xaden's `main` has and the pinned release does not, when `scripts/sync-docs.sh --main` runs, then the page renders from the checkout; the entry in `PAGES` carries the field `unreleased`, so the same list renders the pinned release too, where the page is skipped with a warning naming its source (an entry without the field still fails on a missing source)
+- Given a preview, when I run `scripts/dev.sh` in the main checkout of the site or in one of its worktrees, then the guides render from the main of the Xaden checkout (`XADEN_SOURCE`, the one next to the site, or the one next to the `worktrees/` folder), so `hugo server` shows what Xaden's `main` holds before any release
