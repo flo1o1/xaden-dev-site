@@ -13,6 +13,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 - `scripts/dev.sh` renders the guides from the main of the Xaden checkout next to the site (`scripts/sync-docs.sh --main`), so the local preview shows what Xaden's `main` holds, including pages newer than the pinned release. Without that checkout it renders the pinned release as before.
 
 ### Added
+- A "Credits and licenses" page under About (`/about/credits/`, linked from About and the footer) names the tools Xaden runs, the standards and works it builds on (OWASP, Conventional Commits, Keep a Changelog, Semantic Versioning, the AI-Driven Development manifesto) and what the site is built with, each with a link and its license; the OFL texts of Cinzel and Inter are served next to the fonts; `scripts/check-site.sh` fails on an entry without link or license, on a missing footer or About link and on a font without a license file (REQ-024).
 - A **Contributing** section next to the guides, below Reference: Install with git, Architecture, Work on Xaden, Release and sign Xaden, and Threat model and requirements. Its pages are generated from the Xaden release like the guides (`docs/guide/contributing/`); a release that does not carry them yet leaves the section empty. Contributing is exempt from the checks that keep repository paths and rule IDs out of the guides (REQ-005).
 
 ### Changed

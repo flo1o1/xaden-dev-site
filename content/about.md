@@ -24,7 +24,8 @@ know why this tool is called Xaden.
 ## License
 
 Xaden is open source under the [MIT license](https://github.com/flo1o1/xaden-dev/blob/main/LICENSE).
-Projects you generate with it do not inherit that license; you choose one for each project.
+Projects you generate with it do not inherit that license; you choose one for each project. The tools Xaden runs and the works it builds on are
+credited, with their licenses, on [Credits and licenses]({{< relref "about/credits" >}}).
 
 ## Release signing key
 

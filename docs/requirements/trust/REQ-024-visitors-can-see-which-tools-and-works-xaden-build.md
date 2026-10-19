@@ -3,7 +3,7 @@ id: REQ-024
 type: job
 epic: trust
 priority: should
-status: approved
+status: done
 updated: 2026-10-19
 ---
 
