@@ -65,8 +65,9 @@ pages_before=${#PAGES[@]}
 output="$(SYNC_MAIN=1 check_every_guide_has_a_page "$WORK/main" 2>&1)"
 grep -q "brand-new.md is not in PAGES yet" <<<"$output" || { printf 'FAIL: no warning for an unlisted guide file:\n%s\n' "$output" >&2; exit 1; }
 SYNC_MAIN=1 check_every_guide_has_a_page "$WORK/main" 2>/dev/null
-[ "${#PAGES[@]}" -gt "$pages_before" ] && printf '%s\n' "${PAGES[@]}" | grep -q '^developer-guide|brand-new|docs/guide/developer/brand-new.md|.*|unreleased$' ||
-  { printf 'FAIL: the unlisted guide file got no derived entry\n' >&2; exit 1; }
+if [ "${#PAGES[@]}" -le "$pages_before" ] || ! printf '%s\n' "${PAGES[@]}" | grep -q '^developer-guide|brand-new|docs/guide/developer/brand-new.md|.*|unreleased$'; then
+  printf 'FAIL: the unlisted guide file got no derived entry\n' >&2; exit 1
+fi
 printf 'ok: --main gives an unlisted guide file a derived entry and warns\n'
 output="$(SYNC_MAIN=1 check_reference_covers_commands "$WORK/main" 2>&1)" || { printf 'FAIL: --main died on a command without a Reference entry\n' >&2; exit 1; }
 grep -q "zzz-undocumented-command" <<<"$output" || { printf 'FAIL: no warning naming the undocumented command:\n%s\n' "$output" >&2; exit 1; }
