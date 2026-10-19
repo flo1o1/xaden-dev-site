@@ -93,6 +93,10 @@ Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing
 
 Guide: [Update Xaden]({{< relref "docs/admin-guide/update-xaden" >}}).
 
+## `xaden update-check`
+
+Only in Xaden 0.5 and earlier; it is gone from `main` and from the next release. Use `xaden upgrade --check` (look now) or `xaden upgrade --check --if-due` (quiet, interval). The setting `update-check` and the `XADEN_UPDATE_CHECK` environment variable are unchanged.
+
 ## `xaden rules`
 
 Regenerates `xaden/RULES.md` from the pinned Xaden version.
