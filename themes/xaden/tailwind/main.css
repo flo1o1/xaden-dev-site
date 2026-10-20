@@ -59,6 +59,11 @@
     font-family: var(--font-sans);
     letter-spacing: normal;
   }
+  /* the home page keeps Cinzel for its section headlines and the buttons of the hero */
+  main h2.home-h2, .hero .btn {
+    font-family: var(--font-display);
+    letter-spacing: 0.04em;
+  }
   :focus-visible {
     outline: 3px solid var(--color-accent);
     outline-offset: 3px;

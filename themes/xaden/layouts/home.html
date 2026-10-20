@@ -20,7 +20,7 @@
 </section>
 
 <section class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="benefits">
-  <h2 id="benefits" class="sr-only">What Xaden gives you</h2>
+  <h2 id="benefits" class="home-h2 sr-only">What Xaden gives you</h2>
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
     {{ range .Params.benefits }}
     <a href="{{ relref $ .link }}" class="card block">
@@ -35,7 +35,7 @@
 <hr class="rule">
 
 <section class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="steps">
-  <h2 id="steps" class="text-center text-3xl font-bold">{{ .Params.steps_title }}</h2>
+  <h2 id="steps" class="home-h2 text-center text-3xl font-bold">{{ .Params.steps_title }}</h2>
   <ol class="mt-10 grid gap-8 md:grid-cols-3">
     {{ range $i, $step := .Params.steps }}
     <li class="flex gap-4">
@@ -52,7 +52,7 @@
 <hr class="rule">
 
 <section class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="roles">
-  <h2 id="roles" class="text-center text-3xl font-bold">{{ .Params.roles_title }}</h2>
+  <h2 id="roles" class="home-h2 text-center text-3xl font-bold">{{ .Params.roles_title }}</h2>
   <div class="mt-10 grid gap-6 md:grid-cols-2">
     {{ range .Params.roles }}
     <a href="{{ relref $ .link }}" class="card block">
