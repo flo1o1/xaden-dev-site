@@ -123,14 +123,14 @@
     animation: embers 14s linear infinite;
     opacity: 0.8;
   }
-  /* large dragon scales: only in the hero, on the logo side; the text side stays clear (REQ-013) */
+  /* large dragon scales in a serpentine (scripts/make-scales.py): only in the hero, on the logo side; the text side stays clear (REQ-013) */
   .hero::after {
     content: "";
     position: absolute;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background-image: url("/img/scales.svg");
+    background: url("/img/scales.svg") right center / auto no-repeat;
     -webkit-mask-image: radial-gradient(ellipse 55% 75% at 82% 45%, #000 0%, transparent 100%);
     mask-image: radial-gradient(ellipse 55% 75% at 82% 45%, #000 0%, transparent 100%);
   }
