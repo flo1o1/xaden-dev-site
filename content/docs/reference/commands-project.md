@@ -4,7 +4,7 @@ weight: 10
 description: "core, project and every xaden project command, version and help."
 ---
 
-Commands that act on a project and the Xaden version it uses: create, adopt, remove, setup, doctor, fetch, pin, rules, preset, release, persona and ignore-list, and the version. They work from any folder unless
+Commands that act on a project and the Xaden version it uses: create, adopt, remove, setup, pin, rules, add-preset, release and persona, and the version. `doctor`, `fetch` and `ignore-list` read the project too but act on Xaden, so they are `xaden core` commands. They work from any folder unless
 the entry says otherwise.
 
 Commands are grouped by what they act on: `xaden core` acts on Xaden itself, `xaden project` on one project and the Xaden version it uses.
@@ -17,24 +17,29 @@ workflows and the rules every assistant reads call them. The old top-level spell
 ```text
 xaden core upgrade [--check [--if-due]] [<version>]
 xaden core version
+xaden core fetch <version>
+xaden core doctor
+xaden core ignore-list
+xaden core help
 ```
 
-`upgrade` updates Xaden itself on this machine, `version` prints the installed version. Without a command, `xaden core` prints this list and
-exits with status `2`. Details: [`xaden core upgrade`]({{< relref "docs/reference/commands-team" >}}#xaden-core-upgrade).
+The commands that act on Xaden itself, not on a project: `upgrade` updates it on this machine, `version` prints the installed version, `fetch`
+installs a version, `doctor` compares the installed version with the pinned one and `ignore-list` prints the paths Xaden owns. `help` lists
+these commands, and so do `-h` and `--help`. Without a command, `xaden core` prints the list and exits with status `2`. Details: [`xaden core upgrade`]({{< relref "docs/reference/commands-team" >}}#xaden-core-upgrade).
 
 ## `xaden project`
 
 ```text
-xaden project <create|adopt|remove|pin|fetch|doctor|rules|preset|setup|release|persona|ignore-list|check|req> [<arguments>]
+xaden project <create|adopt|remove|pin|rules|add-preset|setup|release|persona|check|req|help> [<arguments>]
 ```
 
 The commands that act on one project and the Xaden version it uses; each entry in this Reference names its full spelling. Without a
-command, `xaden project` prints the list and exits with status `2`. A project that pins an older Xaden than the one that introduced these
+command, `xaden project` prints the list and exits with status `2`; `xaden project help` prints it and exits with `0`. A project that pins an older Xaden than the one that introduced these
 names hands the command over as typed and that version does not know it: run `xaden project pin` first.
 
 `xaden check` and `xaden req` are shortcuts of `xaden project check` and `xaden project req`, and `xaden version` is an alias of
 `xaden core version`: the same output and exit codes, no notice. `aidd` is a namespace of its own, for the AI-Driven Development
-framework (`xaden help aidd` lists its commands). A project command outside a git repository fails and names `xaden project create <name>`
+framework (`xaden aidd help` lists its commands; every namespace has a `help` command). A project command outside a git repository fails and names `xaden project create <name>`
 and `xaden project adopt`; in a repository that has not adopted Xaden it prints `this repository has not adopted Xaden; run: xaden project adopt`.
 
 ## `xaden project create`
@@ -119,26 +124,26 @@ the repository (husky) need no setup.
 
 Guide: [Join a project]({{< relref "docs/developer-guide/join-a-project" >}}).
 
-## `xaden project doctor`
+## `xaden core doctor`
 
 Compares the installed Xaden with the one the project pins. Reads two files and uses no network.
 
 ```text
-xaden project doctor
+xaden core doctor
 ```
 
-Prints `installed X, project pinned Y` and checks the installed copy against the pinned checksum.
+Run it inside a project. Prints `installed X, project pinned Y` and checks the installed copy against the pinned checksum.
 
 Exit status: `0` the pinned version is available and matches; `1` it is missing or does not match.
 
 Guide: [Pin one Xaden version per project]({{< relref "docs/admin-guide/pin-one-version-per-project" >}}).
 
-## `xaden project fetch`
+## `xaden core fetch`
 
 Installs a pinned Xaden version that is missing on this machine.
 
 ```text
-xaden project fetch <version>
+xaden core fetch <version>
 ```
 
 The version must be the one `xaden/xaden.conf` pins. It shows version, source and checksum, then asks `Download and install Xaden <version> now? [y/N]`.
@@ -179,12 +184,12 @@ xaden project rules
 
 Use it when `xaden project check` reports that the rules file does not match the pinned version. Review the diff and commit it.
 
-## `xaden project ignore-list`
+## `xaden core ignore-list`
 
 Prints the paths Xaden owns in a repository, one per line, for `.dockerignore`, `.npmignore` and archive excludes.
 
 ```text
-xaden project ignore-list
+xaden core ignore-list
 ```
 
 Prints `xaden/`, `AGENTS.md` and, when the file exists, `CLAUDE.md`. Changes no file.
@@ -212,12 +217,12 @@ tool is missing, or a requirement, `SECURITY.md` or `xaden/threat-model.md` has 
 
 Guide: [Release a version]({{< relref "docs/developer-guide/release-a-version" >}}).
 
-## `xaden project preset`
+## `xaden project add-preset`
 
 Adds Xaden's preset for a stack to an adopted project.
 
 ```text
-xaden project preset <python|node>
+xaden project add-preset <python|node>
 ```
 
 Writes the preset's configuration files at the repository root (never over a file you have), maps the check commands in `xaden/xaden.conf`
@@ -287,10 +292,11 @@ xaden version
 
 ## `xaden help`
 
-Prints the list of commands. `xaden help core`, `xaden help project` and `xaden help aidd` print one namespace.
+Prints the list of namespaces and daily commands. The commands of one namespace: `xaden core help`, `xaden project help` and `xaden aidd help`
+(also `-h` and `--help`). `xaden help` takes no namespace: `xaden help core` fails as an unknown command.
 
 ```text
-xaden help [core|project|aidd]
+xaden help
 ```
 
 ## Spellings of Xaden 0.5 and earlier
@@ -308,15 +314,15 @@ Xaden 0.5 and earlier. From the next release: `xaden project create`.
 
 ## `xaden doctor`
 
-Xaden 0.5 and earlier. From the next release: `xaden project doctor`.
+Xaden 0.5 and earlier. From the next release: `xaden core doctor`.
 
 ## `xaden fetch`
 
-Xaden 0.5 and earlier. From the next release: `xaden project fetch`.
+Xaden 0.5 and earlier. From the next release: `xaden core fetch`.
 
 ## `xaden ignore-list`
 
-Xaden 0.5 and earlier. From the next release: `xaden project ignore-list`.
+Xaden 0.5 and earlier. From the next release: `xaden core ignore-list`.
 
 ## `xaden persona`
 
@@ -324,7 +330,7 @@ Xaden 0.5 and earlier. From the next release: `xaden project persona`.
 
 ## `xaden preset`
 
-Xaden 0.5 and earlier. From the next release: `xaden project preset`.
+Xaden 0.5 and earlier. From the next release: `xaden project add-preset`.
 
 ## `xaden release`
 
