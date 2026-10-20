@@ -102,6 +102,11 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 **Cause:** the finding is not in the baseline and is in a file your change touches (`changed-files`), or anywhere (`strict`).
 **Fix:** fix it. If it existed before Xaden was adopted, ask the team whether it belongs in the baseline; letting a baseline grow is an approval point.
 
+### CI fails with `check settings changed`
+
+**Cause:** the pull request changes `mode`, `hook-checks`, `expect`, a `check.*` or `findings-status.*` line, `require-signature`, the pin, a baseline (it grew) or the Xaden workflow. No mapped command ran, so a changed command line never executed unread.
+**Fix:** read the changed lines the run prints. If the change is wanted, a person who may merge adds the label `xaden-settings-accepted` to the pull request. An older workflow does not pass the label: take the new one that `xaden project pin` writes as `.github/workflows/xaden.yml-dist`.
+
 ### A check fails with `failed (exit status N)` although it printed nothing new
 
 **Cause:** the tool exited with a status Xaden does not know as "violations found", so it did not run to the end (a crash, a wrong option, a missing file). In earlier versions such a run could pass when its output was baselined.
@@ -156,7 +161,7 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 
 ### A download fails with exit code 6
 
-**Cause:** the signature of the release does not verify against the keys in `release-signers`. Nothing was installed.
+**Cause:** the signature of the release is missing (for a release from 0.3.0 on, which was published signed) or does not verify against the keys in `release-signers`. Nothing was installed.
 **Fix:** treat it as an attack until proven otherwise. Compare the key in `release-signers` with the one published on this site ([Verify releases]({{< relref "docs/admin-guide/verify-releases" >}})).
 
 ### Xaden refuses to run: the project requires signed releases

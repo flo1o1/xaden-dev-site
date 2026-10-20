@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Reference, Troubleshooting and Security follow Xaden `main` after REQ-136 and REQ-137: exit code 6 also covers a missing signature of a signed-era release, `require-signature` is on for new projects, the download address variables are confirmed first, and CI stops on changed check settings until the label `xaden-settings-accepted` is added (`SETTINGS_ACCEPTED`).
 - Home page: the headlines of level 2 and 3 and the buttons of the hero are set in Cinzel again; the headlines of level 4 and below, and every `h2` and `h3` on the other pages, stay in Inter.
 - Reference, Troubleshooting and Configuration follow Xaden `main` after the REQ-131 iteration: `xaden core fetch`, `xaden core doctor` and `xaden core ignore-list` (they act on Xaden), `xaden project add-preset` (was `preset`), and a `help` command in every namespace (`xaden core help`, `xaden project help`, `xaden aidd help`); `xaden help` takes no namespace. The "0.5 and earlier" entries name the new spellings.
 - The large scales behind the hero logo run in rows that wave like a serpent instead of a straight grid, each scale turned to stand across its row; the scale itself is unchanged. `scripts/make-scales.py` draws `scales-serpentine.svg`; the new name keeps a cached copy of the old tile from showing as a single scale (REQ-019).
