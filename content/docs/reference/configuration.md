@@ -40,7 +40,7 @@ findings-status.audit = 1
 | `hook-checks` | comma-separated check names | The checks the pre-commit hook runs. Default: `lint`. The full run and CI run all checks. The audits (`audit`, `security`) stay out of the hook: they need the network or are slow. |
 | `expect` | comma-separated kinds: `test`, `lint`, `typecheck`, `audit`, `security` | The kinds of checks the repository should have. A kind without a `check.<kind>` command is a gap. A new adoption of a Python or Node repository lists `audit` too, and `security` for Python; an adoption from before keeps its line, and no update adds to it. When the line is missing, Xaden looks at the files (`package.json`, `pyproject.toml`). |
 | `findings-status.<name>` | a comma-separated list of exit statuses, 1 to 255 | The statuses with which the check `<name>` (`check.<name>` or a built-in one such as `shellcheck`) reports that it found violations. Only these go through the baseline and the mode. Any other non-zero status means the tool did not run to the end, and the check fails. Not allowed for `test`. `xaden project adopt` records `= 1` for a mapped check that exits with status 1 while the baseline is recorded, and `xaden project add-preset` sets `= 1` for the checks it maps (`audit`, `security` included); any other status is not recorded, you add it yourself. Loosening it is an approval point. |
-| `require-signature` | `true`, `false` | `true`: only releases the maintainer signed are installed or run for this project. Default: `false`. Any other value, an empty one included, stops every `xaden` command. A git checkout of Xaden is never accepted. Setting it back is an approval point. |
+| `require-signature` | `true`, `false` | `true`: only releases the maintainer signed are installed or run for this project. A project created or adopted by a Xaden that knows a signing key gets `true`; without the line the default is `false`. Any other value, an empty one included, stops every `xaden` command. A git checkout of Xaden is never accepted. Setting it back is an approval point. |
 | `update-check` | `off`, or a whole number of hours or days of at least `1h`: `12h`, `1d`, `7d` | How often `xaden core upgrade --check --if-due` may look for a newer Xaden and outdated dependencies. It only reports. Default: `off`. The `XADEN_UPDATE_CHECK` environment variable overrides it on one machine. |
 | `aidd-cli` | a version, for example `5.5.0` | The exact version of the framework's installer that `xaden aidd` runs. Written by `xaden aidd enable` and `xaden aidd pin`, removed by `xaden aidd disable`. Absent: the framework is not switched on. |
 | `aidd-release` | a release tag, for example `v5.12.0` | The release of the framework's plugins that the project holds. Written and removed with `aidd-cli`. |
@@ -57,6 +57,10 @@ findings-status.audit = 1
 
 A finding that is in the baseline never fails a check. A failure that names no file (a failing test) cannot be baselined: `advisory` warns,
 the other modes fail. Changing `mode` is an approval point.
+
+In a pull request run, CI compares `mode`, `hook-checks`, `expect`, `check.*`, `findings-status.*`, `require-signature`, `version`, `checksum`, the baselines
+and `.github/workflows/xaden.yml` with the merge base. A difference fails the run (`check settings changed`) before any mapped command runs, until the label
+`xaden-settings-accepted` is added to the pull request. A baseline that grew counts as a change. In the pre-commit hook a `check.*` line that differs from the last commit runs only after a yes.
 
 A check that exits with a status it does not declare as "violations found" (`findings-status.<name>`) failed to run to the end: it fails in
 `changed-files` and `strict` and warns in `advisory`, even when everything it printed was in the baseline.

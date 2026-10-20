@@ -52,7 +52,7 @@ A fast subset runs in a git hook on every commit. The full set runs in CI, where
 
 When you add Xaden to a repository that already has findings, they are recorded in a baseline that only
 shrinks. A new finding fails the check in the mode you chose: in changed files, or everywhere. The mode
-and the baseline never loosen without your approval. See
+and the baseline never loosen without your approval: in a pull request, CI compares these settings with the target branch and stops on a change until a person accepts it with a label. Protect `xaden/xaden.conf`, `xaden/baselines/` and `.github/workflows/` with required review as well. See
 [Check modes and baselines]({{< relref "docs/developer-guide/check-modes-and-baselines" >}}).
 
 A vulnerability you accept for now goes into an exceptions file with an owner, a reason and an
