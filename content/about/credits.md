@@ -3,6 +3,11 @@ title: "Credits and licenses"
 description: "The tools Xaden runs, the works it builds on, what this site is built with, and their licenses."
 ---
 
+Xaden was built with the help of an AI assistant, which is why a tool of this size came together so fast. What such an assistant knows,
+it knows from people: the authors of open-source code and its documentation, the writers of books, articles, tutorials and standards,
+everyone who answered a question in a forum or reported and fixed a bug in the open, and the teachers who explained it first. Most of them
+are not named anywhere and did not know their work would end up here. Their knowledge is in every part of Xaden. Thank you.
+
 Xaden stands on other people's work. This page names it, links to it and states the license, so you can see what you depend on and who
 made it. Licenses are read from each project's own repository; they can differ between versions, and the license of the version you
 install applies. This is a factual list, not legal advice.
@@ -72,13 +77,6 @@ in Robert C. Martin's book *Clean Code*. They are ideas credited here, not text 
 - [Inter](https://github.com/rsms/inter): SIL OFL 1.1. Copyright 2016 The Inter Project Authors. [License text](/fonts/LICENSE-inter.txt).
 
 The fonts are served from this site, from the `@fontsource` packages. The site is hosted on GitHub Pages; the [privacy notice](/privacy/) says what that means for your data.
-
-## The people behind the assistant
-
-Xaden was built with the help of an AI assistant, which is why a tool of this size came together so fast. What such an assistant knows,
-it knows from people: the authors of open-source code and its documentation, the writers of books, articles, tutorials and standards,
-everyone who answered a question in a forum or reported and fixed a bug in the open, and the teachers who explained it first. Most of them
-are not named anywhere and did not know their work would end up here. Their knowledge is in every part of Xaden. Thank you.
 
 ## Names
 
