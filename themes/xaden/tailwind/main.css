@@ -59,8 +59,8 @@
     font-family: var(--font-sans);
     letter-spacing: normal;
   }
-  /* the home page keeps Cinzel for its section headlines and the buttons of the hero */
-  main h2.home-h2, .hero .btn {
+  /* the home page keeps Cinzel for its headlines (h2, h3) and the buttons of the hero */
+  main :is(h2, h3).home-h, .hero .btn {
     font-family: var(--font-display);
     letter-spacing: 0.04em;
   }

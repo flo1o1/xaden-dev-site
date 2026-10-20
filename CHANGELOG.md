@@ -5,7 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
-- Home page: the section headlines (`h2`) and the buttons of the hero are set in Cinzel again; the headlines of level 3 and below, and every `h2` on the other pages, stay in Inter.
+- Home page: the headlines of level 2 and 3 and the buttons of the hero are set in Cinzel again; the headlines of level 4 and below, and every `h2` and `h3` on the other pages, stay in Inter.
 - Reference, Troubleshooting and Configuration follow Xaden `main` after the REQ-131 iteration: `xaden core fetch`, `xaden core doctor` and `xaden core ignore-list` (they act on Xaden), `xaden project add-preset` (was `preset`), and a `help` command in every namespace (`xaden core help`, `xaden project help`, `xaden aidd help`); `xaden help` takes no namespace. The "0.5 and earlier" entries name the new spellings.
 - The large scales behind the hero logo run in rows that wave like a serpent instead of a straight grid, each scale turned to stand across its row; the scale itself is unchanged. `scripts/make-scales.py` draws `scales-serpentine.svg`; the new name keeps a cached copy of the old tile from showing as a single scale (REQ-019).
 - Credits and licenses opens with the section "The people behind the assistant", a thank-you to everyone whose knowledge the AI assistant behind Xaden learned from (REQ-024); the existing introduction follows under "What Xaden builds on".
