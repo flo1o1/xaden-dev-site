@@ -5,7 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
-- Headlines from level 3 down in the main content (`h3` to `h6`) are set in Inter instead of Cinzel; the page title and the section headlines (`h1`, `h2`) and everything outside the main content keep Cinzel.
+- Headlines from level 2 down in the main content (`h2` to `h6`) are set in Inter instead of Cinzel; the page title (`h1`) and everything outside the main content keep Cinzel.
 - Security, "Before a release: a security review": the block holds only the command of the chosen assistant (`/xaden-security`, `$xaden-security` or `xaden prompt security-review`), so the copy button copies something that runs. The `prompt` shortcode prints just the command when label and text are empty.
 - A docs page with `toc: top` in its front matter shows "On this page" only as the box above the text, on every screen width, without the right column; Troubleshooting uses it because its long list of entries fits the column badly.
 - "On this page" highlights the entry of the section in view while you scroll (an optional script, `toc.js`; without JavaScript the entries are plain links; REQ-014).

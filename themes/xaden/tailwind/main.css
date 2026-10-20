@@ -54,8 +54,8 @@
     font-family: var(--font-display);
     letter-spacing: 0.02em;
   }
-  /* Cinzel is for the page title and the sections; headlines from level 3 down in the content are set in the text face */
-  main :is(h3, h4, h5, h6) {
+  /* Cinzel is for the page title; headlines from level 2 down in the content are set in the text face */
+  main :is(h2, h3, h4, h5, h6) {
     font-family: var(--font-sans);
     letter-spacing: normal;
   }
