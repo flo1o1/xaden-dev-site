@@ -1,10 +1,12 @@
 {{- /* REQ-022: a code block with the command to start a prompt, once per assistant.
-       {{< prompt "feature" "feature" "Feature" "<what users can do afterwards>" >}}: slash name, prompt name, label (for the plain prompt), text. */ -}}
+       {{< prompt "feature" "feature" "Feature" "<what users can do afterwards>" >}}: slash name, prompt name, label (for the plain prompt), text.
+       With an empty label and text each block holds only the command to run: `/xaden-security`, `$xaden-security` or `xaden prompt security-review`. */ -}}
 {{- $slash := .Get 0 -}}{{- $prompt := .Get 1 -}}{{- $label := .Get 2 -}}{{- $text := .Get 3 -}}
 {{- range $a := hugo.Data.assistants -}}
 {{- $line := printf "Run `xaden prompt %s` and follow it. %s: %s" $prompt $label $text -}}
-{{- if eq $a.shows "slash" }}{{ $line = printf "/%s %s" $slash $text }}{{ end -}}
-{{- if eq $a.shows "skill" }}{{ $line = printf "$%s %s" $slash $text }}{{ end }}
+{{- if not (or $label $text) }}{{ $line = printf "xaden prompt %s" $prompt }}{{ end -}}
+{{- if eq $a.shows "slash" }}{{ $line = printf "/%s %s" $slash $text | strings.TrimSpace }}{{ end -}}
+{{- if eq $a.shows "skill" }}{{ $line = printf "$%s %s" $slash $text | strings.TrimSpace }}{{ end }}
 <div class="assistant-variant" data-assistant="{{ $a.id }}">
 {{ transform.Highlight $line "text" }}
 {{ with $a.needs }}<p class="assistant-note">This needs the command files of {{ $a.name }} in the project: create it with <code>xaden create --assistants {{ . }}</code>, or run <code>xaden adopt</code> in an existing project.</p>{{ end }}

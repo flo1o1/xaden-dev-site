@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Security, "Before a release: a security review": the block holds only the command of the chosen assistant (`/xaden-security`, `$xaden-security` or `xaden prompt security-review`), so the copy button copies something that runs. The `prompt` shortcode prints just the command when label and text are empty.
 - A docs page with `toc: top` in its front matter shows "On this page" only as the box above the text, on every screen width, without the right column; Troubleshooting uses it because its long list of entries fits the column badly.
 - "On this page" highlights the entry of the section in view while you scroll (an optional script, `toc.js`; without JavaScript the entries are plain links; REQ-014).
 - Project commands: `xaden project check` and `xaden project req` have their own entries there (moved from Work commands, which lose `check` and `req`); each names the shortcut `xaden check` or `xaden req`. The combined pointer entry is gone; `xaden check` and `xaden req` keep a one-line entry each, because `xaden help` lists them.
