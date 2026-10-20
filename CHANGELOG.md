@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Reference, Troubleshooting and Configuration follow Xaden `main` after the REQ-131 iteration: `xaden core fetch`, `xaden core doctor` and `xaden core ignore-list` (they act on Xaden), `xaden project add-preset` (was `preset`), and a `help` command in every namespace (`xaden core help`, `xaden project help`, `xaden aidd help`); `xaden help` takes no namespace. The "0.5 and earlier" entries name the new spellings.
 - The docs pages show "On this page" in its own column right of the text from the `xl` breakpoint (sticky), and as an open box above the text on narrower screens; the sidebar lists only the pages. Project commands now holds every `xaden project` command (`setup`, `doctor`, `fetch`, `pin`, `rules`, `ignore-list`, `persona`, `release`, `preset` moved there from Team and Work commands), with a short entry for `project check` and `project req`.
 - Reference and Troubleshooting follow Xaden `main` after REQ-132: `xaden project check` and `xaden project req` are the commands and `xaden check`, `xaden req` and `xaden version` aliases, `aidd` is a namespace of its own with `xaden help aidd`, and the two messages for a missing project have Troubleshooting entries. The headings of `xaden check` and `xaden req` stay because the check against the pinned release (0.5) lists them.
 - `inbox/` is git-ignored, as the site's `CLAUDE.md` already said: drafts and assets dropped there are never committed.
