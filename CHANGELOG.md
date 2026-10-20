@@ -5,6 +5,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- `inbox/` is git-ignored, as the site's `CLAUDE.md` already said: drafts and assets dropped there are never committed.
+- Docs pages without headings no longer show an empty "On this page" block (for example Contributing).
+- The "Docs" entry of the main menu opens Quick start instead of the Documentation overview; the submenu is unchanged and the overview stays at `/docs/`.
+- The cards on the Documentation page no longer list the pages of their section; the card text and the Open button remain.
 - Reference describes two changes of Xaden `main` (REQ-128, REQ-129): `xaden aidd enable` and `project pin` run the framework's CLI only after your yes, and `xaden project pin` writes the generated CI workflow beside an older one as `xaden.yml-dist`.
 - Reference and pages follow Xaden `main` after the command namespaces (REQ-131): `xaden core upgrade` and `xaden core version`, `xaden project create|adopt|remove|pin|fetch|doctor|rules|preset|setup|release|persona|ignore-list`; the old top-level spellings are gone. Project commands explains the two namespaces and the limit for a project pinned to an older Xaden; Quick start, Troubleshooting, Security and Credits name the new spellings. Short entries for the old spellings stay at the end of Project commands, because the check against the pinned release (0.5) still lists those commands; delete them when the site pins a release with the namespaces.
 - Reference follows Xaden `main` after the classic project was dropped (REQ-001, REQ-100): `xaden create --classic` and `xaden update` are no longer entries, Project commands lists `create` instead of the old `new`, and Security, Configuration and Check commands no longer compare with a classic project.

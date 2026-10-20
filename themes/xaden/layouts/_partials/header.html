@@ -8,9 +8,9 @@
       {{ $here := .RelPermalink }}
       {{ range site.Menus.main }}
         {{ if .HasChildren }}
-        {{/* submenu: opens on hover or keyboard focus, no script (REQ-002) */}}
+        {{/* submenu: opens on hover or keyboard focus, no script (REQ-002); the parent link opens its first child */}}
         <div class="group relative">
-          <a href="{{ .URL }}" class="hover:text-accent" {{ if hasPrefix $here .URL }}aria-current="true"{{ end }}>{{ .Name }}<span aria-hidden="true" class="ml-1 text-xs">▾</span></a>
+          <a href="{{ (index .Children 0).URL }}" class="hover:text-accent" {{ if hasPrefix $here .URL }}aria-current="true"{{ end }}>{{ .Name }}<span aria-hidden="true" class="ml-1 text-xs">▾</span></a>
           <ul class="invisible absolute left-0 top-full z-40 min-w-44 rounded border border-line bg-panel py-1 opacity-0 shadow-lg group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
             {{ range .Children }}
             <li><a href="{{ .URL }}" class="block px-4 py-2 hover:bg-panel-2 hover:text-accent" {{ if eq $here .URL }}aria-current="page"{{ end }}>{{ .Name }}</a></li>
