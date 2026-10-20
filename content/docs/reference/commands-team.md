@@ -1,73 +1,10 @@
 ---
 title: "Team commands"
 weight: 30
-description: "setup, doctor, fetch, pin, upgrade, rules, aidd, hook, verify-commits and ignore-list."
+description: "upgrade, update-check, aidd, hook and verify-commits."
 ---
 
 Commands for keeping a team on the same Xaden version, the same hooks and the same rules. They work inside a project that adopted Xaden.
-
-## `xaden project setup`
-
-Chains Xaden's checks into the git hooks of this clone and reports missing tools.
-
-```text
-xaden project setup
-```
-
-Run it once per clone, because git does not share hooks. It keeps what your hooks already do and is safe to run again. Hooks that are files of
-the repository (husky) need no setup.
-
-Guide: [Join a project]({{< relref "docs/developer-guide/join-a-project" >}}).
-
-## `xaden project doctor`
-
-Compares the installed Xaden with the one the project pins. Reads two files and uses no network.
-
-```text
-xaden project doctor
-```
-
-Prints `installed X, project pinned Y` and checks the installed copy against the pinned checksum.
-
-Exit status: `0` the pinned version is available and matches; `1` it is missing or does not match.
-
-Guide: [Pin one Xaden version per project]({{< relref "docs/admin-guide/pin-one-version-per-project" >}}).
-
-## `xaden project fetch`
-
-Installs a pinned Xaden version that is missing on this machine.
-
-```text
-xaden project fetch <version>
-```
-
-The version must be the one `xaden/xaden.conf` pins. It shows version, source and checksum, then asks `Download and install Xaden <version> now? [y/N]`.
-Only a yes downloads. The download is installed only if it matches the pinned checksum and, when a signature exists, the signature. Versions go to
-`~/.local/share/xaden/versions`.
-
-Exit status: `0` installed or already installed; `1` you answered no; `3` no terminal, nothing downloaded; `5` checksum mismatch; `6` signature mismatch.
-
-Guide: [Pin one Xaden version per project]({{< relref "docs/admin-guide/pin-one-version-per-project" >}}).
-
-## `xaden project pin`
-
-Moves the project to another Xaden version on a branch for a pull request, or looks for a newer release.
-
-```text
-xaden project pin --check
-xaden project pin [<version>]
-```
-
-| Form | Meaning |
-|------|---------|
-| `--check` | Ask, then look up the newest release on github.com and report it. Changes nothing. |
-| `<version>` | Create the branch `chore/upgrade-xaden-<version>` in a folder next to the project, bump version and checksum in `xaden/xaden.conf`, regenerate `xaden/RULES.md`, update the workflow, bring the command files up to date, and show the diff and the changelog entries. A command file you edited stays as it is and the new text is written next to it as `<file>-dist`. When your CI workflow differs from the one the new version generates (for example it lacks the step that records the pinned checksum, which `require-signature = true` needs on a fresh runner), the new workflow is written next to yours as `.github/workflows/xaden.yml-dist` and `pin` prints the `diff` command; your workflow is never replaced. |
-| (no version) | Look up the newest release first, as `--check` does, then pin it. |
-
-Asks before any network access and before downloading a version that is not installed. A signed release pins the signed checksum; otherwise the
-checksum of the download is pinned and Xaden says so.
-
-Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing looked up or downloaded; `5` checksum mismatch; `6` signature mismatch.
 
 ## `xaden core upgrade`
 
@@ -96,16 +33,6 @@ Guide: [Update Xaden]({{< relref "docs/admin-guide/update-xaden" >}}).
 ## `xaden update-check`
 
 Only in Xaden 0.5 and earlier; it is gone from `main` and from the next release. Use `xaden core upgrade --check` (look now) or `xaden core upgrade --check --if-due` (quiet, interval). The setting `update-check` and the `XADEN_UPDATE_CHECK` environment variable are unchanged.
-
-## `xaden project rules`
-
-Regenerates `xaden/RULES.md` from the pinned Xaden version.
-
-```text
-xaden project rules
-```
-
-Use it when `xaden check` reports that the rules file does not match the pinned version. Review the diff and commit it.
 
 ## `xaden aidd`
 
@@ -160,16 +87,7 @@ xaden verify-commits <revision-range>
 
 The command needs the full history. In a shallow checkout, or when git cannot list the range, it exits with status `2` and names `fetch-depth: 0`, whatever the commit convention. Status `1` means a commit failed the checks.
 
-With `commit-convention = conventional` a wrong format, a `feat` without `Refs: REQ-nnn`, a `fix` without a requirement ID or `none`, or an unknown `REQ-nnn` or `CC-nn` fails the command and the log names the commit. With `other` the same findings are warnings and the exit status is `0`; a run that could not read its range still exits with `2`. A workflow from before this command exists gets the step when you run [`xaden project pin`]({{< relref "docs/reference/commands-team#xaden-project-pin" >}}).
+With `commit-convention = conventional` a wrong format, a `feat` without `Refs: REQ-nnn`, a `fix` without a requirement ID or `none`, or an unknown `REQ-nnn` or `CC-nn` fails the command and the log names the commit. With `other` the same findings are warnings and the exit status is `0`; a run that could not read its range still exits with `2`. A workflow from before this command exists gets the step when you run [`xaden project pin`]({{< relref "docs/reference/commands-project#xaden-project-pin" >}}).
 
 The command works in a project that adopted Xaden.
 
-## `xaden project ignore-list`
-
-Prints the paths Xaden owns in a repository, one per line, for `.dockerignore`, `.npmignore` and archive excludes.
-
-```text
-xaden project ignore-list
-```
-
-Prints `xaden/`, `AGENTS.md` and, when the file exists, `CLAUDE.md`. Changes no file.

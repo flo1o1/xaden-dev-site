@@ -1,0 +1,15 @@
+{{/* Table of contents of a docs page. box=true: collapsible block above the text, below the xl breakpoint; else the sticky right column from xl on. An empty table of contents is still an empty <nav>, so test for an item. */}}
+{{ $page := .page }}
+{{ if and (ne $page.RelPermalink "/docs/") (strings.Contains (string $page.TableOfContents) "<li>") }}
+  {{ if .box }}
+<details open class="mb-6 rounded border border-line px-4 py-3 text-sm xl:hidden">
+  <summary class="eyebrow cursor-pointer">On this page</summary>
+  <div class="toc mt-3">{{ $page.TableOfContents }}</div>
+</details>
+  {{ else }}
+<aside class="hidden xl:sticky xl:top-6 xl:block xl:self-start" aria-label="On this page">
+  <p class="eyebrow">On this page</p>
+  <div class="toc mt-3">{{ $page.TableOfContents }}</div>
+</aside>
+  {{ end }}
+{{ end }}

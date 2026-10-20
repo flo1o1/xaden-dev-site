@@ -1,7 +1,7 @@
 ---
 title: "Work commands"
 weight: 20
-description: "prompt, req, check, persona, context, release, doc and preset."
+description: "prompt, req, check, context and doc."
 ---
 
 Commands for daily work inside a project. Run them from any folder below the project's top. In a project that adopted Xaden they run the
@@ -65,17 +65,6 @@ is set by the mode; see [Configuration]({{< relref "docs/reference/configuration
 
 Exit status: `0` no check failed (skips included, with a warning); `1` a check failed.
 
-## `xaden project persona`
-
-Creates a user persona from the template.
-
-```text
-xaden project persona new "<name>"
-```
-
-The name is one line of at most 60 characters without `/`, `\`, `&` or `:`. Prints the path of the new file. Three to five personas keep the
-checks focused.
-
 ## `xaden context`
 
 Prints the rule IDs, the number of requirements by status, and the `CONTEXT CHECK` fingerprint that an assistant quotes in its first reply.
@@ -83,19 +72,6 @@ Prints the rule IDs, the number of requirements by status, and the `CONTEXT CHEC
 ```text
 xaden context
 ```
-
-## `xaden project release`
-
-Cuts a release: checks, stamps `VERSION` and `CHANGELOG.md`, commits and tags locally. It never pushes.
-
-```text
-xaden project release <major|minor|patch>
-```
-
-Needs a clean working tree, a `VERSION` file and a `CHANGELOG.md` with an `Unreleased` section. It refuses to continue while a check fails, a required
-tool is missing, or a requirement, `SECURITY.md` or `xaden/threat-model.md` has an unfilled `TODO` marker. A failed step restores the files.
-
-Guide: [Release a version]({{< relref "docs/developer-guide/release-a-version" >}}).
 
 ## `xaden doc`
 
@@ -107,15 +83,3 @@ xaden doc <clean-code|security|optional-tools|local-llm|rules-<topic>>
 
 `rules-<topic>` prints one section of the rules that moved out of the always-loaded rules file: `rules-checks`, `rules-docs`, `rules-findings`, `rules-git`, `rules-requirements`, `rules-security` or `rules-working-style`. `xaden/RULES.md` names the one to read before a task; a classic project has the same text in `docs/rules/`.
 
-## `xaden project preset`
-
-Adds Xaden's preset for a stack to an adopted project.
-
-```text
-xaden project preset <python|node>
-```
-
-Writes the preset's configuration files at the repository root (never over a file you have), maps the check commands in `xaden/xaden.conf`
-and prints the command that installs the tools. Python: `ruff.toml`, `mypy.ini`, `requirements-dev.txt`. Node: `eslint.config.mjs`. It maps the kinds that have no command yet: `lint`, `typecheck` and `test`, and also `audit` (`pip-audit`, or `npm audit --audit-level=high` for Node) and, for Python, `security` (`bandit -q -r . -x ./.venv,./node_modules,./tests`), each with `findings-status = 1`. `expect` is not changed.
-
-Guide: [Check modes and baselines]({{< relref "docs/developer-guide/check-modes-and-baselines" >}}).
