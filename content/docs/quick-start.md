@@ -25,19 +25,19 @@ export PATH="$HOME/.local/bin:$PATH"
 ```
 
 This puts `~/.local/bin` in front of the folders your shell searches for commands, so it finds `xaden`.
-Check it with `xaden version`; it prints the installed version. Later, `xaden upgrade` brings Xaden to the newest release. Details: [Install Xaden]({{< relref "docs/admin-guide/install-xaden" >}}).
+Check it with `xaden version`; it prints the installed version. Later, `xaden core upgrade` brings Xaden to the newest release. Details: [Install Xaden]({{< relref "docs/admin-guide/install-xaden" >}}).
 
 ## 2. Create your project
 
 ```bash
-xaden create my-app
+xaden project create my-app
 cd my-app
 ```
 
-- `xaden create my-app`: creates the folder `my-app` in the current directory with its own git repository, the folder `xaden/` for requirements and rules, git hooks that run the checks, a CI workflow, and a first commit. If anything fails, it removes the half-created folder.
+- `xaden project create my-app`: creates the folder `my-app` in the current directory with its own git repository, the folder `xaden/` for requirements and rules, git hooks that run the checks, a CI workflow, and a first commit. If anything fails, it removes the half-created folder.
 - `cd my-app`: moves your terminal into the new project.
 
-Want the recommended checks for a stack without choosing each tool? Use `xaden create --autopilot --stack python my-app`
+Want the recommended checks for a stack without choosing each tool? Use `xaden project create --autopilot --stack python my-app`
 (or `--stack node`). It prints one plan and asks once. Details: [Create a project]({{< relref "docs/developer-guide/create-a-project" >}}).
 
 ## 3. Tell your assistant what to build
@@ -68,10 +68,10 @@ Details: [Build features]({{< relref "docs/developer-guide/build-features" >}}).
 ## 5. Release when you decide to
 
 ```bash
-xaden release minor
+xaden project release minor
 ```
 
-- `xaden release minor`: checks everything, stamps the version and the changelog, and tags locally. It never pushes. You push when you are ready.
+- `xaden project release minor`: checks everything, stamps the version and the changelog, and tags locally. It never pushes. You push when you are ready.
 
 Details: [Release a version]({{< relref "docs/developer-guide/release-a-version" >}}).
 

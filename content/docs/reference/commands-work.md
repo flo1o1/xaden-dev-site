@@ -58,19 +58,19 @@ xaden check [--staged] [--strict]
 | `--staged` | The pre-commit subset: staged files only, offline. |
 | `--strict` | A missing tool is a failure instead of a skipped check. CI uses it. |
 
-The full run of an adopted project also prints `NOT COVERED:` for each audit that the classic layout runs and nothing maps; see [Configuration]({{< relref "docs/reference/configuration" >}}).
+The full run also prints `NOT COVERED:` for each audit Xaden knows for your stack and nothing maps; see [Configuration]({{< relref "docs/reference/configuration" >}}).
 
 Every run ends with a summary of passed, failed and skipped checks. A run with skipped checks ends with a warning. How findings are judged
 is set by the mode; see [Configuration]({{< relref "docs/reference/configuration" >}}).
 
 Exit status: `0` no check failed (skips included, with a warning); `1` a check failed.
 
-## `xaden persona`
+## `xaden project persona`
 
 Creates a user persona from the template.
 
 ```text
-xaden persona new "<name>"
+xaden project persona new "<name>"
 ```
 
 The name is one line of at most 60 characters without `/`, `\`, `&` or `:`. Prints the path of the new file. Three to five personas keep the
@@ -84,12 +84,12 @@ Prints the rule IDs, the number of requirements by status, and the `CONTEXT CHEC
 xaden context
 ```
 
-## `xaden release`
+## `xaden project release`
 
 Cuts a release: checks, stamps `VERSION` and `CHANGELOG.md`, commits and tags locally. It never pushes.
 
 ```text
-xaden release <major|minor|patch>
+xaden project release <major|minor|patch>
 ```
 
 Needs a clean working tree, a `VERSION` file and a `CHANGELOG.md` with an `Unreleased` section. It refuses to continue while a check fails, a required
@@ -107,12 +107,12 @@ xaden doc <clean-code|security|optional-tools|local-llm|rules-<topic>>
 
 `rules-<topic>` prints one section of the rules that moved out of the always-loaded rules file: `rules-checks`, `rules-docs`, `rules-findings`, `rules-git`, `rules-requirements`, `rules-security` or `rules-working-style`. `xaden/RULES.md` names the one to read before a task; a classic project has the same text in `docs/rules/`.
 
-## `xaden preset`
+## `xaden project preset`
 
 Adds Xaden's preset for a stack to an adopted project.
 
 ```text
-xaden preset <python|node>
+xaden project preset <python|node>
 ```
 
 Writes the preset's configuration files at the repository root (never over a file you have), maps the check commands in `xaden/xaden.conf`

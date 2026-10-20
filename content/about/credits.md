@@ -9,7 +9,7 @@ install applies. This is a factual list, not legal advice.
 
 ## Tools Xaden runs
 
-Xaden bundles none of these. You or the CI workflow that `xaden adopt` writes install them, and Xaden only starts them as separate
+Xaden bundles none of these. You or the CI workflow that `xaden project adopt` writes install them, and Xaden only starts them as separate
 programs and reads their output. Each entry reads: name, license.
 
 ### Security and review
