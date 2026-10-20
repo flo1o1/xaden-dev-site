@@ -116,3 +116,56 @@ Prints the list of commands. `xaden help core` and `xaden help project` print on
 ```text
 xaden help [core|project]
 ```
+
+## Spellings of Xaden 0.5 and earlier
+
+The site documents the newest Xaden on `main`. The release the site pins, 0.5, still has the commands below at the top level; from the next release
+they carry the namespace named in each entry, with the same options and exit status.
+
+## `xaden adopt`
+
+Xaden 0.5 and earlier. From the next release: `xaden project adopt`.
+
+## `xaden create`
+
+Xaden 0.5 and earlier. From the next release: `xaden project create`.
+
+## `xaden doctor`
+
+Xaden 0.5 and earlier. From the next release: `xaden project doctor`.
+
+## `xaden fetch`
+
+Xaden 0.5 and earlier. From the next release: `xaden project fetch`.
+
+## `xaden ignore-list`
+
+Xaden 0.5 and earlier. From the next release: `xaden project ignore-list`.
+
+## `xaden persona`
+
+Xaden 0.5 and earlier. From the next release: `xaden project persona`.
+
+## `xaden preset`
+
+Xaden 0.5 and earlier. From the next release: `xaden project preset`.
+
+## `xaden release`
+
+Xaden 0.5 and earlier. From the next release: `xaden project release`.
+
+## `xaden remove`
+
+Xaden 0.5 and earlier. From the next release: `xaden project remove`.
+
+## `xaden rules`
+
+Xaden 0.5 and earlier. From the next release: `xaden project rules`.
+
+## `xaden setup`
+
+Xaden 0.5 and earlier. From the next release: `xaden project setup`.
+
+## `xaden upgrade`
+
+Xaden 0.5 and earlier. From the next release: `xaden core upgrade`.
