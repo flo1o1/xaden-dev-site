@@ -22,7 +22,7 @@ Guide: [Build features]({{< relref "docs/developer-guide/build-features" >}}).
 
 ## `xaden req`
 
-Looks up and creates requirements.
+Looks up and creates requirements. In Xaden `main` the command is `xaden project req`; `xaden req` is an alias with the same options and exit codes.
 
 ```text
 xaden req list [--epic <epic>] [--status <status>]
@@ -46,7 +46,7 @@ xaden req index
 
 ## `xaden check`
 
-Runs the project's checks.
+Runs the project's checks. In Xaden `main` the command is `xaden project check`; `xaden check` is an alias with the same options and exit codes.
 
 ```text
 xaden check [--staged] [--strict]

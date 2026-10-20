@@ -25,12 +25,17 @@ exits with status `2`. Details: [`xaden core upgrade`]({{< relref "docs/referenc
 ## `xaden project`
 
 ```text
-xaden project <create|adopt|remove|pin|fetch|doctor|rules|preset|setup|release|persona|ignore-list> [<arguments>]
+xaden project <create|adopt|remove|pin|fetch|doctor|rules|preset|setup|release|persona|ignore-list|check|req> [<arguments>]
 ```
 
 The commands that act on one project and the Xaden version it uses; each entry in this Reference names its full spelling. Without a
 command, `xaden project` prints the list and exits with status `2`. A project that pins an older Xaden than the one that introduced these
 names hands the command over as typed and that version does not know it: run `xaden project pin` first.
+
+`xaden check` and `xaden req` are aliases of `xaden project check` and `xaden project req`, and `xaden version` is an alias of
+`xaden core version`: the same output and exit codes, no notice. `aidd` is a namespace of its own, for the AI-Driven Development
+framework (`xaden help aidd` lists its commands). A project command outside a git repository fails and names `xaden project create <name>`
+and `xaden project adopt`; in a repository that has not adopted Xaden it prints `this repository has not adopted Xaden; run: xaden project adopt`.
 
 ## `xaden project create`
 
@@ -103,7 +108,7 @@ Guide: [Uninstall]({{< relref "docs/admin-guide/uninstall" >}}).
 
 ## `xaden version`
 
-Prints the installed Xaden version, for example `0.3.0`. `xaden core version` does the same.
+Prints the installed Xaden version, for example `0.3.0`. It is an alias of `xaden core version`.
 
 ```text
 xaden version
@@ -111,10 +116,10 @@ xaden version
 
 ## `xaden help`
 
-Prints the list of commands. `xaden help core` and `xaden help project` print one namespace.
+Prints the list of commands. `xaden help core`, `xaden help project` and `xaden help aidd` print one namespace.
 
 ```text
-xaden help [core|project]
+xaden help [core|project|aidd]
 ```
 
 ## Spellings of Xaden 0.5 and earlier

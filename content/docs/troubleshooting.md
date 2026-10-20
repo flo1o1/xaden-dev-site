@@ -30,6 +30,16 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 
 ## Creating and adopting
 
+### A command says it must run inside a project
+
+**Cause:** you ran a project command (for example `xaden check`, `xaden project pin` or `xaden aidd status`) outside a git repository.
+**Fix:** change into the project, or start one with `xaden project create <name>`, or add Xaden to a clone with `xaden project adopt`.
+
+### A command says this repository has not adopted Xaden
+
+**Cause:** you are in a git repository that has no `xaden/xaden.conf`.
+**Fix:** run `xaden project adopt` in it.
+
 ### `xaden project adopt` says this is not a git repository
 
 **Fix:** run it inside a clone, or run `git init` first.

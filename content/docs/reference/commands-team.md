@@ -109,6 +109,8 @@ Use it when `xaden check` reports that the rules file does not match the pinned 
 
 ## `xaden aidd`
 
+`aidd` is a namespace of its own, not part of `project`; `xaden help aidd` lists its commands.
+
 Switches the [AI-Driven Dev framework](https://github.com/ai-driven-dev/framework) (MIT) on or off in a project, at a pinned version. The framework is an optional add-on: its skills and agents take a task from spec to review, and Xaden stays the layer that sets the rules and runs the checks. Where a framework skill and Xaden's rules disagree, Xaden's rules win.
 
 ```text
