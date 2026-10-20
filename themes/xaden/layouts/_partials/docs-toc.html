@@ -1,12 +1,13 @@
-{{/* Table of contents of a docs page. box=true: collapsible block above the text, below the xl breakpoint; else the sticky right column from xl on. An empty table of contents is still an empty <nav>, so test for an item. */}}
+{{/* Table of contents of a docs page. A page with `toc: top` in its front matter has only the box, on every width. box=true: collapsible block above the text, below the xl breakpoint; else the sticky right column from xl on. An empty table of contents is still an empty <nav>, so test for an item. */}}
 {{ $page := .page }}
+{{ $top := eq $page.Params.toc "top" }}
 {{ if and (ne $page.RelPermalink "/docs/") (strings.Contains (string $page.TableOfContents) "<li>") }}
   {{ if .box }}
-<details open class="mb-6 rounded border border-line px-4 py-3 text-sm xl:hidden">
+<details open class="mb-6 rounded border border-line px-4 py-3 text-sm{{ if not $top }} xl:hidden{{ end }}">
   <summary class="eyebrow cursor-pointer">On this page</summary>
   <div class="toc mt-3">{{ $page.TableOfContents }}</div>
 </details>
-  {{ else }}
+  {{ else if not $top }}
 <aside class="hidden xl:sticky xl:top-6 xl:block xl:self-start" aria-label="On this page">
   <p class="eyebrow">On this page</p>
   <div class="toc mt-3">{{ $page.TableOfContents }}</div>

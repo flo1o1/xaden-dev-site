@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./hair.css";
 @plugin "@tailwindcss/typography";
 @source "../layouts";
 
@@ -53,6 +54,11 @@
   h1, h2, h3 {
     font-family: var(--font-display);
     letter-spacing: 0.02em;
+  }
+  /* Cinzel is for the page title; headlines from level 2 down in the content are set in the text face */
+  main :is(h2, h3, h4, h5, h6) {
+    font-family: var(--font-sans);
+    letter-spacing: normal;
   }
   :focus-visible {
     outline: 3px solid var(--color-accent);
@@ -118,14 +124,14 @@
     animation: embers 14s linear infinite;
     opacity: 0.8;
   }
-  /* large dragon scales: only in the hero, on the logo side; the text side stays clear (REQ-013) */
+  /* large dragon scales in a serpentine (scripts/make-scales.py): only in the hero, on the logo side; the text side stays clear (REQ-013) */
   .hero::after {
     content: "";
     position: absolute;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background-image: url("/img/scales.svg");
+    background: url("/img/scales-serpentine.svg") right center / auto no-repeat;
     -webkit-mask-image: radial-gradient(ellipse 55% 75% at 82% 45%, #000 0%, transparent 100%);
     mask-image: radial-gradient(ellipse 55% 75% at 82% 45%, #000 0%, transparent 100%);
   }
@@ -146,6 +152,17 @@
   }
   /* shadow of the logo: a blurred black copy that sways behind it (REQ-019) */
   .logo-wrap { position: relative; }
+  /* writhing tendrils like Medusa's hair behind the head (scripts/make-hair.py, hair.css) */
+  .hair-svg {
+    position: absolute;
+    left: 50%;
+    top: 38%;
+    width: 190%;
+    transform: translate(-50%, -50%);
+    overflow: visible;
+    pointer-events: none;
+    filter: blur(1.5px) drop-shadow(0 0 10px rgb(66 65 77 / 0.8));
+  }
   .logo-shadow {
     position: absolute;
     top: 0;
@@ -176,6 +193,7 @@
     filter: blur(4px);
   }
   .logo-glow {
+    position: relative;
     filter: drop-shadow(0 0 28px rgb(147 39 45 / 0.6));
   }
 
@@ -253,6 +271,7 @@ html[data-assistant="other"] .assistant-variant[data-assistant="other"] { displa
 .toc ul ul { margin-left: 0.75rem; }
 .toc a { display: block; padding: 0.25rem 0 0.25rem 1rem; color: var(--color-muted); }
 .toc a:hover { color: var(--color-accent); }
+.toc a[aria-current="location"] { color: var(--color-accent); font-weight: 600; }
 @media (min-width: 48rem) {
   .toc { max-height: calc(100vh - 14rem); overflow-y: auto; }
 }

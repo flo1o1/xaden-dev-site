@@ -1,5 +1,5 @@
 {{ define "main" }}
-<div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-[16rem_1fr] xl:max-w-7xl xl:grid-cols-[16rem_minmax(0,1fr)_14rem]">
+<div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-[16rem_1fr]{{ if ne .Params.toc "top" }} xl:max-w-7xl xl:grid-cols-[16rem_minmax(0,1fr)_14rem]{{ end }}">
   <aside class="md:sticky md:top-6 md:self-start">{{ partial "docs-nav.html" . }}</aside>
   <article class="min-w-0">
     {{ if ne .Parent.RelPermalink "/docs/" }}<p class="eyebrow"><a href="{{ .Parent.RelPermalink }}" class="hover:text-accent">{{ .Parent.Title }}</a></p>{{ end }}

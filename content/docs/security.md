@@ -70,11 +70,10 @@ comes from the maintainer and not from the download; see
 
 ## Before a release: a security review
 
-```text
-Run `xaden prompt security-review` and follow it.
-```
+{{< prompt "xaden-security" "security-review" "" "" >}}
 
-Tell your assistant this. The prompt is based on the OWASP Web Security Testing Guide. It works with any
+Run the command for your assistant in the project. With `xaden prompt security-review` you print the prompt and give it to
+your assistant. The prompt is based on the OWASP Web Security Testing Guide. It works with any
 model, and the assistant saves a report with scope, evidence, limitations and findings.
 
 Run it after every feature that touches input, logins, data, files, the network or dependencies, and
