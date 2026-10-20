@@ -2,6 +2,7 @@
 title: "Troubleshooting"
 weight: 7
 description: "Symptoms, causes and fixes, by area."
+toc: top
 ---
 
 Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit codes and environment]({{< relref "docs/reference/exit-codes-and-environment" >}}).

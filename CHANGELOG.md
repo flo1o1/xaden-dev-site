@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- A docs page with `toc: top` in its front matter shows "On this page" only as the box above the text, on every screen width, without the right column; Troubleshooting uses it because its long list of entries fits the column badly.
 - "On this page" highlights the entry of the section in view while you scroll (an optional script, `toc.js`; without JavaScript the entries are plain links; REQ-014).
 - Project commands: `xaden project check` and `xaden project req` have their own entries there (moved from Work commands, which lose `check` and `req`); each names the shortcut `xaden check` or `xaden req`. The combined pointer entry is gone.
 - The docs pages show "On this page" in its own column right of the text from the `xl` breakpoint (sticky), and as an open box above the text on narrower screens; the sidebar lists only the pages. Project commands now holds every `xaden project` command (`setup`, `doctor`, `fetch`, `pin`, `rules`, `ignore-list`, `persona`, `release`, `preset` moved there from Team and Work commands), with a short entry for `project check` and `project req`.
