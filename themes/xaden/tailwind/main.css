@@ -253,6 +253,7 @@ html[data-assistant="other"] .assistant-variant[data-assistant="other"] { displa
 .toc ul ul { margin-left: 0.75rem; }
 .toc a { display: block; padding: 0.25rem 0 0.25rem 1rem; color: var(--color-muted); }
 .toc a:hover { color: var(--color-accent); }
+.toc a[aria-current="location"] { color: var(--color-accent); font-weight: 600; }
 @media (min-width: 48rem) {
   .toc { max-height: calc(100vh - 14rem); overflow-y: auto; }
 }

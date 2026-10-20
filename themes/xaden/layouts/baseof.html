@@ -16,5 +16,7 @@
   <script src="{{ $shadows.RelPermalink }}" defer></script>
   {{ $assistant := resources.Get "js/assistant.js" | minify | fingerprint }}
   <script src="{{ $assistant.RelPermalink }}" defer></script>
+  {{ $toc := resources.Get "js/toc.js" | minify | fingerprint }}
+  <script src="{{ $toc.RelPermalink }}" defer></script>
 </body>
 </html>
