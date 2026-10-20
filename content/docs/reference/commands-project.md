@@ -1,10 +1,10 @@
 ---
 title: "Project commands"
 weight: 10
-description: "core, project, create, adopt, remove, version and help."
+description: "core, project and every xaden project command, version and help."
 ---
 
-Commands that create a project, add Xaden to a repository, take it out again, and report the version. They work from any folder unless
+Commands that act on a project and the Xaden version it uses: create, adopt, remove, setup, doctor, fetch, pin, rules, preset, release, persona and ignore-list, and the version. They work from any folder unless
 the entry says otherwise.
 
 Commands are grouped by what they act on: `xaden core` acts on Xaden itself, `xaden project` on one project and the Xaden version it uses.
@@ -105,6 +105,129 @@ terminal and without `--yes` it changes nothing.
 Exit status: `0` removed or nothing changed; `1` Xaden is not adopted here.
 
 Guide: [Uninstall]({{< relref "docs/admin-guide/uninstall" >}}).
+
+## `xaden project setup`
+
+Chains Xaden's checks into the git hooks of this clone and reports missing tools.
+
+```text
+xaden project setup
+```
+
+Run it once per clone, because git does not share hooks. It keeps what your hooks already do and is safe to run again. Hooks that are files of
+the repository (husky) need no setup.
+
+Guide: [Join a project]({{< relref "docs/developer-guide/join-a-project" >}}).
+
+## `xaden project doctor`
+
+Compares the installed Xaden with the one the project pins. Reads two files and uses no network.
+
+```text
+xaden project doctor
+```
+
+Prints `installed X, project pinned Y` and checks the installed copy against the pinned checksum.
+
+Exit status: `0` the pinned version is available and matches; `1` it is missing or does not match.
+
+Guide: [Pin one Xaden version per project]({{< relref "docs/admin-guide/pin-one-version-per-project" >}}).
+
+## `xaden project fetch`
+
+Installs a pinned Xaden version that is missing on this machine.
+
+```text
+xaden project fetch <version>
+```
+
+The version must be the one `xaden/xaden.conf` pins. It shows version, source and checksum, then asks `Download and install Xaden <version> now? [y/N]`.
+Only a yes downloads. The download is installed only if it matches the pinned checksum and, when a signature exists, the signature. Versions go to
+`~/.local/share/xaden/versions`.
+
+Exit status: `0` installed or already installed; `1` you answered no; `3` no terminal, nothing downloaded; `5` checksum mismatch; `6` signature mismatch.
+
+Guide: [Pin one Xaden version per project]({{< relref "docs/admin-guide/pin-one-version-per-project" >}}).
+
+## `xaden project pin`
+
+Moves the project to another Xaden version on a branch for a pull request, or looks for a newer release.
+
+```text
+xaden project pin --check
+xaden project pin [<version>]
+```
+
+| Form | Meaning |
+|------|---------|
+| `--check` | Ask, then look up the newest release on github.com and report it. Changes nothing. |
+| `<version>` | Create the branch `chore/upgrade-xaden-<version>` in a folder next to the project, bump version and checksum in `xaden/xaden.conf`, regenerate `xaden/RULES.md`, update the workflow, bring the command files up to date, and show the diff and the changelog entries. A command file you edited stays as it is and the new text is written next to it as `<file>-dist`. When your CI workflow differs from the one the new version generates (for example it lacks the step that records the pinned checksum, which `require-signature = true` needs on a fresh runner), the new workflow is written next to yours as `.github/workflows/xaden.yml-dist` and `pin` prints the `diff` command; your workflow is never replaced. |
+| (no version) | Look up the newest release first, as `--check` does, then pin it. |
+
+Asks before any network access and before downloading a version that is not installed. A signed release pins the signed checksum; otherwise the
+checksum of the download is pinned and Xaden says so.
+
+Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing looked up or downloaded; `5` checksum mismatch; `6` signature mismatch.
+
+## `xaden project rules`
+
+Regenerates `xaden/RULES.md` from the pinned Xaden version.
+
+```text
+xaden project rules
+```
+
+Use it when `xaden check` reports that the rules file does not match the pinned version. Review the diff and commit it.
+
+## `xaden project ignore-list`
+
+Prints the paths Xaden owns in a repository, one per line, for `.dockerignore`, `.npmignore` and archive excludes.
+
+```text
+xaden project ignore-list
+```
+
+Prints `xaden/`, `AGENTS.md` and, when the file exists, `CLAUDE.md`. Changes no file.
+## `xaden project persona`
+
+Creates a user persona from the template.
+
+```text
+xaden project persona new "<name>"
+```
+
+The name is one line of at most 60 characters without `/`, `\`, `&` or `:`. Prints the path of the new file. Three to five personas keep the
+checks focused.
+
+## `xaden project release`
+
+Cuts a release: checks, stamps `VERSION` and `CHANGELOG.md`, commits and tags locally. It never pushes.
+
+```text
+xaden project release <major|minor|patch>
+```
+
+Needs a clean working tree, a `VERSION` file and a `CHANGELOG.md` with an `Unreleased` section. It refuses to continue while a check fails, a required
+tool is missing, or a requirement, `SECURITY.md` or `xaden/threat-model.md` has an unfilled `TODO` marker. A failed step restores the files.
+
+Guide: [Release a version]({{< relref "docs/developer-guide/release-a-version" >}}).
+
+## `xaden project preset`
+
+Adds Xaden's preset for a stack to an adopted project.
+
+```text
+xaden project preset <python|node>
+```
+
+Writes the preset's configuration files at the repository root (never over a file you have), maps the check commands in `xaden/xaden.conf`
+and prints the command that installs the tools. Python: `ruff.toml`, `mypy.ini`, `requirements-dev.txt`. Node: `eslint.config.mjs`. It maps the kinds that have no command yet: `lint`, `typecheck` and `test`, and also `audit` (`pip-audit`, or `npm audit --audit-level=high` for Node) and, for Python, `security` (`bandit -q -r . -x ./.venv,./node_modules,./tests`), each with `findings-status = 1`. `expect` is not changed.
+
+Guide: [Check modes and baselines]({{< relref "docs/developer-guide/check-modes-and-baselines" >}}).
+## `xaden project check` and `xaden project req`
+
+`xaden check` and `xaden req` are the short spellings of these two commands, with the same output and exit codes. Their entries are under
+[`xaden check`]({{< relref "docs/reference/commands-work#xaden-check" >}}) and [`xaden req`]({{< relref "docs/reference/commands-work#xaden-req" >}}).
 
 ## `xaden version`
 

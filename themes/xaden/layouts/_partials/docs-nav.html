@@ -1,4 +1,4 @@
-{{/* Sidebar of the docs: the top-level pages and guides in menu order; under the guide or page you are in, its own pages; then the table of contents. */}}
+{{/* Sidebar of the docs: the top-level pages and guides in menu order; under the guide or page you are in, its own pages; the table of contents is docs-toc.html. */}}
 {{ $current := . }}
 {{ $docs := site.GetPage "/docs" }}
 <nav aria-label="Documentation" class="space-y-6 text-sm">
@@ -17,11 +17,4 @@
       </li>
     {{ end }}
   </ul>
-  {{/* an empty table of contents is still an empty <nav>, so test for an item */}}
-  {{ if and (ne $current.RelPermalink "/docs/") (strings.Contains (string $current.TableOfContents) "<li>") }}
-  <div>
-    <p class="eyebrow">On this page</p>
-    <div class="toc mt-3">{{ $current.TableOfContents }}</div>
-  </div>
-  {{ end }}
 </nav>
