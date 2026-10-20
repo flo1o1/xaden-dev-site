@@ -32,7 +32,7 @@ The commands that act on one project and the Xaden version it uses; each entry i
 command, `xaden project` prints the list and exits with status `2`. A project that pins an older Xaden than the one that introduced these
 names hands the command over as typed and that version does not know it: run `xaden project pin` first.
 
-`xaden check` and `xaden req` are aliases of `xaden project check` and `xaden project req`, and `xaden version` is an alias of
+`xaden check` and `xaden req` are shortcuts of `xaden project check` and `xaden project req`, and `xaden version` is an alias of
 `xaden core version`: the same output and exit codes, no notice. `aidd` is a namespace of its own, for the AI-Driven Development
 framework (`xaden help aidd` lists its commands). A project command outside a git repository fails and names `xaden project create <name>`
 and `xaden project adopt`; in a repository that has not adopted Xaden it prints `this repository has not adopted Xaden; run: xaden project adopt`.
@@ -177,7 +177,7 @@ Regenerates `xaden/RULES.md` from the pinned Xaden version.
 xaden project rules
 ```
 
-Use it when `xaden check` reports that the rules file does not match the pinned version. Review the diff and commit it.
+Use it when `xaden project check` reports that the rules file does not match the pinned version. Review the diff and commit it.
 
 ## `xaden project ignore-list`
 
@@ -224,10 +224,50 @@ Writes the preset's configuration files at the repository root (never over a fil
 and prints the command that installs the tools. Python: `ruff.toml`, `mypy.ini`, `requirements-dev.txt`. Node: `eslint.config.mjs`. It maps the kinds that have no command yet: `lint`, `typecheck` and `test`, and also `audit` (`pip-audit`, or `npm audit --audit-level=high` for Node) and, for Python, `security` (`bandit -q -r . -x ./.venv,./node_modules,./tests`), each with `findings-status = 1`. `expect` is not changed.
 
 Guide: [Check modes and baselines]({{< relref "docs/developer-guide/check-modes-and-baselines" >}}).
-## `xaden project check` and `xaden project req`
+## `xaden project check`
 
-`xaden check` and `xaden req` are the short spellings of these two commands, with the same output and exit codes. Their entries are under
-[`xaden check`]({{< relref "docs/reference/commands-work#xaden-check" >}}) and [`xaden req`]({{< relref "docs/reference/commands-work#xaden-req" >}}).
+Runs the project's checks. Shortcut: `xaden check` does the same, with the same options and exit codes.
+
+```text
+xaden project check [--staged] [--strict]
+```
+
+| Option | Meaning |
+|--------|---------|
+| (none) | The full run: all files, the commands in `xaden.conf`, requirements, traceability, secret scan and workflow lint. |
+| `--staged` | The pre-commit subset: staged files only, offline. |
+| `--strict` | A missing tool is a failure instead of a skipped check. CI uses it. |
+
+The full run also prints `NOT COVERED:` for each audit Xaden knows for your stack and nothing maps; see [Configuration]({{< relref "docs/reference/configuration" >}}).
+
+Every run ends with a summary of passed, failed and skipped checks. A run with skipped checks ends with a warning. How findings are judged
+is set by the mode; see [Configuration]({{< relref "docs/reference/configuration" >}}).
+
+Exit status: `0` no check failed (skips included, with a warning); `1` a check failed.
+
+## `xaden project req`
+
+Looks up and creates requirements. Shortcut: `xaden req` does the same, with the same options and exit codes.
+
+```text
+xaden project req list [--epic <epic>] [--status <status>]
+xaden project req show REQ-nnn [--brief]
+xaden project req for <path>...
+xaden project req find <word>...
+xaden project req new <epic> <job|quality> "<title>"
+xaden project req index
+```
+
+| Subcommand | Meaning |
+|------------|---------|
+| `list` | One line per requirement: ID, status, priority, title. `--epic` and `--status` narrow the list; an unknown status is refused. |
+| `show REQ-nnn` | The file of one requirement. `--brief` prints the ID, status, title, the job or quality goal and the acceptance criteria only. |
+| `for <path>...` | The requirements whose optional `paths:` front-matter line covers one of the files or folders. An entry ending in `/` covers the folder, an entry with `*`, `?` or `[` is a glob over the whole path (a `*` also crosses `/`), anything else is one file. A requirement without `paths:` never matches. |
+| `find <word>...` | The requirements whose title or text holds every word, ignoring case, one line each. |
+| `new <epic> <job\|quality> "<title>"` | Creates the next requirement as a draft and refreshes the index. The epic is lowercase words with hyphens. |
+| `index` | Rewrites the generated `INDEX.md`, which lists only requirements that are not `done` or `dropped` and counts the others per epic, and `INDEX-full.md`, the full table that no tool imports, so the files an assistant loads stay small. |
+
+`xaden project check` warns, and does not fail, about a `paths:` entry that matches no file or folder, because a stale entry hides its requirement.
 
 ## `xaden version`
 

@@ -8,8 +8,8 @@ This section lists facts. It does not teach; each entry links to the guide page 
 
 | Look up | Page |
 |---------|------|
-| Commands that act on a project and its Xaden version, and the namespaces `core` and `project`: `project create`, `project adopt`, `project remove`, `project setup`, `project doctor`, `project fetch`, `project pin`, `project rules`, `project ignore-list`, `project persona`, `project release`, `project preset`, `version`, `help` | [Project commands]({{< relref "docs/reference/commands-project" >}}) |
-| Commands for daily work: `prompt`, `req`, `check`, `context`, `doc` | [Work commands]({{< relref "docs/reference/commands-work" >}}) |
+| Commands that act on a project and its Xaden version, and the namespaces `core` and `project`: `project create`, `project adopt`, `project remove`, `project setup`, `project doctor`, `project fetch`, `project pin`, `project rules`, `project ignore-list`, `project persona`, `project release`, `project preset`, `project check`, `project req`, `version`, `help` | [Project commands]({{< relref "docs/reference/commands-project" >}}) |
+| Commands for daily work: `prompt`, `context`, `doc` | [Work commands]({{< relref "docs/reference/commands-work" >}}) |
 | Commands for a team and its versions: `core upgrade`, `aidd`, `hook`, `verify-commits` | [Team commands]({{< relref "docs/reference/commands-team" >}}) |
 | Every setting in `xaden/xaden.conf` | [Configuration]({{< relref "docs/reference/configuration" >}}) |
 | What Xaden keeps in a repository and on a machine | [Files and folders]({{< relref "docs/reference/files-and-folders" >}}) |
