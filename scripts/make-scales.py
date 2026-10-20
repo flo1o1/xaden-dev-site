@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Draws themes/xaden/static/img/scales.svg: the large dragon scales of the hero background (REQ-019).
+"""Draws themes/xaden/static/img/scales-serpentine.svg: the large dragon scales of the hero background (REQ-019).
 
 The scale is the one of the former tile (144 x 129.6, pointed, centre ridge). The rows do not run straight:
 they wave like a serpent (a sine curve, the same for every row), and each scale is turned to stand across its row.
-Usage: scripts/make-scales.py > themes/xaden/static/img/scales.svg   (deterministic; no dependencies)
+Usage: scripts/make-scales.py > themes/xaden/static/img/scales-serpentine.svg   (deterministic; no dependencies)
 """
 import math
 
