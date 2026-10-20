@@ -16,7 +16,7 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### The installer says a file named `xaden` exists and is not a link to a Xaden
 
 **Cause:** another file or link of that name is in the folder. The installer never overwrites it.
-**Fix:** remove or rename that file, then run the installer again. A link to a former Xaden is replaced without this message. To get a newer release, run `xaden upgrade` ([Update Xaden]({{< relref "docs/admin-guide/update-xaden" >}})).
+**Fix:** remove or rename that file, then run the installer again. A link to a former Xaden is replaced without this message. To get a newer release, run `xaden core upgrade` ([Update Xaden]({{< relref "docs/admin-guide/update-xaden" >}})).
 
 ### The checks end with INCOMPLETE
 
@@ -30,16 +30,16 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 
 ## Creating and adopting
 
-### `xaden adopt` says this is not a git repository
+### `xaden project adopt` says this is not a git repository
 
 **Fix:** run it inside a clone, or run `git init` first.
 
-### `xaden adopt` stopped after the plan and did not ask
+### `xaden project adopt` stopped after the plan and did not ask
 
 **Cause:** there is no terminal (a script, a CI job, some editors). Nothing was changed.
-**Fix:** run the command it prints, `xaden adopt --yes`, with the options you used.
+**Fix:** run the command it prints, `xaden project adopt --yes`, with the options you used.
 
-### `xaden adopt` exits with code 4
+### `xaden project adopt` exits with code 4
 
 **Cause:** your hook manager or CI system is not supported.
 **Fix:** the message names the manual step. Adopt without that part with `--skip-hooks` or `--skip-ci`.
@@ -49,27 +49,27 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 **Cause:** an earlier adoption left `chore/adopt-xaden` or `<repo>-adopt-xaden`.
 **Fix:** finish it, or remove it with `git worktree remove <folder>` and `git branch -D chore/adopt-xaden`.
 
-### `xaden create --autopilot` exits with code 2
+### `xaden project create --autopilot` exits with code 2
 
 **Cause:** the folder already holds code, a build file or history.
-**Fix:** run `xaden adopt` inside it, or choose another name.
+**Fix:** run `xaden project adopt` inside it, or choose another name.
 
 ## Checks and modes
 
 ### A gap: no `test` check is configured
 
 **Cause:** the repository has no test command that Xaden knows. In `strict` mode a gap is an error; otherwise it is a warning.
-**Fix:** add `check.test = <command>` to `xaden/xaden.conf`, or add Xaden's preset: `xaden preset python` or `xaden preset node`. A Python project that uses `unittest` is found by the scan from 0.6.0 on (a `tests/` or `test/` folder with a `test*.py` file that imports it, and no pytest setup); before that, name it: `check.test = python3 -m unittest discover -s tests`.
+**Fix:** add `check.test = <command>` to `xaden/xaden.conf`, or add Xaden's preset: `xaden project preset python` or `xaden project preset node`. A Python project that uses `unittest` is found by the scan from 0.6.0 on (a `tests/` or `test/` folder with a `test*.py` file that imports it, and no pytest setup); before that, name it: `check.test = python3 -m unittest discover -s tests`.
 
 ### A gap: no `audit` (or `security`) check is configured
 
 **Cause:** the project was adopted with the dependency audit (and, for Python, Bandit) in `expect`, and no `check.audit` or `check.security` command maps them. In `strict` mode a gap is an error; otherwise it is a warning.
-**Fix:** run `xaden preset python` or `xaden preset node`, which maps `pip-audit` and `bandit`, or `npm audit --audit-level=high`, and install the tools it prints. Or name your own command: `check.audit = <command>`. If the team decides not to audit, take `audit` out of `expect`; that loosens a gate, so it is an approval point.
+**Fix:** run `xaden project preset python` or `xaden project preset node`, which maps `pip-audit` and `bandit`, or `npm audit --audit-level=high`, and install the tools it prints. Or name your own command: `check.audit = <command>`. If the team decides not to audit, take `audit` out of `expect`; that loosens a gate, so it is an approval point.
 
 ### A line says `NOT COVERED: pip-audit` (or `bandit`, `npm audit`)
 
-**Cause:** an adopted project from before the audit kinds has no command for a check that a project made by `xaden create` runs for this stack. The line informs; nothing fails because of it.
-**Fix:** map the check as the line says (`check.audit` or `check.security`, `xaden preset <stack>` writes both), then add the kind to `expect` so a missing mapping becomes a gap. Leave it as it is if the team accepts that the audit does not run.
+**Cause:** an adopted project from before the audit kinds has no command for a check that a project made by `xaden project create` runs for this stack. The line informs; nothing fails because of it.
+**Fix:** map the check as the line says (`check.audit` or `check.security`, `xaden project preset <stack>` writes both), then add the kind to `expect` so a missing mapping becomes a gap. Leave it as it is if the team accepts that the audit does not run.
 
 ### `check: audit (needs the network)` fails
 
@@ -84,7 +84,7 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### `xaden check` says `xaden/RULES.md` does not match
 
 **Cause:** the rules file was edited by hand, or another Xaden version generated it.
-**Fix:** run `xaden doctor` to see the versions. If they match, run `xaden rules` and commit the result.
+**Fix:** run `xaden project doctor` to see the versions. If they match, run `xaden project rules` and commit the result.
 
 ### `xaden check` fails on a finding you did not cause
 
@@ -99,7 +99,7 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### A warning says `cannot tell which files this run changes`
 
 **Cause:** in `changed-files` mode Xaden had no previous tip or target branch to compare with (a first push, rewritten history, a shallow clone, CI without the event variables). That run checked all files, as `strict` does. `xaden.conf` is unchanged.
-**Fix:** let the workflow pass `EVENT_NAME`, `BASE_REF` and `BEFORE_SHA` to the check step and check out the full history (`fetch-depth: 0`). The workflow `xaden adopt` writes does.
+**Fix:** let the workflow pass `EVENT_NAME`, `BASE_REF` and `BEFORE_SHA` to the check step and check out the full history (`fetch-depth: 0`). The workflow `xaden project adopt` writes does.
 
 ### A warning says baselined findings are fixed
 
@@ -113,17 +113,17 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 
 ### CI fails on a commit message although my hook did not complain
 
-**Cause:** the commit skipped the hook (`--no-verify`, or a clone that never ran `xaden setup`). The workflow `xaden adopt` writes runs `xaden verify-commits --ci` on every commit a push or pull request brings, and the log names the commit and the rule.
-**Fix:** reword the commit (`git commit --amend` or an interactive rebase on your own branch) so it cites `Refs: REQ-nnn` or, for a `fix`, `Refs: none`, and push again. A project adopted before this check existed gets the step with `xaden pin`.
+**Cause:** the commit skipped the hook (`--no-verify`, or a clone that never ran `xaden project setup`). The workflow `xaden project adopt` writes runs `xaden verify-commits --ci` on every commit a push or pull request brings, and the log names the commit and the rule.
+**Fix:** reword the commit (`git commit --amend` or an interactive rebase on your own branch) so it cites `Refs: REQ-nnn` or, for a `fix`, `Refs: none`, and push again. A project adopted before this check existed gets the step with `xaden project pin`.
 
 ### CI fails with `the checkout is shallow` or `cannot read the commit range`
 
 **Cause:** `xaden verify-commits --ci` could not read the commits of the run, so it did not check them. The usual reason is a checkout with the default depth of 1 (`actions/checkout` without `fetch-depth: 0`), or a pull request whose target branch is not in the checkout. Exit status `2` means "could not check", and it applies under every commit convention. Older versions printed `commit messages OK` after looking at one commit.
-**Fix:** check out the full history: `fetch-depth: 0` in the `actions/checkout` step. The workflow `xaden adopt` writes sets it already; a workflow you edited or another CI system must do the same.
+**Fix:** check out the full history: `fetch-depth: 0` in the `actions/checkout` step. The workflow `xaden project adopt` writes sets it already; a workflow you edited or another CI system must do the same.
 
 ### A warning says `commit references: advisory only`
 
-**Cause:** `commit-convention` in `xaden/xaden.conf` is `other`, so the `Refs:` checks only advise. `xaden adopt` sets it when the history does not follow Conventional Commits (with fewer than 5 commits, when any subject does not).
+**Cause:** `commit-convention` in `xaden/xaden.conf` is `other`, so the `Refs:` checks only advise. `xaden project adopt` sets it when the history does not follow Conventional Commits (with fewer than 5 commits, when any subject does not).
 **Fix:** to enforce the rule set `commit-convention = conventional`; it tightens a gate, so your team reviews the change.
 
 ## Versions and downloads
@@ -136,7 +136,7 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### A commit in an IDE fails with exit code 3
 
 **Cause:** the pinned Xaden version is missing, and the IDE has no terminal to ask you in. Nothing was downloaded.
-**Fix:** run the `xaden fetch <version>` that the message shows, in a terminal.
+**Fix:** run the `xaden project fetch <version>` that the message shows, in a terminal.
 
 ### A download fails with exit code 5
 
@@ -151,18 +151,18 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### Xaden refuses to run: the project requires signed releases
 
 **Cause:** `require-signature = true` is set, and the installed Xaden has no verified signature on record or its files differ from the signed checksum.
-**Fix:** run `xaden fetch <version>` in a terminal; after a yes it checks the installed copy against the signed checksum and records the result. If it exits with code 6, do not work around it ([Verify releases]({{< relref "docs/admin-guide/verify-releases" >}})).
+**Fix:** run `xaden project fetch <version>` in a terminal; after a yes it checks the installed copy against the signed checksum and records the result. If it exits with code 6, do not work around it ([Verify releases]({{< relref "docs/admin-guide/verify-releases" >}})).
 
 ### `xaden check` says this is one Xaden version and the project pins another
 
-**Fix:** run `xaden doctor`, then `xaden fetch <version>` in a terminal.
+**Fix:** run `xaden project doctor`, then `xaden project fetch <version>` in a terminal.
 
 ## Hooks and CI
 
 ### The hooks do not run in a teammate's clone
 
 **Cause:** hooks that live in `.git` are not shared. The same happens after `pre-commit install` rewrites the hook.
-**Fix:** run `xaden setup` once in each clone.
+**Fix:** run `xaden project setup` once in each clone.
 
 ### A hook prints `xaden not found`
 
@@ -172,4 +172,4 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### The CI job fails at "Install Xaden"
 
 **Cause:** the downloaded Xaden does not match `XADEN_CHECKSUM` in `.github/workflows/xaden.yml`, or the version tag does not exist.
-**Fix:** the version and checksum in the workflow must equal `version` and `checksum` in `xaden/xaden.conf`. `xaden pin` updates both.
+**Fix:** the version and checksum in the workflow must equal `version` and `checksum` in `xaden/xaden.conf`. `xaden project pin` updates both.

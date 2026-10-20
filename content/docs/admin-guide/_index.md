@@ -14,7 +14,6 @@ This guide is for the person who installs and operates Xaden on a machine or for
 | Make a team use one version | [Pin one Xaden version per project]({{< relref "docs/admin-guide/pin-one-version-per-project" >}}) |
 | Check checksums and signatures | [Verify releases]({{< relref "docs/admin-guide/verify-releases" >}}) |
 | Add extra checks and assistant plugins | [Optional tools and plugins]({{< relref "docs/admin-guide/optional-tools-and-plugins" >}}) |
-| Update a project that has its own copy of Xaden | [Update a classic project]({{< relref "docs/admin-guide/update-a-classic-project" >}}) |
 | Remove Xaden | [Uninstall]({{< relref "docs/admin-guide/uninstall" >}}) |
 
 Working with Xaden in a project is in the [Developer Guide]({{< relref "docs/developer-guide" >}}).
