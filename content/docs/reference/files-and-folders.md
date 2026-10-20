@@ -28,9 +28,9 @@ New projects also get a `README.md`, `.gitignore`, `VERSION`, `CHANGELOG.md` and
 
 ## What `xaden/footprint.txt` records
 
-One line per place outside `xaden/` that Xaden changed, so `xaden remove` can undo exactly that.
+One line per place outside `xaden/` that Xaden changed, so `xaden project remove` can undo exactly that.
 
-| Kind | Meaning | `xaden remove` |
+| Kind | Meaning | `xaden project remove` |
 |------|---------|----------------|
 | `block` | a marked block in a file that existed | removes the block |
 | `created-block` | a marked block in a file Xaden created | removes the block, and the file if nothing else is left |
@@ -49,8 +49,8 @@ Xaden's blocks are delimited by `<!-- xaden:begin -->` and `<!-- xaden:end -->` 
 
 | Where | What |
 |-------|------|
-| `.git/hooks/pre-commit`, `.git/hooks/commit-msg` | a block that calls `xaden hook` (plain git, pre-commit, lefthook). Not shared by git; `xaden setup` creates it in each clone. |
-| `.git/xaden-update-check` | the cached result of `xaden upgrade --check --if-due`. Never committed; every worktree of the clone shares it. |
+| `.git/hooks/pre-commit`, `.git/hooks/commit-msg` | a block that calls `xaden hook` (plain git, pre-commit, lefthook). Not shared by git; `xaden project setup` creates it in each clone. |
+| `.git/xaden-update-check` | the cached result of `xaden core upgrade --check --if-due`. Never committed; every worktree of the clone shares it. |
 
 ## On a machine
 
@@ -58,5 +58,5 @@ Xaden's blocks are delimited by `<!-- xaden:begin -->` and `<!-- xaden:end -->` 
 |------|------|
 | `~/.local/bin/xaden` | the link to `scripts/xaden.sh` of the current version (of the clone, for a git install) |
 | `~/.local/share/xaden/versions/<version>/` | every installed Xaden version, one folder each; `XADEN_HOME` moves the parent folder |
-| `~/.local/share/xaden/current` | a link to the active version; `xaden upgrade` moves it |
+| `~/.local/share/xaden/current` | a link to the active version; `xaden core upgrade` moves it |
 | `~/.xaden` | the Xaden folder of a git install, for contributors ([Contributing]({{< relref "docs/contributing" >}})) |

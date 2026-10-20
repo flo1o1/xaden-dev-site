@@ -6,7 +6,7 @@ description: "How Xaden builds security into the workflow, and where to learn mo
 
 AI assistants write code fast, and not always safely. Xaden does not make software secure by itself,
 but it builds security into the workflow at six points, so that mistakes are caught early and
-cheaply. Everything below ships with every project that `xaden create` creates and with every repository
+cheaply. Everything below ships with every project that `xaden project create` creates and with every repository
 that adopts Xaden.
 
 ## Before you build: a threat model

@@ -1,19 +1,44 @@
 ---
 title: "Project commands"
 weight: 10
-description: "create, adopt, remove, version and help."
+description: "core, project, create, adopt, remove, version and help."
 ---
 
 Commands that create a project, add Xaden to a repository, take it out again, and report the version. They work from any folder unless
 the entry says otherwise.
 
-## `xaden create`
+Commands are grouped by what they act on: `xaden core` acts on Xaden itself, `xaden project` on one project and the Xaden version it uses.
+The commands for daily work (`check`, `req`, `context`, `prompt`, `doc`, `aidd`, `verify-commits`, `hook`) have no namespace, because git hooks, CI
+workflows and the rules every assistant reads call them. The old top-level spellings of the moved commands (`xaden create`, `xaden pin`,
+`xaden upgrade`, ...) are unknown.
+
+## `xaden core`
+
+```text
+xaden core upgrade [--check [--if-due]] [<version>]
+xaden core version
+```
+
+`upgrade` updates Xaden itself on this machine, `version` prints the installed version. Without a command, `xaden core` prints this list and
+exits with status `2`. Details: [`xaden core upgrade`]({{< relref "docs/reference/commands-team" >}}#xaden-core-upgrade).
+
+## `xaden project`
+
+```text
+xaden project <create|adopt|remove|pin|fetch|doctor|rules|preset|setup|release|persona|ignore-list> [<arguments>]
+```
+
+The commands that act on one project and the Xaden version it uses; each entry in this Reference names its full spelling. Without a
+command, `xaden project` prints the list and exits with status `2`. A project that pins an older Xaden than the one that introduced these
+names hands the command over as typed and that version does not know it: run `xaden project pin` first.
+
+## `xaden project create`
 
 Creates a project in the `xaden/` layout, with its own git repository, hooks, a CI workflow and a first commit on `main`.
 
 ```text
-xaden create [--assistants <list>] <name> [<dir>]
-xaden create --autopilot [--stack python|node] [--assistants <list>] <name> [<dir>]
+xaden project create [--assistants <list>] <name> [<dir>]
+xaden project create --autopilot [--stack python|node] [--assistants <list>] <name> [<dir>]
 ```
 
 | Argument or option | Meaning |
@@ -29,12 +54,12 @@ code, a build file or history; `1` any other error. A failed run removes the fol
 
 Guide: [Create a project]({{< relref "docs/developer-guide/create-a-project" >}}).
 
-## `xaden adopt`
+## `xaden project adopt`
 
 Adds Xaden to the repository you are in, on a new branch and worktree. Run it inside a git clone.
 
 ```text
-xaden adopt [--scan | --plan] [--yes] [--assistants <list>] [--mode <mode>]
+xaden project adopt [--scan | --plan] [--yes] [--assistants <list>] [--mode <mode>]
             [--check <kind>=<command>]... [--preset | --no-preset] [--skip-hooks] [--skip-ci]
             [--commit-convention <conventional|other>]
 ```
@@ -61,12 +86,12 @@ CI system is not supported.
 
 Guide: [Add Xaden to a repository]({{< relref "docs/developer-guide/add-xaden-to-a-repository" >}}).
 
-## `xaden remove`
+## `xaden project remove`
 
 Takes Xaden out of the working tree of an adopted repository.
 
 ```text
-xaden remove [--yes]
+xaden project remove [--yes]
 ```
 
 Deletes `xaden/` and undoes exactly the paths listed in `xaden/footprint.txt`. It commits nothing. `--yes` skips the question; without a
@@ -78,7 +103,7 @@ Guide: [Uninstall]({{< relref "docs/admin-guide/uninstall" >}}).
 
 ## `xaden version`
 
-Prints the installed Xaden version, for example `0.3.0`.
+Prints the installed Xaden version, for example `0.3.0`. `xaden core version` does the same.
 
 ```text
 xaden version
@@ -86,8 +111,8 @@ xaden version
 
 ## `xaden help`
 
-Prints the list of commands.
+Prints the list of commands. `xaden help core` and `xaden help project` print one namespace.
 
 ```text
-xaden help
+xaden help [core|project]
 ```
