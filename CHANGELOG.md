@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Reference and Troubleshooting follow Xaden `main` after REQ-132: `xaden project check` and `xaden project req` are the commands and `xaden check`, `xaden req` and `xaden version` aliases, `aidd` is a namespace of its own with `xaden help aidd`, and the two messages for a missing project have Troubleshooting entries. The headings of `xaden check` and `xaden req` stay because the check against the pinned release (0.5) lists them.
 - `inbox/` is git-ignored, as the site's `CLAUDE.md` already said: drafts and assets dropped there are never committed.
 - Docs pages without headings no longer show an empty "On this page" block (for example Contributing).
 - The "Docs" entry of the main menu opens Quick start instead of the Documentation overview; the submenu is unchanged and the overview stays at `/docs/`.
