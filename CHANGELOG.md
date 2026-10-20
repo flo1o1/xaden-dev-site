@@ -5,7 +5,6 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
-- The scales behind the hero logo are drawn as a dragon's body instead of a flat tile: they point backwards, follow the curves of a few muscles (larger and lighter on top of a muscle, smaller and darker on its flank) and point down on the leg. `scripts/make-scales.py` draws `scales.svg` (REQ-019).
 - Credits and licenses opens with the section "The people behind the assistant", a thank-you to everyone whose knowledge the AI assistant behind Xaden learned from (REQ-024); the existing introduction follows under "What Xaden builds on".
 - Headlines from level 2 down in the main content (`h2` to `h6`) are set in Inter instead of Cinzel; the page title (`h1`) and everything outside the main content keep Cinzel.
 - Security, "Before a release: a security review": the block holds only the command of the chosen assistant (`/xaden-security`, `$xaden-security` or `xaden prompt security-review`), so the copy button copies something that runs. The `prompt` shortcode prints just the command when label and text are empty.
