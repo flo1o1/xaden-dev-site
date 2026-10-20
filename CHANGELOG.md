@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Dark tendrils like Medusa's hair writhe behind the hero logo, in addition to its swaying shadow. `scripts/make-hair.py` draws them (`hair.html`, `hair.css`); they move in browsers that animate the CSS property `d` (Chrome, Firefox) and stand still in the others and under reduced motion (REQ-019).
 - The large scales behind the hero logo run in rows that wave like a serpent instead of a straight grid, each scale turned to stand across its row; the scale itself is unchanged. `scripts/make-scales.py` draws `scales-serpentine.svg`; the new name keeps a cached copy of the old tile from showing as a single scale (REQ-019).
 - Credits and licenses opens with the section "The people behind the assistant", a thank-you to everyone whose knowledge the AI assistant behind Xaden learned from (REQ-024); the existing introduction follows under "What Xaden builds on".
 - Headlines from level 2 down in the main content (`h2` to `h6`) are set in Inter instead of Cinzel; the page title (`h1`) and everything outside the main content keep Cinzel.

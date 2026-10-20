@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./hair.css";
 @plugin "@tailwindcss/typography";
 @source "../layouts";
 
@@ -151,6 +152,17 @@
   }
   /* shadow of the logo: a blurred black copy that sways behind it (REQ-019) */
   .logo-wrap { position: relative; }
+  /* writhing tendrils like Medusa's hair behind the head (scripts/make-hair.py, hair.css) */
+  .hair-svg {
+    position: absolute;
+    left: 50%;
+    top: 38%;
+    width: 190%;
+    transform: translate(-50%, -50%);
+    overflow: visible;
+    pointer-events: none;
+    filter: blur(1.5px) drop-shadow(0 0 10px rgb(66 65 77 / 0.8));
+  }
   .logo-shadow {
     position: absolute;
     top: 0;
@@ -181,6 +193,7 @@
     filter: blur(4px);
   }
   .logo-glow {
+    position: relative;
     filter: drop-shadow(0 0 28px rgb(147 39 45 / 0.6));
   }
 
