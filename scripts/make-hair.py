@@ -30,8 +30,8 @@ def main():
     css, paths = [], []
     for i in range(N):
         angle = -math.pi / 2 + (i - (N - 1) / 2) * (2 * math.pi / N) * 0.95     # a fan around the head, open at the bottom
-        down = math.sin(angle)                                                    # 1 straight down, -1 straight up
-        length = random.uniform(115, 170) * (1 + 0.3 * down)                      # the ones toward the floor are longer, the upper ones shorter
+        below = max(0.0, math.sin(angle))                                         # the lower ones are shorter
+        length = random.uniform(115, 170) * (1 - 0.45 * below)
         amp = random.uniform(24, 44)
         sway = random.uniform(0.16, 0.3)
         phase = random.choice((-1, 1))
