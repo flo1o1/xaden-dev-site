@@ -269,6 +269,14 @@ xaden project req index
 
 `xaden project check` warns, and does not fail, about a `paths:` entry that matches no file or folder, because a stale entry hides its requirement.
 
+## `xaden check`
+
+Shortcut of [`xaden project check`]({{< relref "docs/reference/commands-project#xaden-project-check" >}}): the same options, output and exit codes.
+
+## `xaden req`
+
+Shortcut of [`xaden project req`]({{< relref "docs/reference/commands-project#xaden-project-req" >}}): the same subcommands, output and exit codes.
+
 ## `xaden version`
 
 Prints the installed Xaden version, for example `0.3.0`. It is an alias of `xaden core version`.
