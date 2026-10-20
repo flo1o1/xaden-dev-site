@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Credits and licenses has a section "The people behind the assistant" that thanks everyone whose knowledge the AI assistant behind Xaden learned from (REQ-024).
 - Headlines from level 2 down in the main content (`h2` to `h6`) are set in Inter instead of Cinzel; the page title (`h1`) and everything outside the main content keep Cinzel.
 - Security, "Before a release: a security review": the block holds only the command of the chosen assistant (`/xaden-security`, `$xaden-security` or `xaden prompt security-review`), so the copy button copies something that runs. The `prompt` shortcode prints just the command when label and text are empty.
 - A docs page with `toc: top` in its front matter shows "On this page" only as the box above the text, on every screen width, without the right column; Troubleshooting uses it because its long list of entries fits the column badly.

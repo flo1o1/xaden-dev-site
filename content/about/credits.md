@@ -73,6 +73,13 @@ in Robert C. Martin's book *Clean Code*. They are ideas credited here, not text 
 
 The fonts are served from this site, from the `@fontsource` packages. The site is hosted on GitHub Pages; the [privacy notice](/privacy/) says what that means for your data.
 
+## The people behind the assistant
+
+Xaden was built with the help of an AI assistant, which is why a tool of this size came together so fast. What such an assistant knows,
+it knows from people: the authors of open-source code and its documentation, the writers of books, articles, tutorials and standards,
+everyone who answered a question in a forum or reported and fixed a bug in the open, and the teachers who explained it first. Most of them
+are not named anywhere and did not know their work would end up here. Their knowledge is in every part of Xaden. Thank you.
+
 ## Names
 
 The names of assistants and tools, such as Claude Code, Codex, Cursor and GitHub Copilot, belong to their owners. Xaden says that it works
