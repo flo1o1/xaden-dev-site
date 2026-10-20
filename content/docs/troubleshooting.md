@@ -69,17 +69,17 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### A gap: no `test` check is configured
 
 **Cause:** the repository has no test command that Xaden knows. In `strict` mode a gap is an error; otherwise it is a warning.
-**Fix:** add `check.test = <command>` to `xaden/xaden.conf`, or add Xaden's preset: `xaden project preset python` or `xaden project preset node`. A Python project that uses `unittest` is found by the scan from 0.6.0 on (a `tests/` or `test/` folder with a `test*.py` file that imports it, and no pytest setup); before that, name it: `check.test = python3 -m unittest discover -s tests`.
+**Fix:** add `check.test = <command>` to `xaden/xaden.conf`, or add Xaden's preset: `xaden project add-preset python` or `xaden project add-preset node`. A Python project that uses `unittest` is found by the scan from 0.6.0 on (a `tests/` or `test/` folder with a `test*.py` file that imports it, and no pytest setup); before that, name it: `check.test = python3 -m unittest discover -s tests`.
 
 ### A gap: no `audit` (or `security`) check is configured
 
 **Cause:** the project was adopted with the dependency audit (and, for Python, Bandit) in `expect`, and no `check.audit` or `check.security` command maps them. In `strict` mode a gap is an error; otherwise it is a warning.
-**Fix:** run `xaden project preset python` or `xaden project preset node`, which maps `pip-audit` and `bandit`, or `npm audit --audit-level=high`, and install the tools it prints. Or name your own command: `check.audit = <command>`. If the team decides not to audit, take `audit` out of `expect`; that loosens a gate, so it is an approval point.
+**Fix:** run `xaden project add-preset python` or `xaden project add-preset node`, which maps `pip-audit` and `bandit`, or `npm audit --audit-level=high`, and install the tools it prints. Or name your own command: `check.audit = <command>`. If the team decides not to audit, take `audit` out of `expect`; that loosens a gate, so it is an approval point.
 
 ### A line says `NOT COVERED: pip-audit` (or `bandit`, `npm audit`)
 
 **Cause:** an adopted project from before the audit kinds has no command for a check that a project made by `xaden project create` runs for this stack. The line informs; nothing fails because of it.
-**Fix:** map the check as the line says (`check.audit` or `check.security`, `xaden project preset <stack>` writes both), then add the kind to `expect` so a missing mapping becomes a gap. Leave it as it is if the team accepts that the audit does not run.
+**Fix:** map the check as the line says (`check.audit` or `check.security`, `xaden project add-preset <stack>` writes both), then add the kind to `expect` so a missing mapping becomes a gap. Leave it as it is if the team accepts that the audit does not run.
 
 ### `check: audit (needs the network)` fails
 
@@ -94,7 +94,7 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### `xaden check` says `xaden/RULES.md` does not match
 
 **Cause:** the rules file was edited by hand, or another Xaden version generated it.
-**Fix:** run `xaden project doctor` to see the versions. If they match, run `xaden project rules` and commit the result.
+**Fix:** run `xaden core doctor` to see the versions. If they match, run `xaden project rules` and commit the result.
 
 ### `xaden check` fails on a finding you did not cause
 
@@ -146,7 +146,7 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### A commit in an IDE fails with exit code 3
 
 **Cause:** the pinned Xaden version is missing, and the IDE has no terminal to ask you in. Nothing was downloaded.
-**Fix:** run the `xaden project fetch <version>` that the message shows, in a terminal.
+**Fix:** run the `xaden core fetch <version>` that the message shows, in a terminal.
 
 ### A download fails with exit code 5
 
@@ -161,11 +161,11 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### Xaden refuses to run: the project requires signed releases
 
 **Cause:** `require-signature = true` is set, and the installed Xaden has no verified signature on record or its files differ from the signed checksum.
-**Fix:** run `xaden project fetch <version>` in a terminal; after a yes it checks the installed copy against the signed checksum and records the result. If it exits with code 6, do not work around it ([Verify releases]({{< relref "docs/admin-guide/verify-releases" >}})).
+**Fix:** run `xaden core fetch <version>` in a terminal; after a yes it checks the installed copy against the signed checksum and records the result. If it exits with code 6, do not work around it ([Verify releases]({{< relref "docs/admin-guide/verify-releases" >}})).
 
 ### `xaden check` says this is one Xaden version and the project pins another
 
-**Fix:** run `xaden project doctor`, then `xaden project fetch <version>` in a terminal.
+**Fix:** run `xaden core doctor`, then `xaden core fetch <version>` in a terminal.
 
 ## Hooks and CI
 
