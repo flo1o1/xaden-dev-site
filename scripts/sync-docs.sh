@@ -44,7 +44,6 @@ PAGES=(
   "admin-guide|pin-one-version-per-project|docs/guide/admin/pin-one-version-per-project.md|Make a team use one Xaden version, and move it together."
   "admin-guide|verify-releases|docs/guide/admin/verify-releases.md|Check checksums and signatures, and know what they prove."
   "admin-guide|optional-tools-and-plugins|template/docs/optional-tools.md|Extra checks and assistant plugins, and their risks."
-  "admin-guide|update-a-classic-project|docs/guide/admin/update-a-classic-project.md|Update a project that keeps its own copy of the tooling."
   "admin-guide|uninstall|docs/guide/admin/uninstall.md|Remove Xaden from a repository or from a machine."
   "contributing|install-with-git|docs/guide/contributing/install-with-git.md|Clone Xaden to read its history, contribute or work on it."
   "contributing|architecture|docs/guide/contributing/architecture.md|How the repository is organised and how the xaden command finds a version."
