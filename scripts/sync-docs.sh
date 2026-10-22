@@ -44,7 +44,6 @@ PAGES=(
   "admin-guide|pin-one-version-per-project|docs/guide/admin/pin-one-version-per-project.md|Make a team use one Xaden version, and move it together."
   "admin-guide|verify-releases|docs/guide/admin/verify-releases.md|Check checksums and signatures, and know what they prove."
   "admin-guide|optional-tools-and-plugins|template/docs/optional-tools.md|Extra checks and assistant plugins, and their risks."
-  "admin-guide|update-a-classic-project|docs/guide/admin/update-a-classic-project.md|Update a project that keeps its own copy of the tooling."
   "admin-guide|uninstall|docs/guide/admin/uninstall.md|Remove Xaden from a repository or from a machine."
   "contributing|install-with-git|docs/guide/contributing/install-with-git.md|Clone Xaden to read its history, contribute or work on it."
   "contributing|architecture|docs/guide/contributing/architecture.md|How the repository is organised and how the xaden command finds a version."
@@ -115,6 +114,8 @@ rewrite_for_readers() {
     s/ \((?:`?AGENTS\.md`? )?(?:§ ?[0-9]+|section [0-9]+)\)//g;
     s/ \(CC-[0-9]+\)//g;
     s/ \(REQ-[0-9]+(?:, REQ-[0-9]+)*\)//g;
+    s/, REQ-[0-9]+\)/)/g;
+    s/recorded before REQ-153/recorded before the pin check existed/g;
     s/the risks to know before installing are in `template\/docs\/optional-tools\.md` → "Assistant\s+plugins" \(in a generated project: `docs\/optional-tools\.md`\)/the risks to know before installing are in [Optional tools and assistant plugins](\/docs\/admin-guide\/optional-tools-and-plugins\/#assistant-plugins-claude-code)/g;
     s/list in `template\/docs\/optional-tools\.md`/list in [Optional tools and assistant plugins](\/docs\/admin-guide\/optional-tools-and-plugins\/)/g;
     s/ \(`?AGENTS\.md`? §[0-9]+\)//g;
