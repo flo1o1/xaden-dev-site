@@ -47,8 +47,8 @@ and `xaden project adopt`; in a repository that has not adopted Xaden it prints 
 Creates a project in the `xaden/` layout, with its own git repository, hooks, a CI workflow and a first commit on `main`.
 
 ```text
-xaden project create [--assistants <list>] <name> [<dir>]
-xaden project create --autopilot [--stack python|node] [--assistants <list>] <name> [<dir>]
+xaden project create [--assistants <list>] [--remote <url>] <name> [<dir>]
+xaden project create --autopilot [--stack python|node] [--assistants <list>] [--remote <url>] <name> [<dir>]
 ```
 
 | Argument or option | Meaning |
@@ -58,6 +58,7 @@ xaden project create --autopilot [--stack python|node] [--assistants <list>] <na
 | `--autopilot` | Add the stack's preset and print one plan; ask once before anything is created. |
 | `--stack python\|node` | The stack for autopilot. Without it, autopilot asks (in a terminal) or stops. |
 | `--assistants <list>` | Comma-separated assistants. `claude` adds `CLAUDE.md` with the line `@AGENTS.md`. Without it, a terminal gets a question and a script gets no `CLAUDE.md`. |
+| `--remote <url>` | The remote Git URL, added as `origin`. Without it, a terminal gets a question (`skip` adds none) and a script gets no remote. Accepted: `https://host/path`, `ssh://host/path`, `user@host:path`, never with a password in the address; `ext::`, `file:` and options are refused. Xaden only runs `git remote add`: it never contacts the URL and never pushes. An invalid flag stops before anything is created; an invalid typed answer is skipped with a warning. |
 
 Exit status: `0` created, or nothing changed because you answered no or there is no terminal for autopilot; `2` the folder already holds
 code, a build file or history; `1` any other error. A failed run removes the folder it created.
