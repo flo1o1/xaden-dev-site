@@ -114,6 +114,8 @@ rewrite_for_readers() {
     s/ \((?:`?AGENTS\.md`? )?(?:§ ?[0-9]+|section [0-9]+)\)//g;
     s/ \(CC-[0-9]+\)//g;
     s/ \(REQ-[0-9]+(?:, REQ-[0-9]+)*\)//g;
+    s/, REQ-[0-9]+\)/)/g;
+    s/recorded before REQ-153/recorded before the pin check existed/g;
     s/the risks to know before installing are in `template\/docs\/optional-tools\.md` → "Assistant\s+plugins" \(in a generated project: `docs\/optional-tools\.md`\)/the risks to know before installing are in [Optional tools and assistant plugins](\/docs\/admin-guide\/optional-tools-and-plugins\/#assistant-plugins-claude-code)/g;
     s/list in `template\/docs\/optional-tools\.md`/list in [Optional tools and assistant plugins](\/docs\/admin-guide\/optional-tools-and-plugins\/)/g;
     s/ \(`?AGENTS\.md`? §[0-9]+\)//g;
