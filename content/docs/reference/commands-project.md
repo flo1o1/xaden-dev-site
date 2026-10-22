@@ -53,7 +53,7 @@ xaden project create --autopilot [--stack python|node] [--assistants <list>] <na
 
 | Argument or option | Meaning |
 |--------------------|---------|
-| `<name>` | Project name: lowercase letters, digits and hyphens, 2 to 51 characters, starting with a letter. |
+| `<name>` | Project name: lowercase letters, digits, hyphens and dots, 2 to 51 characters, starting with a letter. A dot must sit between other characters: `mywebsite.com` is fine, `site.` and `my..site` are refused. |
 | `<dir>` | The folder to create. Default: `./<name>`. |
 | `--autopilot` | Add the stack's preset and print one plan; ask once before anything is created. |
 | `--stack python\|node` | The stack for autopilot. Without it, autopilot asks (in a terminal) or stops. |
