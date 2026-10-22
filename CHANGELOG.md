@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Reference, `xaden project create`: a project name may contain dots (`mywebsite.com`), not at the end and not twice in a row (code REQ-155).
 - Reference follows Xaden `main` after REQ-153 and REQ-154: the settings `missing-tools`, `aidd-integrity` and `aidd-commit`, the pin check in every `xaden aidd` form, and `--strict` next to `missing-tools = fail`.
 - Reference, Troubleshooting and Security follow Xaden `main` after REQ-136 and REQ-137: exit code 6 also covers a missing signature of a signed-era release, `require-signature` is on for new projects, the download address variables are confirmed first, and CI stops on changed check settings until the label `xaden-settings-accepted` is added (`SETTINGS_ACCEPTED`).
 - Home page: the headlines of level 2 and 3 and the buttons of the hero are set in Cinzel again; the headlines of level 4 and below, and every `h2` and `h3` on the other pages, stay in Inter.
