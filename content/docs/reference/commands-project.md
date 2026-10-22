@@ -241,7 +241,7 @@ xaden project check [--staged] [--strict]
 |--------|---------|
 | (none) | The full run: all files, the commands in `xaden.conf`, requirements, traceability, secret scan and workflow lint. |
 | `--staged` | The pre-commit subset: staged files only, offline. |
-| `--strict` | A missing tool is a failure instead of a skipped check. CI uses it. |
+| `--strict` | A missing tool is a failure instead of a skipped check. CI uses it. `missing-tools = fail` in `xaden/xaden.conf` does the same for every run. |
 
 The full run also prints `NOT COVERED:` for each audit Xaden knows for your stack and nothing maps; see [Configuration]({{< relref "docs/reference/configuration" >}}).
 

@@ -49,10 +49,10 @@ xaden aidd pin <cli-version> <release>
 
 | Form | Meaning |
 |------|---------|
-| `enable` | Show the exact command, ask, then run the framework's installer (`@ai-driven-dev/cli`, through `npx`) at the pinned CLI version and release. It writes `.aidd/` and the settings of the assistants, adds a block marked `xaden:aidd` to `AGENTS.md`, and records `aidd-cli`, `aidd-release` and `aidd-assistants` in `xaden/xaden.conf`. `--ai claude,cursor` chooses the assistants; without it Xaden uses the ones in `assistants`. |
-| `status` | Print the pin next to what is installed. Exit status `1` when an installed plugin does not come from the pinned release. |
-| `disable` | Ask, then run the framework's own `clean`, remove the block from `AGENTS.md` and the three settings. A marketplace registration in your Claude Code user settings stays, as it does with the framework's own `clean`. |
-| `pin` | Ask, then create the branch `chore/pin-aidd-<release>` in a folder next to the project, run the installer there at the new pin, commit, and print a link to the framework's changes between the two releases. Nothing else moves the pin. |
+| `enable` | Show the exact command, ask, then check that npm and GitHub still answer the pin (`aidd-integrity`, `aidd-commit`) and run the framework's installer (`@ai-driven-dev/cli`, through `npx`) at the pinned CLI version and release. It writes `.aidd/` and the settings of the assistants, adds a block marked `xaden:aidd` to `AGENTS.md`, and records `aidd-cli`, `aidd-release`, `aidd-integrity`, `aidd-commit` and `aidd-assistants` in `xaden/xaden.conf`. `--ai claude,cursor` chooses the assistants; without it Xaden uses the ones in `assistants`. |
+| `status` | Print the pin, its integrity and commit, next to what is installed. Exit status `1` when an installed plugin does not come from the pinned release. |
+| `disable` | Ask, check the pin like `enable` does, then run the framework's own `clean`, remove the block from `AGENTS.md` and the pin settings. A marketplace registration in your Claude Code user settings stays, as it does with the framework's own `clean`. |
+| `pin` | Ask, read the integrity of the new CLI from npm and the commit of the release from GitHub, then create the branch `chore/pin-aidd-<release>` in a folder next to the project, run the installer there at the new pin, commit (with both values recorded), and print a link to the framework's changes between the two releases. Nothing else moves the pin. |
 
 Needs Node 22.12 or later, `git` and `npx`, only for the framework's installer; Xaden itself needs none of them for this. The project must have adopted Xaden. Xaden never uses "latest": `enable` stops before it installs when the pinned CLI cannot be held to a release (it asks that of the CLI only after your yes, because running it downloads it through `npx`), and removes the installation again when a plugin does not come from the pinned release.
 
