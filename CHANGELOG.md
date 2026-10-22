@@ -4,6 +4,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-22
+
 ### Changed
 - Reference, `xaden project create`: a project name may contain dots (`mywebsite.com`), not at the end and not twice in a row (code REQ-155).
 - Reference follows Xaden `main` after REQ-153 and REQ-154: the settings `missing-tools`, `aidd-integrity` and `aidd-commit`, the pin check in every `xaden aidd` form, and `--strict` next to `missing-tools = fail`.
