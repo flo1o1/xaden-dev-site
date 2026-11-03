@@ -267,7 +267,7 @@ xaden project req index
 | Subcommand | Meaning |
 |------------|---------|
 | `list` | One line per requirement: ID, status, priority, title. `--epic` and `--status` narrow the list; an unknown status is refused. |
-| `show REQ-nnn` | The file of one requirement. `--brief` prints the ID, status, title, the job or quality goal and the acceptance criteria only. |
+| `show REQ-nnn` | The file of one requirement. A short number such as `15` works too, with or without the `REQ-` prefix and in any case; it is read as the three-digit ID. An unknown ID names the last existing one. `--brief` prints the ID, status, title, the job or quality goal and the acceptance criteria only. |
 | `for <path>...` | The requirements whose optional `paths:` front-matter line covers one of the files or folders. An entry ending in `/` covers the folder, an entry with `*`, `?` or `[` is a glob over the whole path (a `*` also crosses `/`), anything else is one file. A requirement without `paths:` never matches. |
 | `find <word>...` | The requirements whose title or text holds every word, ignoring case, one line each. |
 | `new <epic> <job\|quality> "<title>"` | Creates the next requirement as a draft and refreshes the index. The epic is lowercase words with hyphens. |
