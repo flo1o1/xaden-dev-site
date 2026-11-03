@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Changed
+- Reference, `xaden project req show`: short IDs (`15`, `REQ-15`, `req-015`) and the error for an unknown ID (code REQ-164).
+
 ## [0.6.0] - 2026-10-22
 
 ### Changed
