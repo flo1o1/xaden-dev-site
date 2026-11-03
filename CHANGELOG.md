@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Fixed
+- `scripts/sync-docs.sh` renders the kickoff guide of Xaden `main` again: the assistant-picker rule accepts the new wording "In any of them, tell it:" next to the old one, so the render of 0.6.0 is unchanged.
+
 ## [0.6.0] - 2026-10-22
 
 ### Changed
