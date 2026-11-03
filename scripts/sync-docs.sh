@@ -136,7 +136,7 @@ rewrite_for_readers() {
 assistant_commands() {
   perl -0pe '
     # a pair of code blocks: the slash command, then the plain prompt
-    s{([^\n]*?)In Claude Code, type:\n\n```text\n/([a-z-]+) ([^\n]*)\n```\n\n(.*?)In any other assistant, tell it:\n\n```text\nRun `xaden prompt ([a-z-]+)` and follow it\. ([^:\n]+): [^\n]*\n```\n}{$1Start it with:\n\n\{\{< prompt "$2" "$5" "$6" "$3" >\}\}\n\n$4}s;
+    s{([^\n]*?)In Claude Code, type:\n\n```text\n/([a-z-]+) ([^\n]*)\n```\n\n(.*?)In any (?:other assistant|of them), tell it:\n\n```text\nRun `xaden prompt ([a-z-]+)` and follow it\. ([^:\n]+): [^\n]*\n```\n}{$1Start it with:\n\n\{\{< prompt "$2" "$5" "$6" "$3" >\}\}\n\n$4}s;
     # the table of other tasks: one column with the command of the chosen assistant
     s{\| You want to \| Claude Code \| Tell another assistant to run \|\n\|[-|]+\|\n}{| You want to | Run |\n|-------------|-----|\n};
     s{^\| ([^|\n]+) \| `/([a-z-]+)` \| `xaden prompt ([a-z-]+)` \|$}{| $1 | \{\{< cmd "$2" "$3" >\}\} |}mg;
