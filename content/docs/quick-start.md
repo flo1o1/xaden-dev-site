@@ -71,7 +71,7 @@ Details: [Build features]({{< relref "docs/developer-guide/build-features" >}}).
 xaden project release minor
 ```
 
-- `xaden project release minor`: checks everything, stamps the version and the changelog, and tags locally. It never pushes. You push when you are ready.
+- `xaden project release minor`: checks everything, stamps the version and the changelog, and tags locally. It never pushes. You push when you are ready. For a pre-release add `--pre alpha` (`0.1.0-alpha`); `pre` makes the next one and `final` the stable version. `xaden check --release` runs the release gate first.
 
 Details: [Release a version]({{< relref "docs/developer-guide/release-a-version" >}}).
 

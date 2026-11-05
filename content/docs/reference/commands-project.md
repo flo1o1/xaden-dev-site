@@ -210,8 +210,18 @@ checks focused.
 Cuts a release: checks, stamps `VERSION` and `CHANGELOG.md`, commits and tags locally. It never pushes.
 
 ```text
-xaden project release <major|minor|patch>
+xaden project release <major|minor|patch|pre|final> [--pre <id>]
 ```
+
+| Part | Result |
+|------|--------|
+| `major`, `minor`, `patch` | The next stable version, for example `0.1.0` to `0.2.0`. With `--pre <id>` a pre-release: `minor --pre alpha` from `0.0.x` gives `0.1.0-alpha`. The id starts with a letter and holds letters, digits and `-`. |
+| `pre` | The next pre-release of the current one. The same id counts up: `0.1.0-alpha`, `0.1.0-alpha.2`, `0.1.0-alpha.3`. `pre --pre beta` changes the id: `0.1.0-beta`, then `rc`. |
+| `final` | Drops the suffix: `0.2.0-rc.2` becomes `0.2.0`. |
+
+A result that does not sort higher under SemVer 2.0 is refused before any file changes (`beta` after `rc`, `pre` on a stable version). `major`, `minor`
+and `patch` without `--pre` on a pre-release are refused too and name `final`. Each pre-release stamps its own `CHANGELOG.md` section from `Unreleased`;
+the final version stamps what is left, so read the pre-release sections above it for the whole story. Checks, commit and tag are the same as for a stable release.
 
 Needs a clean working tree, a `VERSION` file and a `CHANGELOG.md` with an `Unreleased` section. It refuses to continue while a check fails, a required
 tool is missing, or a requirement, `SECURITY.md` or `xaden/threat-model.md` has an unfilled `TODO` marker. A failed step restores the files.
@@ -235,13 +245,14 @@ Guide: [Check modes and baselines]({{< relref "docs/developer-guide/check-modes-
 Runs the project's checks. Shortcut: `xaden check` does the same, with the same options and exit codes.
 
 ```text
-xaden project check [--staged] [--strict]
+xaden project check [--staged] [--strict] [--release]
 ```
 
 | Option | Meaning |
 |--------|---------|
 | (none) | The full run: all files, the commands in `xaden.conf`, requirements, traceability, secret scan and workflow lint. |
 | `--staged` | The pre-commit subset: staged files only, offline. |
+| `--release` | The release gate: the full run, and an unfilled `TODO` marker in `SECURITY.md` or `xaden/threat-model.md`, or a requirement placeholder, fails it. Not with `--staged`. Run it before you ask for a release. |
 | `--strict` | A missing tool is a failure instead of a skipped check. CI uses it. `missing-tools = fail` in `xaden/xaden.conf` does the same for every run. |
 
 The full run also prints `NOT COVERED:` for each audit Xaden knows for your stack and nothing maps; see [Configuration]({{< relref "docs/reference/configuration" >}}).
