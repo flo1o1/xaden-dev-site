@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Fixed
+- The Reference says where `xaden project pin` and `xaden aidd pin` create their worktree: in the project's `worktrees/` folder, or next to the project when there is none (Xaden REQ-168).
+
 ## [0.8.0] - 2026-11-07
 
 ### Fixed
