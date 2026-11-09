@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- The Reference and Troubleshooting describe `xaden project adopt` in a folder without a Git repository: the question, `--init`, and what Xaden does and does not set up (Xaden REQ-163).
 - The Reference says that `xaden project req new` numbers above the requirements on every branch of `origin` and what it does when the remote cannot be reached (Xaden REQ-169).
 
 ### Fixed
