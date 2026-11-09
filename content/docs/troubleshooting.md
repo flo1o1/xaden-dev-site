@@ -43,7 +43,8 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 
 ### `xaden project adopt` says this is not a git repository
 
-**Fix:** run it inside a clone, or run `git init` first.
+**Cause:** the folder is not in a Git repository and none was set up: you declined the question, there is no terminal, or you used `--scan` or `--plan`. Xaden never sets up a repository in your home folder or in `/`.
+**Fix:** run it inside a clone, accept the setup question in a project folder, or use `xaden project adopt --init` to set up Git without that question. Add `--yes` to apply the adoption without a terminal. `--scan` and `--plan` never set up Git; you can also run `git init` yourself.
 
 ### `xaden project adopt` stopped after the plan and did not ask
 
