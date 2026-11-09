@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Changed
+- The Reference describes `xaden project adopt` in a folder without a Git repository: the question, `--init`, and what Xaden does and does not set up (Xaden REQ-163). Merge with the release that contains REQ-163.
+
 ### Fixed
 - The Reference says where `xaden project pin` and `xaden aidd pin` create their worktree: in the project's `worktrees/` folder, or next to the project when there is none (Xaden REQ-168).
 

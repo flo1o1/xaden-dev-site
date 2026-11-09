@@ -67,10 +67,10 @@ Guide: [Create a project]({{< relref "docs/developer-guide/create-a-project" >}}
 
 ## `xaden project adopt`
 
-Adds Xaden to the repository you are in, on a new branch and worktree. Run it inside a git clone.
+Adds Xaden to the repository you are in, on a new branch and worktree. Run it inside a git clone, or in a folder that is no repository yet (see `--init`).
 
 ```text
-xaden project adopt [--scan | --plan] [--yes] [--assistants <list>] [--mode <mode>]
+xaden project adopt [--scan | --plan] [--init] [--yes] [--assistants <list>] [--mode <mode>]
             [--check <kind>=<command>]... [--preset | --no-preset] [--skip-hooks] [--skip-ci]
             [--commit-convention <conventional|other>]
 ```
@@ -79,6 +79,7 @@ xaden project adopt [--scan | --plan] [--yes] [--assistants <list>] [--mode <mod
 |--------|---------|
 | `--scan` | Report what the repository has: stacks, test runner (npm, pytest, `unittest`, make and others), linters, type checker, dependency audit, security linter, and the kinds of checks it lacks. Changes nothing. |
 | `--plan` (alias `--dry-run`) | Print the exact diff and the file list. Changes nothing. |
+| `--init` | In a folder that is no Git repository, set one up without the question (`git init -b main`), also without a terminal. |
 | `--yes` | Apply the plan without the question. Use it in scripts. |
 | `--assistants <list>` | Comma-separated assistants. Default: pre-selected from what the scan finds, confirmed by you. |
 | `--mode advisory\|changed-files\|strict` | Mode of the checks. Default: `changed-files`. |
@@ -89,10 +90,12 @@ xaden project adopt [--scan | --plan] [--yes] [--assistants <list>] [--mode <mod
 
 A new adoption expects `audit` for a Python or Node repository and `security` for Python (`expect` in `xaden/xaden.conf`): until a command maps them they are gaps. See [Configuration]({{< relref "docs/reference/configuration" >}}).
 
+In a folder that is no Git repository, a terminal gets the question `Set up a Git repository in <folder> now?`: yes runs `git init -b main` and the adoption goes on as in an empty repository, no changes nothing and ends with the error that names `git init`. Xaden runs `git init` only: no commit, no remote, and the files that are there stay untracked; the closing hint names `git remote add origin <url>`. It never does this in your home folder or in `/`, and `--scan` and `--plan` ask nothing and set nothing up. Without a terminal and without `--init`, nothing is set up and the error stays.
+
 Without a terminal and without `--yes`, `adopt` stops after the plan. It creates the branch `chore/adopt-xaden` in the folder
 `<repo>-adopt-xaden`; in a repository without commits it works in place.
 
-Exit status: `0` done or nothing changed; `1` error (not a git repository, already adopted, branch or folder exists); `4` the hook manager or
+Exit status: `0` done or nothing changed; `1` error (not a git repository and none set up, `git init` failed, already adopted, branch or folder exists); `4` the hook manager or
 CI system is not supported.
 
 Guide: [Add Xaden to a repository]({{< relref "docs/developer-guide/add-xaden-to-a-repository" >}}).
