@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Changed
+- The Reference says that `xaden project req new` numbers above the requirements on every branch of `origin` and what it does when the remote cannot be reached (Xaden REQ-169).
+
 ### Fixed
 - The Reference says where `xaden project pin` and `xaden aidd pin` create their worktree: in the project's `worktrees/` folder, or next to the project when there is none (Xaden REQ-168).
 
