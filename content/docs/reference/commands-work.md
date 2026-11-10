@@ -23,6 +23,10 @@ Guide: [Build features]({{< relref "docs/developer-guide/build-features" >}}).
 ## `xaden context`
 
 Prints the rule IDs, the number of requirements by status, and the `CONTEXT CHECK` fingerprint that an assistant quotes in its first reply.
+Before printing, regenerates `xaden/requirements/INDEX.md` and `INDEX-full.md` when both are ignored by Git and neither is tracked.
+Run it after cloning, before reading the index. Tracked legacy indexes are not rewritten automatically.
+
+Guide: [Keep generated indexes out of parallel merges]({{< relref "docs/developer-guide/build-features" >}}).
 
 ```text
 xaden context

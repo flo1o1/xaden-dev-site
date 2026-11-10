@@ -20,11 +20,13 @@ xaden core version
 xaden core fetch <version>
 xaden core doctor
 xaden core ignore-list
+xaden core completion bash
 xaden core help
 ```
 
 The commands that act on Xaden itself, not on a project: `upgrade` updates it on this machine, `version` prints the installed version, `fetch`
-installs a version, `doctor` compares the installed version with the pinned one and `ignore-list` prints the paths Xaden owns. `help` lists
+installs a version, `doctor` compares the installed version with the pinned one, `ignore-list` prints the paths Xaden owns, and `completion bash`
+prints a Bash completion script. `help` lists
 these commands, and so do `-h` and `--help`. Without a command, `xaden core` prints the list and exits with status `2`. Details: [`xaden core upgrade`]({{< relref "docs/reference/commands-team" >}}#xaden-core-upgrade).
 
 ## `xaden project`
@@ -176,6 +178,9 @@ xaden project pin [<version>]
 Asks before any network access and before downloading a version that is not installed. A signed release pins the signed checksum; otherwise the
 checksum of the download is pinned and Xaden says so.
 
+Pinning regenerates `xaden/RULES.md` and leaves the project's `AGENTS.md` unchanged. Keep shared project rules outside its Xaden markers;
+link longer project-owned documents from there, and do not edit generated `xaden/RULES.md`.
+
 Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing looked up or downloaded; `5` checksum mismatch; `6` signature mismatch.
 
 ## `xaden project rules`
@@ -187,6 +192,22 @@ xaden project rules
 ```
 
 Use it when `xaden project check` reports that the rules file does not match the pinned version. Review the diff and commit it.
+
+## `xaden core completion`
+
+Prints a Bash completion script for Xaden commands, prompts and common options. It changes no file.
+
+```text
+xaden core completion bash
+```
+
+To enable completion in the current Bash session, run:
+
+```bash
+eval "$(xaden core completion bash)"
+```
+
+Add that line to `~/.bashrc` to enable it in future Bash sessions. Xaden does not edit your shell startup file; other shells are not supported.
 
 ## `xaden core ignore-list`
 
@@ -228,6 +249,22 @@ the final version stamps what is left, so read the pre-release sections above it
 
 Needs a clean working tree, a `VERSION` file and a `CHANGELOG.md` with an `Unreleased` section. It refuses to continue while a check fails, a required
 tool is missing, or a requirement, `SECURITY.md` or `xaden/threat-model.md` has an unfilled `TODO` marker. A failed step restores the files.
+
+### Optional changelog fragments
+
+Instead of editing `Unreleased` on every branch, add a uniquely named plain Markdown file to `changelog.d/`, for example
+`changelog.d/invoice-export.md`. Names use letters, digits, dots, underscores and hyphens, start with a letter or digit, and end in `.md`.
+Each fragment starts with exactly one category heading: `### Added`, `### Changed`, `### Deprecated`, `### Removed`, `### Fixed` or
+`### Security`, followed by one or more bullet entries. For example:
+
+```markdown
+### Added
+- Export invoices as CSV.
+```
+
+Release validates the fragments, combines their entries with the existing `Unreleased` entries, groups them by category, and removes only
+the consumed fragment files. `changelog.d/README.md` is ignored and kept. Invalid fragments stop the release without consuming them;
+a failed commit restores the files and fragments. Without `changelog.d/`, editing `Unreleased` directly works as before.
 
 Guide: [Release a version]({{< relref "docs/developer-guide/release-a-version" >}}).
 
@@ -286,6 +323,11 @@ xaden project req index
 | `find <word>...` | The requirements whose title or text holds every word, ignoring case, one line each. |
 | `new <epic> <job\|quality> "<title>"` | Creates the next requirement as a draft and refreshes the index. The epic is lowercase words with hyphens. It fetches `origin` first and numbers above the requirements on every remote branch, naming a branch that already holds a higher number, so two worktrees do not draw the same ID once the first branch is pushed. When the remote cannot be reached, or there is none, it numbers from the working tree and says so; two drafts created before either branch is pushed can still clash. |
 | `index` | Rewrites the generated `INDEX.md`, which lists only requirements that are not `done` or `dropped` and counts the others per epic, and `INDEX-full.md`, the full table that no tool imports, so the files an assistant loads stay small. |
+
+`xaden context` and `xaden project check` regenerate missing or stale indexes when both are ignored by Git and neither is tracked.
+Tracked legacy indexes still fail the check when stale; ignore entries alone do not change that. `index` explicitly rewrites both indexes
+in either workflow. See [Keep generated indexes out of parallel merges]({{< relref "docs/developer-guide/build-features" >}})
+for the opt-in migration.
 
 `xaden project check` warns, and does not fail, about a `paths:` entry that matches no file or folder, because a stale entry hides its requirement.
 

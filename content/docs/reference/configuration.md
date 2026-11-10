@@ -62,8 +62,15 @@ A finding that is in the baseline never fails a check. A failure that names no f
 the other modes fail. Changing `mode` is an approval point.
 
 In a pull request run, CI compares `mode`, `hook-checks`, `expect`, `check.*`, `findings-status.*`, `require-signature`, `version`, `checksum`, the baselines
-and `.github/workflows/xaden.yml` with the merge base. A difference fails the run (`check settings changed`) before any mapped command runs, until the label
-`xaden-settings-accepted` is added to the pull request. A baseline that grew counts as a change. In the pre-commit hook a `check.*` line that differs from the last commit runs only after a yes.
+and both `.github/workflows/xaden.yml` and `.github/workflows/xaden-settings.yml` with the merge base. A difference fails the run (`check settings changed`)
+before any mapped command runs, until the label `xaden-settings-accepted` is added to the pull request. A baseline that grew counts as a change.
+
+The separate `xaden-settings.yml` workflow runs on `pull_request_target` from the base branch, using the Xaden version pinned there.
+It reads the pull request as Git data; it does not check out or execute its files. The `settings` job must be a required status check
+on the default branch for this independent gate to block a merge. Older projects need the workflow offered by `xaden project pin` as
+`xaden-settings.yml-dist`; see [Troubleshooting]({{< relref "docs/troubleshooting#ci-fails-with-check-settings-changed" >}}).
+
+In the pre-commit hook a `check.*` line that differs from the last commit runs only after a yes.
 
 A check that exits with a status it does not declare as "violations found" (`findings-status.<name>`) failed to run to the end: it fails in
 `changed-files` and `strict` and warns in `advisory`, even when everything it printed was in the baseline.

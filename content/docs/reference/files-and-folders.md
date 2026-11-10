@@ -12,19 +12,34 @@ xaden/
   RULES.md              rules for assistants; generated, do not edit
   README.md             what this folder is
   footprint.txt         the paths outside xaden/ that Xaden touched
-  requirements/         one file per requirement, in epic folders, with INDEX.md (open work) and INDEX-full.md (every requirement)
+  requirements/         requirement files in epic folders; local generated INDEX.md (open work) and INDEX-full.md (every requirement)
   personas/             user personas
   security-reviews/     recorded security reviews
   baselines/            findings that existed at adoption
   prompts/              optional: replaces a default prompt of the same name
   threat-model.md       written at kickoff (new projects start with a template)
-AGENTS.md               a marked block that points to xaden/RULES.md
+AGENTS.md               shared project rules outside a marked block that points to xaden/RULES.md
 .aidd/                  optional: the AI-Driven Dev framework, written by `xaden aidd enable`; AGENTS.md then holds a second block, marked xaden:aidd
-CLAUDE.md               only for Claude Code users: the line @AGENTS.md
-.github/workflows/xaden.yml   the CI job, pinned to a version and checksum
+CLAUDE.md               Claude-specific instructions and the line @AGENTS.md, not duplicate shared rules
+.github/workflows/xaden.yml            the CI job, pinned to a version and checksum
+.github/workflows/xaden-settings.yml   the independent settings gate, run from the base branch
 ```
 
 New projects also get a `README.md`, `.gitignore`, `VERSION`, `CHANGELOG.md` and `SECURITY.md`; those belong to the project, not to Xaden.
+
+New and adopted projects ignore both requirement indexes in `xaden/requirements/.gitignore`. Requirement files are the source of truth;
+`xaden context` and `xaden project check` regenerate the indexes when both are ignored and neither is tracked. Tracking either index keeps
+legacy stale-index validation, even after adding ignore entries. Existing projects can opt in without changing their requirements; see
+[Keep generated indexes out of parallel merges]({{< relref "docs/developer-guide/build-features" >}}).
+
+The `xaden-settings.yml` workflow runs on `pull_request_target` with the base branch's pinned Xaden, reading pull-request files only as
+Git data. Its `settings` job must be a required status check on the default branch; older projects get a candidate from `xaden project pin`
+as `xaden-settings.yml-dist`. See [Configuration]({{< relref "docs/reference/configuration" >}}).
+
+Shared project rules belong in `AGENTS.md` outside the Xaden markers. Link longer project-owned documents from there instead of duplicating
+them in `CLAUDE.md`. Xaden owns only its marked block; `xaden/RULES.md` is generated from the pinned version and must not be edited.
+Pinning leaves `AGENTS.md` unchanged, repeated adoption is refused without rewriting it, and removal preserves text outside the block,
+even when the footprint says `created-block`. See [Add Xaden to a repository]({{< relref "docs/developer-guide/add-xaden-to-a-repository" >}}).
 
 ## What `xaden/footprint.txt` records
 
