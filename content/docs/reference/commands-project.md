@@ -287,6 +287,11 @@ xaden project req index
 | `new <epic> <job\|quality> "<title>"` | Creates the next requirement as a draft and refreshes the index. The epic is lowercase words with hyphens. It fetches `origin` first and numbers above the requirements on every remote branch, naming a branch that already holds a higher number, so two worktrees do not draw the same ID once the first branch is pushed. When the remote cannot be reached, or there is none, it numbers from the working tree and says so; two drafts created before either branch is pushed can still clash. |
 | `index` | Rewrites the generated `INDEX.md`, which lists only requirements that are not `done` or `dropped` and counts the others per epic, and `INDEX-full.md`, the full table that no tool imports, so the files an assistant loads stay small. |
 
+`xaden context` and `xaden project check` regenerate missing or stale indexes when both are ignored by Git and neither is tracked.
+Tracked legacy indexes still fail the check when stale; ignore entries alone do not change that. `index` explicitly rewrites both indexes
+in either workflow. See [Keep generated indexes out of parallel merges]({{< relref "docs/developer-guide/build-features" >}})
+for the opt-in migration.
+
 `xaden project check` warns, and does not fail, about a `paths:` entry that matches no file or folder, because a stale entry hides its requirement.
 
 ## `xaden check`

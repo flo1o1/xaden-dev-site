@@ -12,7 +12,7 @@ xaden/
   RULES.md              rules for assistants; generated, do not edit
   README.md             what this folder is
   footprint.txt         the paths outside xaden/ that Xaden touched
-  requirements/         one file per requirement, in epic folders, with INDEX.md (open work) and INDEX-full.md (every requirement)
+  requirements/         requirement files in epic folders; local generated INDEX.md (open work) and INDEX-full.md (every requirement)
   personas/             user personas
   security-reviews/     recorded security reviews
   baselines/            findings that existed at adoption
@@ -25,6 +25,11 @@ CLAUDE.md               only for Claude Code users: the line @AGENTS.md
 ```
 
 New projects also get a `README.md`, `.gitignore`, `VERSION`, `CHANGELOG.md` and `SECURITY.md`; those belong to the project, not to Xaden.
+
+New and adopted projects ignore both requirement indexes in `xaden/requirements/.gitignore`. Requirement files are the source of truth;
+`xaden context` and `xaden project check` regenerate the indexes when both are ignored and neither is tracked. Tracking either index keeps
+legacy stale-index validation, even after adding ignore entries. Existing projects can opt in without changing their requirements; see
+[Keep generated indexes out of parallel merges]({{< relref "docs/developer-guide/build-features" >}}).
 
 ## What `xaden/footprint.txt` records
 
