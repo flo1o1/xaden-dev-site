@@ -20,11 +20,13 @@ xaden core version
 xaden core fetch <version>
 xaden core doctor
 xaden core ignore-list
+xaden core completion bash
 xaden core help
 ```
 
 The commands that act on Xaden itself, not on a project: `upgrade` updates it on this machine, `version` prints the installed version, `fetch`
-installs a version, `doctor` compares the installed version with the pinned one and `ignore-list` prints the paths Xaden owns. `help` lists
+installs a version, `doctor` compares the installed version with the pinned one, `ignore-list` prints the paths Xaden owns, and `completion bash`
+prints a Bash completion script. `help` lists
 these commands, and so do `-h` and `--help`. Without a command, `xaden core` prints the list and exits with status `2`. Details: [`xaden core upgrade`]({{< relref "docs/reference/commands-team" >}}#xaden-core-upgrade).
 
 ## `xaden project`
@@ -190,6 +192,22 @@ xaden project rules
 ```
 
 Use it when `xaden project check` reports that the rules file does not match the pinned version. Review the diff and commit it.
+
+## `xaden core completion`
+
+Prints a Bash completion script for Xaden commands, prompts and common options. It changes no file.
+
+```text
+xaden core completion bash
+```
+
+To enable completion in the current Bash session, run:
+
+```bash
+eval "$(xaden core completion bash)"
+```
+
+Add that line to `~/.bashrc` to enable it in future Bash sessions. Xaden does not edit your shell startup file; other shells are not supported.
 
 ## `xaden core ignore-list`
 
