@@ -176,6 +176,9 @@ xaden project pin [<version>]
 Asks before any network access and before downloading a version that is not installed. A signed release pins the signed checksum; otherwise the
 checksum of the download is pinned and Xaden says so.
 
+Pinning regenerates `xaden/RULES.md` and leaves the project's `AGENTS.md` unchanged. Keep shared project rules outside its Xaden markers;
+link longer project-owned documents from there, and do not edit generated `xaden/RULES.md`.
+
 Exit status: `0` done; `1` you answered no or an error; `3` no terminal, nothing looked up or downloaded; `5` checksum mismatch; `6` signature mismatch.
 
 ## `xaden project rules`

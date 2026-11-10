@@ -18,9 +18,9 @@ xaden/
   baselines/            findings that existed at adoption
   prompts/              optional: replaces a default prompt of the same name
   threat-model.md       written at kickoff (new projects start with a template)
-AGENTS.md               a marked block that points to xaden/RULES.md
+AGENTS.md               shared project rules outside a marked block that points to xaden/RULES.md
 .aidd/                  optional: the AI-Driven Dev framework, written by `xaden aidd enable`; AGENTS.md then holds a second block, marked xaden:aidd
-CLAUDE.md               only for Claude Code users: the line @AGENTS.md
+CLAUDE.md               Claude-specific instructions and the line @AGENTS.md, not duplicate shared rules
 .github/workflows/xaden.yml   the CI job, pinned to a version and checksum
 ```
 
@@ -30,6 +30,11 @@ New and adopted projects ignore both requirement indexes in `xaden/requirements/
 `xaden context` and `xaden project check` regenerate the indexes when both are ignored and neither is tracked. Tracking either index keeps
 legacy stale-index validation, even after adding ignore entries. Existing projects can opt in without changing their requirements; see
 [Keep generated indexes out of parallel merges]({{< relref "docs/developer-guide/build-features" >}}).
+
+Shared project rules belong in `AGENTS.md` outside the Xaden markers. Link longer project-owned documents from there instead of duplicating
+them in `CLAUDE.md`. Xaden owns only its marked block; `xaden/RULES.md` is generated from the pinned version and must not be edited.
+Pinning leaves `AGENTS.md` unchanged, repeated adoption is refused without rewriting it, and removal preserves text outside the block,
+even when the footprint says `created-block`. See [Add Xaden to a repository]({{< relref "docs/developer-guide/add-xaden-to-a-repository" >}}).
 
 ## What `xaden/footprint.txt` records
 
