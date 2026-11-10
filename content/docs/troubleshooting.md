@@ -105,8 +105,12 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 
 ### CI fails with `check settings changed`
 
-**Cause:** the pull request changes `mode`, `hook-checks`, `expect`, a `check.*` or `findings-status.*` line, `require-signature`, the pin, a baseline (it grew) or the Xaden workflow. No mapped command ran, so a changed command line never executed unread.
-**Fix:** read the changed lines the run prints. If the change is wanted, a person who may merge adds the label `xaden-settings-accepted` to the pull request. An older workflow does not pass the label: take the new one that `xaden project pin` writes as `.github/workflows/xaden.yml-dist`.
+**Cause:** the pull request changes `mode`, `hook-checks`, `expect`, a `check.*` or `findings-status.*` line, `require-signature`, the pin, a baseline (it grew) or either Xaden workflow (`xaden.yml` or `xaden-settings.yml`). No mapped command ran, so a changed command line never executed unread.
+**Fix:** read the changed lines the run prints. If the change is wanted, a person who may merge adds the label `xaden-settings-accepted` to the pull request.
+For an older project, `xaden project pin` offers the independent settings workflow as `.github/workflows/xaden-settings.yml-dist`.
+Review it, rename it to `xaden-settings.yml`, merge it into the default branch, and make its `settings` job a required status check.
+It runs from the base branch on `pull_request_target`, using the Xaden pinned there and reading the pull request only as Git data.
+The separate `xaden.yml-dist` candidate updates the main CI workflow; accepting that file alone does not install the independent settings gate.
 
 ### A check fails with `failed (exit status N)` although it printed nothing new
 
