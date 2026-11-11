@@ -127,6 +127,7 @@ rewrite_for_readers() {
     s/comes from `template\/`/comes from Xaden\x27s template folder/g;
     s/--brief REQ-003 feature/--brief <requirement> feature/g;
     s/index, REQ-003, prompt/index, the named requirement, prompt/g;
+    s/changelog\.d\/REQ-[0-9]+-docs\.md/changelog.d\/<requirement>-docs.md/g;
   '
 }
 

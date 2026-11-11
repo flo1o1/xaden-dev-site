@@ -38,5 +38,5 @@ Only an explicit yes answers a question; anything else, including no answer, is 
 | `XADEN_UPDATE_CHECK` | Overrides `update-check` from `xaden/xaden.conf` on this machine: `off`, or an interval such as `12h`, `1d`, `7d`. |
 | `EVENT_NAME`, `BASE_REF`, `BEFORE_SHA` | Set by the CI workflow for the check step: `push` or `pull_request`, the target branch of a pull request, and the previous tip of a push. In `changed-files` mode they say which files the change touches; without them in CI the run checks all files. |
 | `STRICT=1` | The same as `xaden check --strict`. |
-| `SETTINGS_ACCEPTED` | Set by the CI workflow to `true` when the pull request carries the label `xaden-settings-accepted`; the run then accepts changed check settings. |
+| `SETTINGS_ACCEPTED` | Set by the CI workflow to `true` when someone other than the author added the label `xaden-settings-accepted` after the last push (`label-accepted.sh`; unknown counts as `false`); the run then accepts changed check settings. |
 | `XADEN_RELEASES_URL`, `XADEN_ASSETS_URL`, `XADEN_LATEST_URL` | Where releases, signatures and the newest-release answer come from, for mirrors. Xaden names each one it finds and asks before it downloads from there; without a terminal it downloads nothing. A download is still checked against the pinned checksum and the signature. |
