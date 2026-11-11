@@ -4,6 +4,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-11-11
+
 ### Changed
 - Reference, Security and Troubleshooting say that the label `xaden-settings-accepted` counts only when someone other than the author adds it after the last push (Xaden REQ-160).
 - The Reference and Troubleshooting describe `xaden project adopt` in a folder without a Git repository: the question, `--init`, and what Xaden does and does not set up (Xaden REQ-163).
