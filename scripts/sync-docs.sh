@@ -30,10 +30,10 @@ PAGES=(
   "developer-guide|create-a-project|docs/guide/developer/create-a-project.md|Start a new project with Xaden's rules, checks and requirements from the first commit."
   "developer-guide|add-xaden-to-a-repository|docs/guide/developer/add-xaden-to-a-repository.md|Put Xaden beneath a repository you already have without changing its build."
   "developer-guide|check-modes-and-baselines|docs/guide/developer/check-modes-and-baselines.md|Decide how strict the checks are, and adopt without failing on old findings."
-  "developer-guide|what-xaden-checks|docs/guide/developer/what-xaden-checks.md|See which checks each layout runs, which an adopted project does not, and how to make the gates blocking.|unreleased"
+  "developer-guide|what-xaden-checks|docs/guide/developer/what-xaden-checks.md|See which checks each layout runs, which an adopted project does not, and how to make the gates blocking."
   "developer-guide|kick-off-with-your-assistant|docs/guide/developer/kick-off-with-your-assistant.md|Turn an idea into approved requirements, a stack and a first skeleton."
   "developer-guide|build-features|docs/guide/developer/build-features.md|Add a feature from a requirement, test first, checked before every commit."
-  "developer-guide|use-the-aidd-framework|docs/guide/developer/use-the-aidd-framework.md|Switch on the AI-Driven Dev framework in a project at a pinned version, and off again.|unreleased"
+  "developer-guide|use-the-aidd-framework|docs/guide/developer/use-the-aidd-framework.md|Switch on the AI-Driven Dev framework in a project at a pinned version, and off again."
   "developer-guide|release-a-version|docs/guide/developer/release-a-version.md|Cut a checked, stamped and tagged version when you decide to."
   "developer-guide|join-a-project|docs/guide/developer/join-a-project.md|Start contributing to a repository whose team already uses Xaden."
   "developer-guide|other-assistants-and-local-models|template/docs/local-llm.md|Use Xaden in a chat window or with a model on your own machine."
@@ -50,7 +50,7 @@ PAGES=(
   "contributing|work-on-xaden|docs/guide/contributing/work-on-xaden.md|How a change to Xaden is made, checked and landed."
   "contributing|release-and-signing|docs/guide/contributing/release-and-signing.md|How a Xaden release is cut and signed."
   "contributing|threat-model-and-requirements|docs/guide/contributing/threat-model-and-requirements.md|What Xaden protects, what it accepts, and where its requirements live."
-  "contributing|xaden-and-the-aidd-manifesto|docs/guide/developer/xaden-and-the-aidd-manifesto.md|Which values and principles of the AI-Driven Development Manifesto Xaden meets, and which only partly.|unreleased"
+  "contributing|xaden-and-the-aidd-manifesto|docs/guide/developer/xaden-and-the-aidd-manifesto.md|Which values and principles of the AI-Driven Development Manifesto Xaden meets, and which only partly."
 )
 # Site pages that sources link to: source file | page URL.
 SITE_TARGETS=(

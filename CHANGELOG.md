@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+### Changed
+- The three guide pages marked `unreleased` in `scripts/sync-docs.sh` (What Xaden checks, Use the AIDD framework, Xaden and the AIDD manifesto) lose the marker: the pinned release holds them.
+
 ## [0.9.0] - 2026-11-11
 
 ### Changed
