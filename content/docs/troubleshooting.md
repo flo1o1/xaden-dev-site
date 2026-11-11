@@ -106,7 +106,7 @@ Find your symptom, read the cause, apply the fix. Exit codes are listed in [Exit
 ### CI fails with `check settings changed`
 
 **Cause:** the pull request changes `mode`, `hook-checks`, `expect`, a `check.*` or `findings-status.*` line, `require-signature`, the pin, a baseline (it grew) or either Xaden workflow (`xaden.yml` or `xaden-settings.yml`). No mapped command ran, so a changed command line never executed unread.
-**Fix:** read the changed lines the run prints. If the change is wanted, a person who may merge adds the label `xaden-settings-accepted` to the pull request.
+**Fix:** read the changed lines the run prints. If the change is wanted, a person other than the pull request's author adds the label `xaden-settings-accepted` after the last push. A label from the author, one added before the last push, or one that is removed again does not count.
 For an older project, `xaden project pin` offers the independent settings workflow as `.github/workflows/xaden-settings.yml-dist`.
 Review it, rename it to `xaden-settings.yml`, merge it into the default branch, and make its `settings` job a required status check.
 It runs from the base branch on `pull_request_target`, using the Xaden pinned there and reading the pull request only as Git data.

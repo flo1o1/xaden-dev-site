@@ -63,7 +63,7 @@ the other modes fail. Changing `mode` is an approval point.
 
 In a pull request run, CI compares `mode`, `hook-checks`, `expect`, `check.*`, `findings-status.*`, `require-signature`, `version`, `checksum`, the baselines
 and both `.github/workflows/xaden.yml` and `.github/workflows/xaden-settings.yml` with the merge base. A difference fails the run (`check settings changed`)
-before any mapped command runs, until the label `xaden-settings-accepted` is added to the pull request. A baseline that grew counts as a change.
+before any mapped command runs, until someone other than the author adds the label `xaden-settings-accepted` to the pull request after its last push. A baseline that grew counts as a change.
 
 The separate `xaden-settings.yml` workflow runs on `pull_request_target` from the base branch, using the Xaden version pinned there.
 It reads the pull request as Git data; it does not check out or execute its files. The `settings` job must be a required status check

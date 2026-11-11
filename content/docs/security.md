@@ -52,7 +52,7 @@ A fast subset runs in a git hook on every commit. The full set runs in CI, where
 
 When you add Xaden to a repository that already has findings, they are recorded in a baseline that only
 shrinks. A new finding fails the check in the mode you chose: in changed files, or everywhere. The mode
-and the baseline never loosen without your approval: in a pull request, CI compares these settings with the target branch and stops on a change until a person accepts it with a label.
+and the baseline never loosen without your approval: in a pull request, CI compares these settings with the target branch and stops on a change until a person other than the author accepts it with a label after the last push.
 The separate `.github/workflows/xaden-settings.yml` runs on `pull_request_target`, using the base branch's workflow and pinned Xaden;
 the pull request is read as Git data, not checked out or executed by that gate. Make its `settings` job a required status check on the default
 branch. Without that requirement, or in an older project without the workflow, this independent merge gate is not enforced.
