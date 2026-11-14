@@ -4,6 +4,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-11-14
+
 ### Changed
 - Documents `settings-review = solo` (REQ-174, code issue 146) in the configuration reference, security, troubleshooting and environment pages.
 - The three guide pages marked `unreleased` in `scripts/sync-docs.sh` (What Xaden checks, Use the AIDD framework, Xaden and the AIDD manifesto) lose the marker: the pinned release holds them.
