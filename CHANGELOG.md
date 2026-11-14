@@ -5,11 +5,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ## [Unreleased]
 
 ### Changed
+- Documents `settings-review = solo` (REQ-174, code issue 146) in the configuration reference, security, troubleshooting and environment pages.
 - The three guide pages marked `unreleased` in `scripts/sync-docs.sh` (What Xaden checks, Use the AIDD framework, Xaden and the AIDD manifesto) lose the marker: the pinned release holds them.
 
 ## [0.9.0] - 2026-11-11
 
 ### Changed
+- Documents `settings-review = solo` (REQ-174, code issue 146) in the configuration reference, security, troubleshooting and environment pages.
 - Reference, Security and Troubleshooting say that the label `xaden-settings-accepted` counts only when someone other than the author adds it after the last push (Xaden REQ-160).
 - The Reference and Troubleshooting describe `xaden project adopt` in a folder without a Git repository: the question, `--init`, and what Xaden does and does not set up (Xaden REQ-163).
 - The Reference says that `xaden project req new` numbers above the requirements on every branch of `origin` and what it does when the remote cannot be reached (Xaden REQ-169).
@@ -25,12 +27,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 - `scripts/sync-docs.sh` renders the kickoff guide of Xaden `main` again: the assistant-picker rule accepts the new wording "In any of them, tell it:" next to the old one, so the render of 0.6.0 is unchanged.
 
 ### Changed
+- Documents `settings-review = solo` (REQ-174, code issue 146) in the configuration reference, security, troubleshooting and environment pages.
 - Reference and Quick start: `xaden project release` takes `--pre <id>` and the parts `pre` and `final`, and `xaden check` takes `--release` (code REQ-166, REQ-167).
 - Reference, `xaden project req show`: short IDs (`15`, `REQ-15`, `req-015`) and the error for an unknown ID (code REQ-164).
 
 ## [0.6.0] - 2026-10-22
 
 ### Changed
+- Documents `settings-review = solo` (REQ-174, code issue 146) in the configuration reference, security, troubleshooting and environment pages.
 - Reference, `xaden project create`: the `--remote <url>` option and the question for the remote Git URL (code REQ-161).
 - Reference, `xaden project create`: a project name may contain dots (`mywebsite.com`), not at the end and not twice in a row (code REQ-155).
 - Reference follows Xaden `main` after REQ-153 and REQ-154: the settings `missing-tools`, `aidd-integrity` and `aidd-commit`, the pin check in every `xaden aidd` form, and `--strict` next to `missing-tools = fail`.
@@ -71,12 +75,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 - A **Contributing** section next to the guides, below Reference: Install with git, Architecture, Work on Xaden, Release and sign Xaden, and Threat model and requirements. Its pages are generated from the Xaden release like the guides (`docs/guide/contributing/`); a release that does not carry them yet leaves the section empty. Contributing is exempt from the checks that keep repository paths and rule IDs out of the guides (REQ-005).
 
 ### Changed
+- Documents `settings-review = solo` (REQ-174, code issue 146) in the configuration reference, security, troubleshooting and environment pages.
 - Reference and Troubleshooting describe the new settings and messages of the gate fixes on Xaden `main`: `findings-status.<name>`, `require-signature`, the change scope in CI (`EVENT_NAME`, `BASE_REF`, `BEFORE_SHA`), and exit code 6 under the policy.
 - Quick start installs Xaden with one command (`curl -fsSL https://xaden.dev/install | bash`). The reference describes `xaden upgrade` (updates Xaden itself) and `xaden pin` (moves a project), the `-dist` files, and the changed troubleshooting entries. This describes the next Xaden release; the generated guide pages follow with it.
 
 ## [0.5.0] - 2026-10-18
 
 ### Changed
+- Documents `settings-review = solo` (REQ-174, code issue 146) in the configuration reference, security, troubleshooting and environment pages.
 - Quick start installs Xaden from the signed release zip (download, check the signature against the key on the About page, extract, `install.sh`); cloning stays described on the Install Xaden page for contributors. The docs describe Xaden v0.5.0.
 - **Release cycle (REQ-023):** the site is published only from a version tag, no longer from every push to `main`. The site has the version of the Xaden release it describes (`VERSION`, replacing `XADEN_DOCS_VERSION`); `scripts/release-site.sh <X.Y.Z>` prepares the release commit, and `scripts/release-site.sh republish` a re-publish under the same Xaden release (`vX.Y.Z-0001`, `-0002`). CI publishes a tag only when it is the newest one, equals `VERSION` and is on `main`. The daily `bump-docs` workflow and the `DOCS_BUMP_TOKEN` secret are gone.
 - The generated guide pages no longer end in a "Next" section; the previous and next buttons below the page already link there.
@@ -104,6 +110,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 - Hugo site skeleton with its own theme `themes/xaden` (dark, self-hosted fonts, one optional script for copy buttons), pages Home, Docs and About, a 404 page and `security.txt`; `scripts/check-site.sh` builds it and fails on other origins, inline script, a missing Content-Security-Policy or a `security.txt` that expires within 60 days; CI installs pinned, checksum-verified Hugo and Tailwind CSS CLI.
 
 ### Changed
+- Documents `settings-review = solo` (REQ-174, code issue 146) in the configuration reference, security, troubleshooting and environment pages.
 - The documentation is restructured by kind of use. Docs menu: Quick start, Developer Guide, Admin Guide, Reference, Security, Troubleshooting. The two guides have one page per task (Developer Guide: create a project, add Xaden to a repository, check modes and baselines, kick off, build features, release, join a project, other assistants and local models; Admin Guide: requirements and platforms, install, update, pin one version per project, verify releases, optional tools and plugins, update a classic project, uninstall). Every page starts with the shortest path and ends with the special cases; headings say what the reader does.
 - The guide pages are generated from one source file each in the Xaden release (`docs/guide/` and the shipped guides), not cut out of Getting started with patterns. `scripts/sync-docs.sh` lists the pages, resolves links between them, and fails on a guide file without a page. Releases before v0.2.4 have no `docs/guide/`, so `VERSION` must move to the release that has them before CI can render the site.
 - Home page copy: a headline about AI code crossing the parapet and what Xaden checks on every step, benefit cards that state the means, four paths into the docs. `xaden create` replaces `xaden new` everywhere.
